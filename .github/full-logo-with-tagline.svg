@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="750mm"
+   height="200mm"
+   viewBox="0 0 2657.4802 708.6614"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="full-logo-with-tagline.svg"
+   inkscape:export-filename="/home/jordan/go/src/github.com/jordanknott/chrono/.github/full-logo-with-tagline.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.5"
+     inkscape:cx="1322.1625"
+     inkscape:cy="418.57762"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="false"
+     inkscape:window-width="1896"
+     inkscape:window-height="1004"
+     inkscape:window-x="1930"
+     inkscape:window-y="64"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-343.70079)">
+    <circle
+       style="fill:none;fill-rule:evenodd;stroke:#2c3f50;stroke-width:33.05263138;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4156"
+       cx="441.03595"
+       cy="698.03149"
+       r="297.47366" />
+    <path
+       sodipodi:type="star"
+       style="fill:none;stroke-width:15;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path4158"
+       sodipodi:sides="3"
+       sodipodi:cx="-50"
+       sodipodi:cy="441.36221"
+       sodipodi:r1="181.96979"
+       sodipodi:r2="90.984886"
+       sodipodi:arg1="-1.040744"
+       sodipodi:arg2="0.0064535184"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 42.00001,284.36221 40.982992,441.94938 39.965988,599.53656 -95.999999,519.86221 -231.966,440.18787 -94.982993,362.27505 Z"
+       inkscape:transform-center-x="44.982994"
+       inkscape:transform-center-y="0.58716857" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#31b198;stroke-width:26.72340393;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 318.99699,486.07719 61.04407,105.72969 61.04408,105.7297 61.03977,-105.7297 61.04408,-105.72969 -122.08385,0 -122.08815,0 z m 121.98918,212.44924 -61.0441,105.72969 -61.03976,105.72969 122.08386,0 122.08816,0 -61.0441,-105.72969 -61.04406,-105.72969 z"
+       id="path4168-3"
+       inkscape:connector-curvature="0" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4239"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2c3f50;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(2.4098055,0,0,2.4098055,-1832.8188,-580.48711)"><flowRegion
+         id="flowRegion4241"><rect
+           id="rect4243"
+           width="1152"
+           height="564"
+           x="1118"
+           y="392.99207"
+           style="fill:#2c3f50;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara4245"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:180px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans';fill:#2c3f50;fill-opacity:1">CHRONO</flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40.333992px;line-height:125%;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans';letter-spacing:0px;word-spacing:0px;fill:#2c3f3f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="1074.6654"
+       y="896.08105"
+       id="text4266"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4268"
+         x="1074.6654"
+         y="896.08105"
+         style="font-size:70.58448792px;fill:#2c3f3f;fill-opacity:1">A fast time tracking tool made with love</tspan></text>
+  </g>
+</svg>
