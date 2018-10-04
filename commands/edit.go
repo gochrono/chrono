@@ -13,7 +13,7 @@ import (
     "github.com/spf13/cobra"
 )
 
-const description = `Edit a frame.
+const editDesciption = `Edit a frame.
 
 You can specific which frame to edit through either its ID or relative position in the index.
 For example if you wanted to get the last frame you edited
@@ -29,7 +29,7 @@ func newEditCmd() *cobra.Command {
     return &cobra.Command{
         Use: "edit [index]",
         Short: "Edit a frame",
-        Long: description,
+        Long: editDesciption,
         Args: cobra.ExactArgs(1),
         Run: func(cmd *cobra.Command, args []string) {
             framesPath := chronolib.GetAppFilePath("frames", "")
