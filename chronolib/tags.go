@@ -16,7 +16,7 @@ func IsAllTags(tags []string) bool {
 
 func NormalizeTags(tags []string) []string {
     for idx, tag := range tags {
-        tags[idx] = strings.Replace(strings.ToLower(tag), " ", "-", -1)
+        tags[idx] = strings.Replace(strings.ToLower(strings.TrimPrefix(tag, "+")), " ", "-", -1)
     }
     return tags
 }
