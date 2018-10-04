@@ -1,0 +1,59 @@
+project_name: chrono
+build:
+  main: main.go
+  binary: chrono
+  ldflags:
+    - -s -w -X github.com/jordanknott/chrono/commands.version={{.Version}} -X github.com/jordanknott/chrono/commands.commit={{.Commit}} -X github.com/jordanknott/chrono/commands.date={{.Date}}
+
+  env:
+    - CGO_ENABLED=0
+  goos:
+    - darwin
+    - linux
+    - windows
+  goarch:
+    - amd64
+    - 386
+    - arm
+    - arm64
+  goarm:
+    - 7
+git:
+  short_hash: true
+nfpm:
+  formats:
+    - deb
+  vendor: "getchrono.io"
+  homepage: "https://getchrono.io/"
+  maintainer: "Jordan Knott <jordan@jordanthedev.com>"
+  description: "A fast and simple time tracker tool"
+  license: "MIT"
+  name_template: "{{.ProjectName}}_{{.Version}}_{{.Os}}-{{.Arch}}"
+  replacements:
+    amd64: 64bit
+    386: 32bit
+    arm: ARM
+    arm64: ARM64
+    darwin: macOS
+    linux: Linux
+    windows: Windows
+archive:
+  format: tar.gz
+  format_overrides:
+    - goos: windows
+      format: zip
+  name_template: "{{.ProjectName}}_{{.Version}}_{{.Os}}-{{.Arch}}"
+  replacements:
+    amd64: 64bit
+    386: 32bit
+    arm: ARM
+    arm64: ARM64
+    darwin: macOS
+    linux: Linux
+    windows: Windows
+  files:
+    - README.md
+    - LICENSE
+release:
+  disable: false
+  draft: true
