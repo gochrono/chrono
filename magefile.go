@@ -1,3 +1,5 @@
+// +build mage
+
 package main
 
 import (
@@ -5,6 +7,8 @@ import (
     "fmt"
     "os"
     "github.com/magefile/mage/sh"
+    "github.com/jordanknott/chrono/chronolib"
+    "github.com/google/gofuzz"
 )
 
 var Default = Test
@@ -23,6 +27,18 @@ func Test() error {
         return errors.New("Tests failed")
     }
     fmt.Println("Tests passed")
+    return nil
+}
+
+func Generate() error {
+    f := fuzz.New()
+    var frames []chronolib.Frame
+    for i := 1; i <= 10000; i++ {
+        var frame chronolib.Frame
+        f.Fuzz(&frame)
+        frames = append(frames, frame)
+    }
+    chronolib.SaveFrames("testFrames", &chronolib.Data{frames})
     return nil
 }
 

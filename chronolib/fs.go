@@ -30,7 +30,7 @@ func LoadFrames(framesPath string) *Data {
     content, err := ioutil.ReadFile(framesPath)
     var data Data
     if err != nil {
-        return &data
+        panic(err)
     }
     err = msgpack.Unmarshal(content, &data)
     if err != nil {

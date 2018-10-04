@@ -44,6 +44,9 @@ func FramesEqual(f1 Frame, f2 Frame) bool {
 }
 
 func GetShortHex(sha []byte) string {
+    if len(sha) < 6 {
+        return ""
+    }
     hex := hex.EncodeToString(sha)
     return hex[0:6]
 }
