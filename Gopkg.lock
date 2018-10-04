@@ -113,11 +113,38 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:76ee51c3f468493aff39dbacc401e8831fbb765104cbf613b89bef01cf4bad70"
+  digest = "1:357e8a9010dc590929a02bc5602c058acea216e4c46089755e618a5a59789604"
   name = "golang.org/x/net"
-  packages = ["context"]
+  packages = [
+    "context",
+    "idna",
+    "publicsuffix",
+  ]
   pruneopts = "UT"
   revision = "f5e5bdd778241bfefa8627f7124c39cd6ad8d74f"
+
+[[projects]]
+  digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
+  name = "golang.org/x/text"
+  packages = [
+    "collate",
+    "collate/build",
+    "internal/colltab",
+    "internal/gen",
+    "internal/tag",
+    "internal/triegen",
+    "internal/ucd",
+    "language",
+    "secure/bidirule",
+    "transform",
+    "unicode/bidi",
+    "unicode/cldr",
+    "unicode/norm",
+    "unicode/rangetable",
+  ]
+  pruneopts = "UT"
+  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
+  version = "v0.3.0"
 
 [[projects]]
   digest = "1:9c89d32a15e9941a6d5c396cc54f9afbcca6ea349b33d997d72119a7a67803f4"
@@ -137,6 +164,14 @@
   revision = "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06"
   version = "v1.2.0"
 
+[[projects]]
+  digest = "1:b7fc4c3fd91df516486f53cc86f4b55a0c815782dbe852c5a19cce8e6c577aac"
+  name = "gopkg.in/resty.v1"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "d4920dcf5b7689548a6db640278a9b35a5b48ec6"
+  version = "v1.9.1"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -149,6 +184,7 @@
     "github.com/spf13/cobra",
     "github.com/stretchr/testify/assert",
     "github.com/vmihailenco/msgpack",
+    "gopkg.in/resty.v1",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
