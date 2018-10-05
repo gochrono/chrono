@@ -55,5 +55,4 @@ archive:
     - README.md
     - LICENSE
 release:
-  disable: false
   draft: true
