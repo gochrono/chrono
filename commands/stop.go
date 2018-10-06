@@ -2,7 +2,6 @@ package commands
 
 import (
     "fmt"
-    "strings"
     "time"
     "github.com/jordanknott/chrono/chronolib"
     "github.com/spf13/cobra"
@@ -22,13 +21,14 @@ func newStopCmd() *cobra.Command {
             frame.EndedAt = now
             frame.UUID = chronolib.CreateFrameUUID(frame.Project, &frame.StartedAt, &frame.EndedAt)
 
-            emptyFrame := chronolib.Frame{}
-            chronolib.SaveState(statePath, &emptyFrame)
-
-            fmt.Println("Stopping project " + frame.Project + " [" + strings.Join(frame.Tags, ", ") + "] at " + now.Format("15:04"))
             data := chronolib.LoadFrames(framesPath)
             data.Frames = append(data.Frames, *frame)
             chronolib.SaveFrames(framesPath, data)
+
+            emptyFrame := chronolib.Frame{}
+            chronolib.SaveState(statePath, &emptyFrame)
+
+            fmt.Println(chronolib.FormatStopFrameMessage(*frame))
         },
     }
 }

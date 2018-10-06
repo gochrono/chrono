@@ -3,13 +3,11 @@ package commands
 import (
     "os"
     "fmt"
-    "strings"
     "time"
     "github.com/spf13/cobra"
     "github.com/jordanknott/chrono/chronolib"
     "io/ioutil"
     "github.com/vmihailenco/msgpack"
-    humanize "github.com/dustin/go-humanize"
 )
 
 func newStartCmd() *cobra.Command {
@@ -40,7 +38,7 @@ func newStartCmd() *cobra.Command {
                 panic(err)
             }
             err = ioutil.WriteFile(statePath, b, 0644)
-            fmt.Println("Starting project " + frame.Project + " [" + strings.Join(frame.Tags, ", ") + "], started " + humanize.Time(now) + ".")
+            fmt.Println(chronolib.FormatNewFrameMessage(frame))
         },
     }
 }

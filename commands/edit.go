@@ -80,11 +80,7 @@ func newEditCmd() *cobra.Command {
             } else {
                 data.Frames[targetIndex] = frameEdited
                 chronolib.SaveFrames(framesPath, data)
-
-                started := frameEdited.StartedAt.Format("15:04:05")
-                ended := frameEdited.EndedAt.Format("15:04:05")
-                hours, minutes, seconds := chronolib.GetTimeElapsed(frameEdited.StartedAt, frameEdited.EndedAt)
-                fmt.Printf("Edited frame for project %s, from %s to %s (%dh %02dm %02ds)\n", frameEdited.Project, started, ended, hours, minutes, seconds)
+                fmt.Printf(chronolib.FormatEditFrameMessage(frameEdited))
             }
         },
     }

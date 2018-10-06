@@ -3,11 +3,9 @@ package commands
 import (
     "os"
     "fmt"
-    "strings"
     "time"
     "github.com/jordanknott/chrono/chronolib"
     "github.com/spf13/cobra"
-    "github.com/fatih/color"
 )
 
 var forCurrentWeek bool
@@ -53,32 +51,6 @@ func FilterFramesByTimespan(start time.Time, end time.Time, frames *[]chronolib.
     return filteredFrames
 }
 
-var cyan = color.New(color.FgCyan).SprintFunc()
-var green = color.New(color.FgGreen).SprintFunc()
-var blue = color.New(color.FgBlue).SprintFunc()
-var purple = color.New(color.FgMagenta).SprintFunc()
-
-func FormatDateHeader(date time.Time) string {
-    return cyan(date.Format("Tuesday _2 January 2006"))
-}
-
-func FormatFrameLine(frame chronolib.Frame) string {
-    tags := ""
-    shorthex := chronolib.GetShortHex(frame.UUID)
-    start := frame.StartedAt.Format("15:04")
-    end := frame.EndedAt.Format("15:04")
-    if len(frame.Tags) != 0 {
-        tags = " [" + strings.Join(frame.Tags, ", ") + "]"
-    }
-    hours, minutes, seconds := chronolib.GetTimeElapsed(frame.StartedAt, frame.EndedAt)
-
-    return fmt.Sprintf("\t(ID: %s) %s to %s %4dh %02dm %02ds  %-12s%s", shorthex, green(start), green(end), hours, minutes, seconds, purple(frame.Project), blue(tags))
-}
-
-
-func FormatNoteLine(note string) string {
-    return fmt.Sprintf("\t\t- %s", note)
-}
 
 func newLogCmd() *cobra.Command {
     cmd :=  &cobra.Command{
@@ -109,11 +81,11 @@ func newLogCmd() *cobra.Command {
             filteredFrames := FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, forAllTime)
             dates := chronolib.SortTimeMapKeys(&filteredFrames)
             for _, date := range dates {
-                fmt.Println(FormatDateHeader(date))
+                fmt.Println(chronolib.FormatDateHeader(date))
                 for _, frame := range filteredFrames[date] {
-                    fmt.Println(FormatFrameLine(frame))
+                    fmt.Println(chronolib.FormatFrameLine(frame))
                     for _, note := range frame.Notes {
-                        fmt.Println(FormatNoteLine(note))
+                        fmt.Println(chronolib.FormatNoteLine(note))
                     }
                 }
             }
