@@ -15,6 +15,8 @@ To begin using Chrono, you can start tracking a project with `chrono start [proj
 
 To stop tracking the project use `chrono stop`.
 
+For more on using Chrono, check out the [quick start guide][1]
+
 #### Supported Architectures ####
 
 We provide pre-built Chrono binaries for Windows, Linux, and macOS (Darwin) for x64, i386 and ARM architectures.
@@ -32,7 +34,7 @@ To contribute to the Chrono project or documentation, you should [fork the GitHu
 
 Alternatively you can install Chrono by building it yourself. This ensures you're running the absolute bleeding edge version.
 
-### Build & Install the Binaries from Source (Advanced Install) ###
+### Building Chrono from the Source ###
 
 #### Prequisite Tools ####
 
@@ -56,20 +58,22 @@ go install
 
 **If you are a Windows user, substitute the `$HOME` environment variable above with `%USERPROFILE%`.**
 
-## Contributing to Chrono
+## Contributing to Chrono ###
 
 For a complete guide to contributing to Chrono, see the [Contribution Guide](CONTRIBUTING.md).
 
 We welcome contributions of many kinds from updating documentation, feature requests, bug reports & issues,
 feature implementation, pull requests, answering other users questions, etc.
 
-### Asking Support Questions
+### Asking Support Questions ###
 
 We currently don't have a discussion forum. For now, use the issue tracker to ask questions.
 
-### Reporting Issues
+### Reporting Issues ###
 
 If you believe you have found an issue or bad documentation, use
 the GitHub issue tracker to report the problem to the Chrono maintainers.
 
 When reporting an issue, please provide the version of chrono is use (`chrono version`)
+
+[1]: https://github.com/JordanKnott/chrono/wiki/Quick-Start
