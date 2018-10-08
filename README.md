@@ -1,6 +1,8 @@
 ![Alt chrono](./.github/full-logo-with-tagline.png)
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/jordanknott/chrono)](https://goreportcard.com/report/github.com/jordanknott/chrono)
+![GitHub](https://img.shields.io/github/license/jordanknott/chrono.svg)
+
 
 ## Overview ##
 
