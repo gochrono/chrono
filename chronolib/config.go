@@ -17,6 +17,8 @@ func GetAppFilePath(fileName string, customConfDir string) string {
     if customConfDir != "" {
         appConfDir = customConfDir
     }
+    err := configdir.MakePath(appConfDir)
+    if err != nil { panic(err) }
     return filepath.Join(appConfDir, fileName)
 }
 
