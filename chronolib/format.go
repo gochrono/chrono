@@ -72,3 +72,13 @@ func FormatStopFrameMessage(frame Frame) string {
     uuid := boldWhite(GetShortHex(frame.UUID))
     return fmt.Sprintf("Stopping project %s%s, started %s (id: %s)", project, tags, started, uuid)
 }
+
+func FormatStatusFrameMessage(frame Frame) string {
+    project := magenta(frame.Project)
+    started := green(humanize.Time(frame.StartedAt))
+    tags := ""
+    if len(frame.Tags) != 0 {
+        tags = FormatTags(frame.Tags)
+    }
+    return fmt.Sprintf("Project %s%s started %s.", project, tags, started)
+}
