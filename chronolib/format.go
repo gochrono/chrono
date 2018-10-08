@@ -1,6 +1,8 @@
 package chronolib
 
 import (
+    "bytes"
+    "text/template"
     "strings"
     "fmt"
     "github.com/fatih/color"
@@ -81,4 +83,46 @@ func FormatStatusFrameMessage(frame Frame) string {
         tags = FormatTags(frame.Tags)
     }
     return fmt.Sprintf("Project %s%s started %s.", project, tags, started)
+}
+
+type colorFormat func(string) string
+
+var FuncMap = template.FuncMap{
+        "cyan": func(input string) string {
+            return cyan(input)
+        },
+        "magenta": func(input string) string {
+            return magenta(input)
+        },
+        "green": func(input string) string {
+            return green(input)
+        },
+        "blue": func(input string) string {
+            return blue(input)
+        },
+        "boldWhite": func(input string) string {
+            return boldWhite(input)
+        },
+        "joinTags": func(input []string) string {
+            return strings.Join(input, ", ")
+        },
+        "humanize": func(t time.Time) string {
+            return humanize.Time(t)
+        },
+    }
+
+func RenderStatusFormatString(frame Frame, format string) string {
+    tmpl := template.New("format")
+    tmpl.Funcs(FuncMap)
+    tmpl, err := tmpl.Parse(format)
+    if err != nil {
+        panic(err)
+    }
+
+    var tpl bytes.Buffer
+    if err := tmpl.Execute(&tpl, frame); err != nil {
+        panic(err)
+    }
+
+    return tpl.String()
 }
