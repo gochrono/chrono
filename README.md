@@ -1,5 +1,7 @@
 ![Alt chrono](./.github/full-logo-with-tagline.png)
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/jordanknott/chrono)](https://goreportcard.com/report/github.com/jordanknott/chrono)
+
 ## Overview ##
 
 Chrono is a time tracking tool written in Go.
