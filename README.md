@@ -1,7 +1,7 @@
 ![Alt chrono](./.github/full-logo-with-tagline.png)
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/jordanknott/chrono)](https://goreportcard.com/report/github.com/jordanknott/chrono)
-![GitHub](https://img.shields.io/github/license/jordanknott/chrono.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gochrono/chrono)](https://goreportcard.com/report/github.com/gochrono/chrono)
+![GitHub](https://img.shields.io/github/license/gochrono/chrono.svg)
 
 
 ## Overview ##
@@ -31,10 +31,10 @@ Alternatively, Chrono can be compiled from source where ever the Go compiler too
 
 ## Choose How to Install ##
 
-The simplest way to install Chrono is to download the latest binary from the [releases page](https://github.com/JordanKnott/chrono/releases).
+The simplest way to install Chrono is to download the latest binary from the [releases page](https://github.com/gochrono/chrono/releases).
 The binaries have no external dependencies.
 
-To contribute to the Chrono project or documentation, you should [fork the GitHub project](https://github.com/jordanknott/chrono#fork-destination-box) and clone it to your machine.
+To contribute to the Chrono project or documentation, you should [fork the GitHub project](https://github.com/gochrono/chrono#fork-destination-box) and clone it to your machine.
 
 Alternatively you can install Chrono by building it yourself. This ensures you're running the absolute bleeding edge version.
 
@@ -54,7 +54,7 @@ The easiest to get the source is to clone Chrono in a directory outside of `GOPA
 
 ``` bash
 mkdir $HOME/src && cd $HOME/src
-git clone https://github.com/jordanknott/chrono.git
+git clone https://github.com/gochrono/chrono.git
 cd chrono
 dep ensure
 go install
@@ -80,4 +80,4 @@ the GitHub issue tracker to report the problem to the Chrono maintainers.
 
 When reporting an issue, please provide the version of chrono is use (`chrono version`)
 
-[1]: https://github.com/JordanKnott/chrono/wiki/Quick-Start
+[1]: https://github.com/gochrono/chrono/wiki/Quick-Start
