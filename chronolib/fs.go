@@ -1,6 +1,7 @@
 package chronolib
 
 import (
+    "os"
     "io/ioutil"
     "github.com/vmihailenco/msgpack"
 )
@@ -29,8 +30,8 @@ func SaveState(statePath string, frame *Frame) {
 func LoadFrames(framesPath string) *Data {
     content, err := ioutil.ReadFile(framesPath)
     var data Data
-    if err != nil {
-        panic(err)
+    if _, err := os.Stat(framesPath); os.IsNotExist(err) {
+        return &Data{}
     }
     err = msgpack.Unmarshal(content, &data)
     if err != nil {
