@@ -5,7 +5,7 @@ import (
     "fmt"
     "strconv"
     "github.com/spf13/cobra"
-    "github.com/jordanknott/chrono/chronolib"
+    "github.com/gochrono/chrono/chronolib"
 )
 
 func newNotesCmd() *cobra.Command {

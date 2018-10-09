@@ -3,7 +3,7 @@ package commands
 import (
     "fmt"
     "github.com/spf13/cobra"
-    "github.com/jordanknott/chrono/chronolib"
+    "github.com/gochrono/chrono/chronolib"
 )
 const defaultFormat = "Project {{ .Project | magenta }}{{ if .Tags }} [{{ joinTags .Tags | blue }}]{{ end }} started {{ humanize .StartedAt | green }}."
 

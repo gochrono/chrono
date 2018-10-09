@@ -3,7 +3,7 @@ package commands
 import (
     "fmt"
     "github.com/spf13/cobra"
-    "github.com/jordanknott/chrono/chronolib"
+    "github.com/gochrono/chrono/chronolib"
 )
 
 func newTagsCmd() *cobra.Command {

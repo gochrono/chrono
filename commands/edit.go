@@ -8,7 +8,7 @@ import (
     "encoding/hex"
     "io/ioutil"
 
-    "github.com/jordanknott/chrono/chronolib"
+    "github.com/gochrono/chrono/chronolib"
 
     "github.com/spf13/cobra"
 )

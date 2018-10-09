@@ -1,7 +1,7 @@
 package main
 
 import (
-    "github.com/jordanknott/chrono/commands"
+    "github.com/gochrono/chrono/commands"
 )
 
 func main() {

@@ -7,7 +7,7 @@ import (
     "fmt"
     "os"
     "github.com/magefile/mage/sh"
-    "github.com/jordanknott/chrono/chronolib"
+    "github.com/gochrono/chrono/chronolib"
     "github.com/google/gofuzz"
 )
 

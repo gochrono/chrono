@@ -5,7 +5,7 @@ import (
     "fmt"
     "time"
     "github.com/spf13/cobra"
-    "github.com/jordanknott/chrono/chronolib"
+    "github.com/gochrono/chrono/chronolib"
     "io/ioutil"
     "github.com/vmihailenco/msgpack"
 )

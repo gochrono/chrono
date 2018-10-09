@@ -3,7 +3,7 @@ build:
   main: main.go
   binary: chrono
   ldflags:
-    - -s -w -X github.com/jordanknott/chrono/commands.version={{.Version}} -X github.com/jordanknott/chrono/commands.commit={{.Commit}} -X github.com/jordanknott/chrono/commands.date={{.Date}}
+    - -s -w -X github.com/gochrono/chrono/commands.version={{.Version}} -X github.com/gochrono/chrono/commands.commit={{.Commit}} -X github.com/gochrono/chrono/commands.date={{.Date}}
 
   env:
     - CGO_ENABLED=0

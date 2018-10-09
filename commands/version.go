@@ -5,7 +5,7 @@ import (
     "encoding/json"
     "github.com/spf13/cobra"
     "gopkg.in/resty.v1"
-    "github.com/jordanknott/chrono/chronolib"
+    "github.com/gochrono/chrono/chronolib"
 )
 
 var (
@@ -14,7 +14,7 @@ var (
 	date    = "unknown"
 )
 
-const latestReleaseUrl = "https://api.github.com/repos/jordanknott/chrono/releases/latest"
+const latestReleaseUrl = "https://api.github.com/repos/gochrono/chrono/releases/latest"
 
 var banner = `   _____ _
   / ____| |
