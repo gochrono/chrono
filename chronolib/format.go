@@ -34,6 +34,17 @@ func FormatFrameLine(frame Frame) string {
     return fmt.Sprintf("\t(ID: %s) %s to %s %4dh %02dm %02ds  %-12s%s", shorthex, green(start), green(end), hours, minutes, seconds, magenta(frame.Project), blue(tags))
 }
 
+func FormatReportProjectTotal(project string, total time.Duration) string {
+    hours, minutes, seconds := GetTimeElapsedForDuration(total)
+    time := green(fmt.Sprintf("%dh %02dm %02ds", hours, minutes, seconds))
+    return fmt.Sprintf("\n%s - %s", magenta(project), time)
+}
+
+func FormatReportProjectTagTotal(tag string, total time.Duration) string {
+    hours, minutes, seconds := GetTimeElapsedForDuration(total)
+    time := green(fmt.Sprintf("%dh %02dm %02ds", hours, minutes, seconds))
+    return fmt.Sprintf("\t[%s %s]", blue(tag), time)
+}
 
 func FormatNoteLine(note string) string {
     return fmt.Sprintf("\t\t- %s", note)
@@ -125,4 +136,17 @@ func RenderStatusFormatString(frame Frame, format string) string {
     }
 
     return tpl.String()
+}
+
+func PrettyDate(t *time.Time) string {
+    return t.Format("_2 January 2006 15:02")
+}
+
+func FormatReportDurationDate(t time.Time) string {
+    return t.Format("Mon 02 January 2006")
+}
+
+func FormatReportDuration(timeStart time.Time) string {
+    today := time.Now()
+    return cyan(fmt.Sprintf("%s -> %s", FormatReportDurationDate(timeStart), FormatReportDurationDate(today)))
 }

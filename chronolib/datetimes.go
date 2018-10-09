@@ -9,13 +9,16 @@ import (
 var FirstDayOfWeek = "Monday"
 
 
-
-func GetTimeElapsed(dateStart, dateEnd time.Time) (int, int, int) {
-    delta := dateEnd.Sub(dateStart)
+func GetTimeElapsedForDuration(delta time.Duration) (int, int, int) {
     hours := int(delta.Hours())
     minutes := int(delta.Minutes()) - (hours * 60)
     seconds := int(delta.Seconds()) - (hours * 60 * 60) - (minutes * 60)
     return hours, minutes, seconds
+}
+
+func GetTimeElapsed(dateStart, dateEnd time.Time) (int, int, int) {
+    delta := dateEnd.Sub(dateStart)
+    return GetTimeElapsedForDuration(delta)
 }
 
 func NormalizeDate(precise time.Time) time.Time {
@@ -51,3 +54,23 @@ func HasSameDate(t1 *time.Time, t2 *time.Time) bool {
     return false
 }
 
+func FilterFramesByTimespan(start time.Time, end time.Time, frames *[]Frame, noCheck bool) map[time.Time][]Frame {
+    filteredFrames := make(map[time.Time][]Frame)
+    for _, frame := range *frames {
+        if IsFrameInTimespan(frame, start, end) || noCheck {
+            date := NormalizeDate(frame.StartedAt)
+            filteredFrames[date] = append(filteredFrames[date], frame)
+        }
+    }
+    return filteredFrames
+}
+
+func IsFrameInTimespan(frame Frame, start time.Time, end time.Time) bool {
+    if !IsTimeInTimespan(frame.StartedAt, start, end) {
+        return false
+    }
+    if !IsTimeInTimespan(frame.EndedAt, start, end) {
+        return false
+    }
+    return true
+}

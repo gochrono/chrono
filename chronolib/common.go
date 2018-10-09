@@ -87,3 +87,16 @@ func ConvertRawFrameToFrame(uuid []byte, rawFrame FrameRaw) Frame {
     }
 }
 
+func ContainsMoreThanOneBooleanFlag(flags... bool) bool {
+    count := 0
+    for _, flag := range flags {
+        if flag {
+            count += 1
+        }
+        if count == 2 {
+            return true
+        }
+    }
+    return false
+}
+

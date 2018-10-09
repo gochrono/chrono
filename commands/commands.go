@@ -11,7 +11,7 @@ stop the timer with ` + "`stop`" + `.`
 
 func Execute() {
     var rootCmd = &cobra.Command{Use: "chrono", Long: mainDescription}
-    rootCmd.AddCommand(newStartCmd(), newStatusCmd(), newStopCmd(),
+    rootCmd.AddCommand(newStartCmd(), newStatusCmd(), newStopCmd(), newReportCmd(),
         newLogCmd(), newEditCmd(), newVersionCmd(), newNotesCmd(), newTagsCmd())
     rootCmd.Execute()
 }

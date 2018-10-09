@@ -13,43 +13,6 @@ var forCurrentMonth bool
 var forCurrentYear bool
 var forAllTime bool
 
-func ContainsMoreThanOneBooleanFlag(flags... bool) bool {
-    count := 0
-    for _, flag := range flags {
-        if flag {
-            count += 1
-        }
-        if count == 2 {
-            return true
-        }
-    }
-    return false
-}
-
-func IsFrameInTimespan(frame chronolib.Frame, start time.Time, end time.Time) bool {
-    if !chronolib.IsTimeInTimespan(frame.StartedAt, start, end) {
-        return false
-    }
-    if !chronolib.IsTimeInTimespan(frame.EndedAt, start, end) {
-        return false
-    }
-    return true
-}
-
-func PrettyDate(t *time.Time) string {
-    return t.Format("_2 January 2006 15:02")
-}
-
-func FilterFramesByTimespan(start time.Time, end time.Time, frames *[]chronolib.Frame, noCheck bool) map[time.Time][]chronolib.Frame {
-    filteredFrames := make(map[time.Time][]chronolib.Frame)
-    for _, frame := range *frames {
-        if IsFrameInTimespan(frame, start, end) || noCheck {
-            date := chronolib.NormalizeDate(frame.StartedAt)
-            filteredFrames[date] = append(filteredFrames[date], frame)
-        }
-    }
-    return filteredFrames
-}
 
 
 func newLogCmd() *cobra.Command {
@@ -61,7 +24,7 @@ func newLogCmd() *cobra.Command {
             framesPath := chronolib.GetAppFilePath("frames", "")
             data := chronolib.LoadFrames(framesPath)
 
-            if ContainsMoreThanOneBooleanFlag(forCurrentWeek, forCurrentMonth, forCurrentYear) {
+            if chronolib.ContainsMoreThanOneBooleanFlag(forCurrentWeek, forCurrentMonth, forCurrentYear) {
                 fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month']")
                 os.Exit(0)
             }
@@ -78,7 +41,7 @@ func newLogCmd() *cobra.Command {
                 tsStart, tsEnd = chronolib.GetTimespanForToday()
             }
 
-            filteredFrames := FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, forAllTime)
+            filteredFrames := chronolib.FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, forAllTime)
             dates := chronolib.SortTimeMapKeys(&filteredFrames)
             for _, date := range dates {
                 fmt.Println(chronolib.FormatDateHeader(date))
