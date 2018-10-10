@@ -24,6 +24,7 @@ func isSlicesEqual(s1, s2 []string) bool {
     return true
 }
 
+// FramesEqual check if frames are equal
 func FramesEqual(f1 Frame, f2 Frame) bool {
     if f1.Project != f2.Project {
         return false
@@ -43,6 +44,7 @@ func FramesEqual(f1 Frame, f2 Frame) bool {
     return true
 }
 
+// GetShortHex returns the first six characters from a hex encoded SHA
 func GetShortHex(sha []byte) string {
     if len(sha) < 6 {
         return ""
@@ -51,7 +53,7 @@ func GetShortHex(sha []byte) string {
     return hex[0:6]
 }
 
-
+// CreateFrameUUID generates a frame's UUID using it's name, start and end date
 func CreateFrameUUID(name string, start *time.Time, end *time.Time) []byte {
     input := []byte(name + start.Format("2006-01-02 15:04:05") + end.Format("2006-01-02 15:04:05"))
     hasher := sha1.New()

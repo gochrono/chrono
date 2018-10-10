@@ -34,10 +34,11 @@ func newStartCmd() *cobra.Command {
                 UUID: []byte{}, Project: project, StartedAt: now, EndedAt: time.Time{}, Tags: tags, Notes: []string{}}
 
             b, err := msgpack.Marshal(&frame)
-            if err != nil {
-                panic(err)
-            }
+            if err != nil { panic(err) }
+
             err = ioutil.WriteFile(statePath, b, 0644)
+            if err != nil { panic(err) }
+
             fmt.Println(chronolib.FormatNewFrameMessage(frame))
         },
     }

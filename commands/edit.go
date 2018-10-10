@@ -65,11 +65,13 @@ func newEditCmd() *cobra.Command {
 
             fpath := os.TempDir() + "/chrono-" + hex.EncodeToString(target.UUID) + ".json"
             err = ioutil.WriteFile(fpath, frameRawJson, 0644)
+            if err != nil { panic(err) }
 
             editor := chronolib.GetEditorEnv()
             chronolib.EditFile(editor, fpath)
 
             content, err := ioutil.ReadFile(fpath)
+            if err != nil { panic(err) }
 
             var frameRawEdited chronolib.FrameRaw
             err = json.Unmarshal(content, &frameRawEdited)

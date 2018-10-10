@@ -6,9 +6,8 @@ import (
     "github.com/jinzhu/now"
 )
 
-var FirstDayOfWeek = "Monday"
 
-
+// GetTimeElapsedForDuration returns the hours, minutes, seconds for a given duration
 func GetTimeElapsedForDuration(delta time.Duration) (int, int, int) {
     hours := int(delta.Hours())
     minutes := int(delta.Minutes()) - (hours * 60)
@@ -16,37 +15,45 @@ func GetTimeElapsedForDuration(delta time.Duration) (int, int, int) {
     return hours, minutes, seconds
 }
 
+// GetTimeElapsed calculates the delta between two Times and returns the hours, minutes, and seconds for that delta
 func GetTimeElapsed(dateStart, dateEnd time.Time) (int, int, int) {
     delta := dateEnd.Sub(dateStart)
     return GetTimeElapsedForDuration(delta)
 }
 
+// NormalizeDate strips hours, minutes, and seconds from a given time
 func NormalizeDate(precise time.Time) time.Time {
     return time.Date(precise.Year(), precise.Month(), precise.Day(), 0, 0, 0, 0, precise.Location())
 }
 
+// GetTimespanForToday returns the the start date and end date of today
 func GetTimespanForToday() (time.Time, time.Time) {
     return now.BeginningOfDay(), now.EndOfDay()
 }
 
+// GetTimespanForWeek returns the start and end date for the current week
 func GetTimespanForWeek() (time.Time, time.Time) {
     return now.BeginningOfWeek(), now.EndOfWeek()
 }
 
+// GetTimespanForMonth returns the start and end date for the current month
 func GetTimespanForMonth() (time.Time, time.Time) {
     return now.BeginningOfMonth(), now.EndOfMonth()
 }
 
+// GetTimespanForYear returns the start and end date for the current year
 func GetTimespanForYear() (time.Time, time.Time) {
     return now.BeginningOfYear(), now.EndOfYear()
 }
 
+// IsTimeInTimespan checks if point is inside the timespan between start and end
 func IsTimeInTimespan(point time.Time, start time.Time, end time.Time) bool {
     duration := end.Sub(start)
     ts := timespan.New(start, duration)
     return ts.ContainsTime(point)
 }
 
+// HasSameDate checks if the date (month, year, day) are the same
 func HasSameDate(t1 *time.Time, t2 *time.Time) bool {
     if t1.Day() == t2.Day() && t1.Year() == t2.Year() && t1.Month() == t2.Month() {
         return true
@@ -54,6 +61,7 @@ func HasSameDate(t1 *time.Time, t2 *time.Time) bool {
     return false
 }
 
+// FilterFramesByTimespan returns only frames that are in the given timespan
 func FilterFramesByTimespan(start time.Time, end time.Time, frames *[]Frame, noCheck bool) map[time.Time][]Frame {
     filteredFrames := make(map[time.Time][]Frame)
     for _, frame := range *frames {
@@ -65,6 +73,7 @@ func FilterFramesByTimespan(start time.Time, end time.Time, frames *[]Frame, noC
     return filteredFrames
 }
 
+// IsFrameInTimespan checks if a frame's start and end time are both in the given timespan
 func IsFrameInTimespan(frame Frame, start time.Time, end time.Time) bool {
     if !IsTimeInTimespan(frame.StartedAt, start, end) {
         return false

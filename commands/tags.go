@@ -15,15 +15,15 @@ func newTagsCmd() *cobra.Command {
             framesPath := chronolib.GetAppFilePath("frames", "")
             data := chronolib.LoadFrames(framesPath)
 
-            encounted := map[string]bool{}
+            encountered := map[string]bool{}
 
             for _, frame := range data.Frames {
                 for _, tag := range frame.Tags {
-                    encounted[tag] = true
+                    encountered[tag] = true
                 }
             }
 
-            for key, _ := range encounted {
+            for key, _ := range encountered {
                 fmt.Println(key)
             }
         },

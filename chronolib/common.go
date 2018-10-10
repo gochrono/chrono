@@ -7,6 +7,7 @@ import (
     "github.com/jinzhu/now"
 )
 
+// FrameRaw is used for converting to and from JSON
 type FrameRaw struct {
     Project string
     StartedAt string
@@ -15,6 +16,7 @@ type FrameRaw struct {
     Notes []string
 }
 
+// Frame is a timespan containing some metadata
 type Frame struct {
     UUID []byte
     Project string
@@ -24,11 +26,13 @@ type Frame struct {
     Notes []string
 }
 
+// Data is a wrapper for frames
 type Data struct {
     Frames []Frame
 }
 
 
+// GetFrameByIndex retrieves a frame by its index
 func (d Data) GetFrameByIndex(index int) (Frame, error) {
     if index <= 0 && index >= len(d.Frames) {
         return Frame{}, errors.New("No frame found")
@@ -36,6 +40,7 @@ func (d Data) GetFrameByIndex(index int) (Frame, error) {
     return d.Frames[index], nil
 }
 
+// GetFrameByShortHex gets a frame using the short form of its UUID
 func (d Data) GetFrameByShortHex(hex string) (int, Frame, error) {
     for idx, frame := range d.Frames {
         if GetShortHex(frame.UUID) == hex {
@@ -45,14 +50,16 @@ func (d Data) GetFrameByShortHex(hex string) (int, Frame, error) {
     return 0, Frame{}, errors.New("No frame found")
 }
 
+// SortFramesByDate sorts frame by its start date
 func SortFramesByDate(frames []Frame) {
     sort.Slice(frames, func(i, j int) bool {
         return frames[i].StartedAt.Before(frames[j].StartedAt)
     })
 }
 
+// SortTimeMapKeys sorts a timemap by its key (a time.Time)
 func SortTimeMapKeys(timemap *map[time.Time][]Frame) []time.Time {
-    var keys[] time.Time
+    var keys []time.Time
     for k := range *timemap {
         keys = append(keys, k)
     }
@@ -62,6 +69,7 @@ func SortTimeMapKeys(timemap *map[time.Time][]Frame) []time.Time {
     return keys
 }
 
+// ConvertFrameToRawFrame converts a frame to a raw frame
 func ConvertFrameToRawFrame(frame Frame) FrameRaw {
     return FrameRaw{
         frame.Project,
@@ -72,6 +80,7 @@ func ConvertFrameToRawFrame(frame Frame) FrameRaw {
     }
 }
 
+// ConvertRawFrameToFrame converts a raw frame back to a frame
 func ConvertRawFrameToFrame(uuid []byte, rawFrame FrameRaw) Frame {
     started, err := now.Parse(rawFrame.StartedAt)
     if err != nil { panic(err) }
@@ -87,6 +96,7 @@ func ConvertRawFrameToFrame(uuid []byte, rawFrame FrameRaw) Frame {
     }
 }
 
+// ContainsMoreThanOneBooleanFlag is a helper method for checking if more than one boolean is true
 func ContainsMoreThanOneBooleanFlag(flags... bool) bool {
     count := 0
     for _, flag := range flags {
