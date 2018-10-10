@@ -8,10 +8,12 @@ import (
     "github.com/spf13/cobra"
 )
 
+var interval int
 var forCurrentWeek bool
 var forCurrentMonth bool
 var forCurrentYear bool
 var forAllTime bool
+var round bool
 
 
 
@@ -46,7 +48,13 @@ func newLogCmd() *cobra.Command {
             for _, date := range dates {
                 fmt.Println(chronolib.FormatDateHeader(date))
                 for _, frame := range filteredFrames[date] {
-                    fmt.Println(chronolib.FormatFrameLine(frame))
+                    if round {
+                        frame.StartedAt = GetAdjustedTime(frame.StartedAt)
+                        frame.EndedAt = GetAdjustedTime(frame.EndedAt)
+                        fmt.Println(chronolib.FormatFrameLine(frame))
+                    } else {
+                        fmt.Println(chronolib.FormatFrameLine(frame))
+                    }
                     for _, note := range frame.Notes {
                         fmt.Println(chronolib.FormatNoteLine(note))
                     }
@@ -58,5 +66,22 @@ func newLogCmd() *cobra.Command {
     cmd.Flags().BoolVarP(&forCurrentMonth, "month", "m", false, "show frames for entire month")
     cmd.Flags().BoolVarP(&forCurrentYear, "year", "y", false, "show frames for entire year")
     cmd.Flags().BoolVarP(&forAllTime, "all", "a", false, "show all frames")
+    cmd.Flags().BoolVarP(&round, "round", "r", false, "round frames start and end times to the nearest interval (default: 5 mins)")
+    cmd.Flags().IntVarP(&interval, "interval", "i", 5, "the interval to round to in minutes")
     return cmd
+}
+
+func GetAdjustedTime(t time.Time) time.Time {
+    halfway := interval * 60 / 2
+    rem := t.Minute() & interval * 60 + t.Second()
+    minutes := t.Minute() % interval
+    if rem > halfway {
+        if minutes == 0 {
+            return t
+        } else {
+            return t.Add(time.Duration(-(interval - minutes)) * time.Minute)
+        }
+    } else {
+        return t.Add(time.Duration(-minutes) * time.Minute)
+    }
 }
