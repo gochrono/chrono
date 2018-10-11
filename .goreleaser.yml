@@ -23,8 +23,8 @@ git:
 nfpm:
   formats:
     - deb
-  vendor: "getchrono.io"
-  homepage: "https://getchrono.io/"
+  vendor: "gochrono"
+  homepage: "https://github.com/gochrono/chrono"
   maintainer: "Jordan Knott <jordan@jordanthedev.com>"
   description: "A fast and simple time tracker tool"
   license: "MIT"
