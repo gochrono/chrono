@@ -1,10 +1,9 @@
 package main
 
 import (
-    "github.com/gochrono/chrono/commands"
+	"github.com/gochrono/chrono/commands"
 )
 
 func main() {
-    commands.Execute()
+	commands.Execute()
 }
-
