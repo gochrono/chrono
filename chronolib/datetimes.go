@@ -20,6 +20,11 @@ func GetTimeElapsed(dateStart, dateEnd time.Time) (int, int, int) {
 	return GetTimeElapsedForDuration(delta)
 }
 
+// IsTimespanNegative returns true if a timespan has a negative amount of time, false otherwise
+func IsTimespanNegative(start time.Time, end time.Time) bool {
+	return end.Sub(start) < 0
+}
+
 // NormalizeDate strips hours, minutes, and seconds from a given time
 func NormalizeDate(precise time.Time) time.Time {
 	return time.Date(precise.Year(), precise.Month(), precise.Day(), 0, 0, 0, 0, precise.Location())

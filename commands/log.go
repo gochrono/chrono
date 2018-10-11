@@ -47,8 +47,12 @@ func newLogCmd() *cobra.Command {
 				fmt.Println(chronolib.FormatDateHeader(date))
 				for _, frame := range filteredFrames[date] {
 					if round {
-						frame.StartedAt = GetAdjustedTime(frame.StartedAt)
-						frame.EndedAt = GetAdjustedTime(frame.EndedAt)
+						newStartTime := GetAdjustedTime(frame.StartedAt)
+						newEndTime := GetAdjustedTime(frame.EndedAt)
+						if !chronolib.IsTimespanNegative(newStartTime, newEndTime) {
+							frame.StartedAt = newStartTime
+							frame.EndedAt = newEndTime
+						}
 						fmt.Println(chronolib.FormatFrameLine(frame))
 					} else {
 						fmt.Println(chronolib.FormatFrameLine(frame))
@@ -80,7 +84,7 @@ func GetAdjustedTime(t time.Time) time.Time {
 		if minutes == 0 {
 			return t
 		}
-		return t.Add(time.Duration(-(interval - minutes)) * time.Minute)
+		return t.Add(time.Duration(interval-minutes) * time.Minute)
 	}
 	return t.Add(time.Duration(-minutes) * time.Minute)
 }
