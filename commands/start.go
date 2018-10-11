@@ -14,8 +14,11 @@ func newStartCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "start [project name] [tags]",
 		Short: "Start a new frame",
-		Long:  "Starts a new frame with the given project name and tags",
-		Args:  cobra.MinimumNArgs(1),
+		Long: `Starts a new frame with the given project name and tags.
+		Tags must start with a plus (+) to be considered valid. Any spaces will be converted to
+		dashes (-). It will also be lowercased. To stop the timer for the current frame, use
+		the 'stop' command.`,
+		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			statePath := chronolib.GetAppFilePath("state", "")
 
