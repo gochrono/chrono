@@ -13,7 +13,7 @@ var reportForCurrentMonth bool
 var reportForCurrentYear bool
 var reportForAllTime bool
 
-type FrameTotals struct {
+type frameTotals struct {
     TotalTime time.Duration
     Tags map[string]time.Duration
 }
@@ -46,7 +46,7 @@ func newReportCmd() *cobra.Command {
 
             filteredFrames := chronolib.FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, reportForAllTime)
             dates := chronolib.SortTimeMapKeys(&filteredFrames)
-            totals := make(map[string]FrameTotals)
+            totals := make(map[string]frameTotals)
             fmt.Println(chronolib.FormatReportDuration(tsStart))
             for _, date := range dates {
                 for _, frame := range filteredFrames[date] {
@@ -55,7 +55,7 @@ func newReportCmd() *cobra.Command {
                     if ok {
                         frameTotal.TotalTime = frameTotal.TotalTime + frameDuration
                     } else {
-                        totals[frame.Project] = FrameTotals{frameDuration, make(map[string]time.Duration)}
+                        totals[frame.Project] = frameTotals{frameDuration, make(map[string]time.Duration)}
                     }
 
                     for _, tag := range frame.Tags {
