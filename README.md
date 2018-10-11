@@ -1,7 +1,9 @@
 ![Alt chrono](./.github/full-logo-with-tagline.png)
 
+[![GitHub (pre-)release](https://img.shields.io/github/release/gochrono/chrono/all.svg)](https://github.com/gochrono/chrono/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gochrono/chrono)](https://goreportcard.com/report/github.com/gochrono/chrono)
 ![GitHub](https://img.shields.io/github/license/gochrono/chrono.svg)
+
 
 
 ## Overview ##
