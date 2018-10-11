@@ -11,8 +11,10 @@ import (
 func newNotesCmd() *cobra.Command {
 	notes := &cobra.Command{
 		Use:   "notes",
-		Short: "Notes are comments for a frame",
-		Long:  "Notes are comments for a frame",
+		Short: "Manage notes for the current frame",
+		Long: `Manage notes for the current frame. You can add new notes with the 'add' command
+		or remove them with the 'delete' command. You can list all added notes with the
+		'show' command.`,
 	}
 	notes.AddCommand(newNotesAddCmd(), newNotesShowCmd(), newNotesDeleteCmd())
 	return notes
