@@ -74,7 +74,7 @@ func FormatReportProjectTagTotal(tag string, total time.Duration) string {
     return fmt.Sprintf("\t[%s %s]", blue(tag), time)
 }
 
-// Format a single frame note
+// FormatNoteLine formats a single frame note
 func FormatNoteLine(note string) string {
     return fmt.Sprintf("\t\t- %s", note)
 }

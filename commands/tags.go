@@ -23,7 +23,7 @@ func newTagsCmd() *cobra.Command {
                 }
             }
 
-            for key, _ := range encountered {
+            for key := range encountered {
                 fmt.Println(key)
             }
         },

@@ -71,6 +71,9 @@ func newLogCmd() *cobra.Command {
     return cmd
 }
 
+// GetAdjustedTime rounds a time to a given interval.
+// E.g if the time is 15:02:13 and the interval is 5 minutes it
+// would be rounded to 15:00:00
 func GetAdjustedTime(t time.Time) time.Time {
     halfway := interval * 60 / 2
     rem := t.Minute() & interval * 60 + t.Second()
@@ -78,10 +81,8 @@ func GetAdjustedTime(t time.Time) time.Time {
     if rem > halfway {
         if minutes == 0 {
             return t
-        } else {
-            return t.Add(time.Duration(-(interval - minutes)) * time.Minute)
         }
-    } else {
-        return t.Add(time.Duration(-minutes) * time.Minute)
+        return t.Add(time.Duration(-(interval - minutes)) * time.Minute)
     }
+    return t.Add(time.Duration(-minutes) * time.Minute)
 }
