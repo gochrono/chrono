@@ -10,8 +10,10 @@ import (
 	"time"
 )
 
+var startNote string
+
 func newStartCmd() *cobra.Command {
-	return &cobra.Command{
+	startCmd := &cobra.Command{
 		Use:   "start [project name] [tags]",
 		Short: "Start a new frame",
 		Long: `Starts a new frame with the given project name and tags.
@@ -33,8 +35,14 @@ func newStartCmd() *cobra.Command {
 
 			tags = chronolib.NormalizeTags(tags)
 
+			var notes []string
+			if startNote == "" {
+				notes = []string{}
+			} else {
+				notes = []string{startNote}
+			}
 			frame := chronolib.Frame{
-				UUID: []byte{}, Project: project, StartedAt: now, EndedAt: time.Time{}, Tags: tags, Notes: []string{}}
+				UUID: []byte{}, Project: project, StartedAt: now, EndedAt: time.Time{}, Tags: tags, Notes: notes}
 
 			b, err := msgpack.Marshal(&frame)
 			if err != nil {
@@ -49,4 +57,6 @@ func newStartCmd() *cobra.Command {
 			fmt.Println(chronolib.FormatNewFrameMessage(frame))
 		},
 	}
+	startCmd.Flags().StringVarP(&startNote, "note", "n", "", "add an initial note to the frame")
+	return startCmd
 }
