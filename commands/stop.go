@@ -7,8 +7,10 @@ import (
 	"time"
 )
 
+var stopNote string
+
 func newStopCmd() *cobra.Command {
-	return &cobra.Command{
+	stopCmd := &cobra.Command{
 		Use:   "stop",
 		Short: "Stop the current frame",
 		Long:  "Stop the current frame",
@@ -21,6 +23,10 @@ func newStopCmd() *cobra.Command {
 			frame.EndedAt = now
 			frame.UUID = chronolib.CreateFrameUUID(frame.Project, &frame.StartedAt, &frame.EndedAt)
 
+			if stopNote != "" {
+				frame.Notes = append(frame.Notes, stopNote)
+			}
+
 			data := chronolib.LoadFrames(framesPath)
 			data.Frames = append(data.Frames, *frame)
 			chronolib.SaveFrames(framesPath, data)
@@ -31,4 +37,6 @@ func newStopCmd() *cobra.Command {
 			fmt.Println(chronolib.FormatStopFrameMessage(*frame))
 		},
 	}
+	stopCmd.Flags().StringVarP(&stopNote, "note", "n", "", "add a final note to current frame")
+	return stopCmd
 }
