@@ -35,9 +35,9 @@ Alternatively, Chrono can be compiled from source where ever the Go compiler too
 ## Choose How to Install ##
 
 The simplest way to install Chrono is to download the latest binary from the [releases page](https://github.com/gochrono/chrono/releases).
-The binaries have no external dependencies.
 
-To contribute to the Chrono project or documentation, you should [fork the GitHub project](https://github.com/gochrono/chrono#fork-destination-box) and clone it to your machine.
+The binaries have no external dependencies. After downloading it, place it somewhere on the PATH such as `/usr/local/bin` on Linux.
+
 
 Alternatively you can install Chrono by building it yourself. This ensures you're running the absolute bleeding edge version.
 
@@ -51,21 +51,20 @@ Alternatively you can install Chrono by building it yourself. This ensures you'r
 
 #### Downloading the source ####
 
-As of right now, Chrono uses [dep](https://github.com/golang/dep) to manage dependencies. We'll be moving to Go Modules in the near future.
+Chrono uses [Go Modules](https://github.com/golang/go/wiki/Modules) to handle dependencies.
 
 The easiest to get the source is to clone Chrono in a directory outside of `GOPATH`, for example:
 
 ``` bash
-mkdir $HOME/src && cd $HOME/src
+mkdir ~/src && cd ~/src
 git clone https://github.com/gochrono/chrono.git
 cd chrono
-dep ensure
 go install
 ```
 
-**If you are a Windows user, substitute the `$HOME` environment variable above with `%USERPROFILE%`.**
-
 ## Contributing to Chrono ###
+
+To contribute to the Chrono project or documentation, you should [fork the GitHub project](https://github.com/gochrono/chrono#fork-destination-box) and clone it to your machine.
 
 For a complete guide to contributing to Chrono, see the [Contribution Guide](CONTRIBUTING.md).
 
