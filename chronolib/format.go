@@ -81,7 +81,7 @@ func FormatNoteLine(note string) string {
 
 // FormatNewFrameMessage returns the output when a new frame is created
 func FormatNewFrameMessage(frame Frame) string {
-	startTime := frame.StartedAt.Format("15:02")
+	startTime := frame.StartedAt.Format("15:04")
 	tags := ""
 	if len(frame.Tags) != 0 {
 		tags = FormatTags(frame.Tags)
@@ -146,9 +146,9 @@ func RenderStatusFormatString(frame Frame, format string) string {
 	return tpl.String()
 }
 
-// PrettyDate returns the date using format 2 January 2006 15:02
+// PrettyDate returns the date using format 2 January 2006 15:04
 func PrettyDate(t *time.Time) string {
-	return t.Format("_2 January 2006 15:02")
+	return t.Format("_2 January 2006 15:04")
 }
 
 // FormatReportDurationDate returns the date using format Mon 02 January 2006

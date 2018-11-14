@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
+	"github.com/jinzhu/now"
 	"github.com/spf13/cobra"
 	"github.com/vmihailenco/msgpack"
 	"io/ioutil"
@@ -11,6 +12,8 @@ import (
 )
 
 var startNote string
+var startTime string
+var startEndTime string
 
 func newStartCmd() *cobra.Command {
 	startCmd := &cobra.Command{
@@ -26,7 +29,7 @@ func newStartCmd() *cobra.Command {
 
 			var project = args[0]
 			var tags = args[1:]
-			var now = time.Now()
+			var frameStart = time.Now()
 
 			if !chronolib.IsAllTags(tags) {
 				fmt.Println("Invalid tag")
@@ -41,8 +44,16 @@ func newStartCmd() *cobra.Command {
 			} else {
 				notes = []string{startNote}
 			}
+
+			if startTime != "" {
+				t, err := now.Parse(startTime)
+				frameStart = t
+				if err != nil {
+					panic(err)
+				}
+			}
 			frame := chronolib.Frame{
-				UUID: []byte{}, Project: project, StartedAt: now, EndedAt: time.Time{}, Tags: tags, Notes: notes}
+				UUID: []byte{}, Project: project, StartedAt: frameStart, EndedAt: time.Time{}, Tags: tags, Notes: notes}
 
 			b, err := msgpack.Marshal(&frame)
 			if err != nil {
@@ -58,5 +69,7 @@ func newStartCmd() *cobra.Command {
 		},
 	}
 	startCmd.Flags().StringVarP(&startNote, "note", "n", "", "add an initial note to the frame")
+	startCmd.Flags().StringVarP(&startTime, "start", "s", "", "set the start time to a different time than now - format: HH:MM mm/dd/yyyy")
+	startCmd.Flags().StringVarP(&startEndTime, "end", "e", "", "add a manual end time to the new frame - does not get tracked through a timer")
 	return startCmd
 }
