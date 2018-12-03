@@ -79,6 +79,11 @@ func FormatNoteLine(note string) string {
 	return fmt.Sprintf("\t\t- %s", note)
 }
 
+// FormatNoteShowLine formats a single frame note for the notes show command
+func FormatNoteShowLine(index int, note string) string {
+	return fmt.Sprintf("[%s]: %s", cyan(index), note)
+}
+
 // FormatNewFrameMessage returns the output when a new frame is created
 func FormatNewFrameMessage(frame Frame) string {
 	startTime := frame.StartedAt.Format("15:04")

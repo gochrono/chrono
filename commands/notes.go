@@ -43,7 +43,7 @@ func newNotesShowCmd() *cobra.Command {
 			statePath := chronolib.GetAppFilePath("state", "")
 			state := chronolib.LoadState(statePath)
 			for index, note := range state.Notes {
-				fmt.Printf("[%d]: %s\n", index, note)
+				fmt.Println(chronolib.FormatNoteShowLine(index, note))
 			}
 		},
 	}
