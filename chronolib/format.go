@@ -43,7 +43,7 @@ var funcMap = template.FuncMap{
 
 // FormatDateHeader returns a time formated with Tuesday 2 January 2006
 func FormatDateHeader(date time.Time) string {
-	return cyan(date.Format("Tuesday _2 January 2006"))
+	return cyan(date.Format("Monday _2 January 2006"))
 }
 
 // FormatFrameLine returns a frame line (all the metadata about a frame except for its notes)
