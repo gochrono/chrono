@@ -12,8 +12,8 @@ import (
 )
 
 var startNote string
-var startTime string
-var startEndTime string
+var startAt string
+var startEnded string
 
 func newStartCmd() *cobra.Command {
 	startCmd := &cobra.Command{
@@ -45,8 +45,8 @@ func newStartCmd() *cobra.Command {
 				notes = []string{startNote}
 			}
 
-			if startTime != "" {
-				t, err := now.Parse(startTime)
+			if startAt != "" {
+				t, err := now.Parse(startAt)
 				frameStart = t
 				if err != nil {
 					panic(err)
@@ -69,7 +69,7 @@ func newStartCmd() *cobra.Command {
 		},
 	}
 	startCmd.Flags().StringVarP(&startNote, "note", "n", "", "add an initial note to the frame")
-	startCmd.Flags().StringVarP(&startTime, "start", "s", "", "set the start time to a different time than now - format: HH:MM mm/dd/yyyy")
-	startCmd.Flags().StringVarP(&startEndTime, "end", "e", "", "add a manual end time to the new frame - does not get tracked through a timer")
+	startCmd.Flags().StringVarP(&startAt, "at", "a", "", "set the start time to a different time than now - format: HH:MM mm/dd/yyyy")
+	startCmd.Flags().StringVarP(&startEnded, "ended", "e", "", "add a manual end time to the new frame - does not get tracked through a timer")
 	return startCmd
 }
