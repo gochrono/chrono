@@ -32,24 +32,78 @@ Alternatively, Chrono can be compiled from source where ever the Go compiler too
 
 **For more information on which architectures you can install Chrono on, check out the [Go documentation](https://golang.org/doc/install).**
 
-## Choose How to Install ##
+# Quickstart #
+
+## Installation ##
 
 The simplest way to install Chrono is to download the latest binary from the [releases page](https://github.com/gochrono/chrono/releases).
 
-The binaries have no external dependencies. After downloading it, place it somewhere on the PATH such as `/usr/local/bin` on Linux.
-
+The binaries have no external dependencies. After downloading it, place it somewhere on the PATH (such as `/usr/local/bin` on Linux).
 
 Alternatively you can install Chrono by building it yourself. This ensures you're running the absolute bleeding edge version.
 
-### Building Chrono from the Source ###
+## Usage ##
 
-#### Prequisite Tools ####
+To start tracking time a project, use the `start` command:
+
+``` bash
+$ chrono start development +chrono
+```
+
+This creates a new __frame__ for the development project with the chrono tag.
+
+Keep notes of what you do for a project with the `notes add` command:
+
+``` bash
+$ chrono notes add "made some awesome changes to the README"
+$ chrono notes show
+[0]: made some awesome changes to the README
+```
+
+The notes are added to the current __frame__.
+
+Get information about the current frame with the `status` command:
+
+``` bash
+$ chrono status
+Project development [chrono] started 10 seconds ago.
+```
+To stop tracking time for the current frame, use the `stop` command:
+
+``` bash
+$ chrono stop
+Stopping project development [chrono], started 5 minutes ago (id: 073bbf).
+```
+
+You can show a chronolical list of the current day's session (or __frames__) through the `log` command:
+
+``` bash
+$ chrono log
+Monday  3 December 2018
+    (ID: 0d3131) 10:15 to 10:20     0h 05m 00s  development [chrono]
+```
+
+For a list of all available commands, use the `help` command:
+
+```
+$ chrono help
+```
+
+For a list of all available options and arguments for a command, use the `---help` flag:
+
+```
+$ chrono log --help
+```
+
+## Building Chrono from the Source ##
+
+### Prequisite Tools ###
 
 * [Git](https://git-scm.com/)
 * [Go (at least Go 1.11)](https://golang.org/dl/)
 
 
-#### Downloading the source ####
+### Downloading the source ###
 
 Chrono uses [Go Modules](https://github.com/golang/go/wiki/Modules) to handle dependencies.
 
