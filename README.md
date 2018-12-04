@@ -4,6 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/gochrono/chrono)](https://goreportcard.com/report/github.com/gochrono/chrono)
 [![Build Status](https://travis-ci.org/gochrono/chrono.svg?branch=master)](https://travis-ci.org/gochrono/chrono)
 ![GitHub](https://img.shields.io/github/license/gochrono/chrono.svg)
+![Golang Version](https://img.shields.io/badge/Go-1.11-lightgrey.svg)
 
 
 
