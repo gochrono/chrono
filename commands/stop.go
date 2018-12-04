@@ -3,11 +3,13 @@ package commands
 import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
+	"github.com/jinzhu/now"
 	"github.com/spf13/cobra"
 	"time"
 )
 
 var stopNote string
+var stopAt string
 
 func newStopCmd() *cobra.Command {
 	stopCmd := &cobra.Command{
@@ -19,8 +21,15 @@ func newStopCmd() *cobra.Command {
 			framesPath := chronolib.GetAppFilePath("frames", "")
 
 			frame := chronolib.LoadState(statePath)
-			now := time.Now()
-			frame.EndedAt = now
+			if stopAt != "" {
+				t, err := now.Parse(stopAt)
+				frame.EndedAt = t
+				if err != nil {
+					panic(err)
+				}
+			} else {
+				frame.EndedAt = time.Now()
+			}
 			frame.UUID = chronolib.CreateFrameUUID(frame.Project, &frame.StartedAt, &frame.EndedAt)
 
 			if stopNote != "" {
@@ -38,5 +47,6 @@ func newStopCmd() *cobra.Command {
 		},
 	}
 	stopCmd.Flags().StringVarP(&stopNote, "note", "n", "", "add a final note to current frame")
+	stopCmd.Flags().StringVarP(&stopAt, "at", "a", "", "sets the time the current frame ended to something other than now - format: HH:MM mm/dd/yyyy")
 	return stopCmd
 }
