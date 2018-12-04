@@ -16,22 +16,6 @@ Want to know what you did with your time? Chrono will help you with that. Track 
 long you spend on a project. Add notes so you know exactly what
 you did.
 
-Chrono can manage thousands of frames in less than a second.
-
-To begin using Chrono, you can start tracking a project with `chrono start [project name] [tags]`
-
-To stop tracking the project use `chrono stop`.
-
-For more on using Chrono, check out the [quick start guide][1]
-
-#### Supported Architectures ####
-
-We provide pre-built Chrono binaries for Windows, Linux, and macOS (Darwin) for x64, i386 and ARM architectures.
-
-Alternatively, Chrono can be compiled from source where ever the Go compiler tool chain can run.
-
-**For more information on which architectures you can install Chrono on, check out the [Go documentation](https://golang.org/doc/install).**
-
 # Quickstart #
 
 ## Installation ##
@@ -41,6 +25,14 @@ The simplest way to install Chrono is to download the latest binary from the [re
 The binaries have no external dependencies. After downloading it, place it somewhere on the PATH (such as `/usr/local/bin` on Linux).
 
 Alternatively you can install Chrono by building it yourself. This ensures you're running the absolute bleeding edge version.
+
+### Supported Architectures ###
+
+We provide pre-built Chrono binaries for Windows, Linux, and macOS (Darwin) for x64, i386 and ARM architectures.
+
+Alternatively, Chrono can be compiled from source where ever the Go compiler tool chain can run.
+
+**For more information on which architectures you can install Chrono on, check out the [Go documentation](https://golang.org/doc/install).**
 
 ## Usage ##
 
