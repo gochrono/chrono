@@ -15,6 +15,7 @@ type colorFormat func(string) string
 var cyan = color.New(color.FgCyan).SprintFunc()
 var green = color.New(color.FgGreen).SprintFunc()
 var blue = color.New(color.FgBlue).SprintFunc()
+var red = color.New(color.FgRed).SprintFunc()
 var magenta = color.New(color.FgMagenta).SprintFunc()
 var boldWhite = color.New(color.FgWhite).Add(color.Bold).SprintFunc()
 var funcMap = template.FuncMap{
@@ -159,6 +160,11 @@ func PrettyDate(t *time.Time) string {
 // FormatReportDurationDate returns the date using format Mon 02 January 2006
 func FormatReportDurationDate(t time.Time) string {
 	return t.Format("Mon 02 January 2006")
+}
+
+// FormatStartError returns a message formated red that says a project is already started
+func FormatStartError(frame Frame) string {
+	return red(fmt.Sprintf("Project %s is already started.", frame.Project))
 }
 
 // FormatReportDuration returns the duration currently being viewed in the report command

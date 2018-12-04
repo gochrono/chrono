@@ -27,6 +27,12 @@ func newStartCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			statePath := chronolib.GetAppFilePath("state", "")
 
+			currentFrame := chronolib.LoadState(statePath)
+			if currentFrame.Project != "" {
+				fmt.Println(chronolib.FormatStartError(*currentFrame))
+				return
+			}
+
 			var project = args[0]
 			var tags = args[1:]
 			var frameStart = time.Now()
