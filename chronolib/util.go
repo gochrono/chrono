@@ -23,6 +23,16 @@ func isSlicesEqual(s1, s2 []string) bool {
 	return true
 }
 
+// StringInSlice checks if a string is present in a slice
+func StringInSlice(target string, list []string) bool {
+	for _, candidate := range list {
+		if candidate == target {
+			return true
+		}
+	}
+	return false
+}
+
 // FramesEqual check if frames are equal
 func FramesEqual(f1 Frame, f2 Frame) bool {
 	if f1.Project != f2.Project {

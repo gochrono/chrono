@@ -14,6 +14,7 @@ var forCurrentMonth bool
 var forCurrentYear bool
 var forAllTime bool
 var round bool
+var logTags []string
 
 func newLogCmd() *cobra.Command {
 	cmd := &cobra.Command{
@@ -41,7 +42,7 @@ func newLogCmd() *cobra.Command {
 				tsStart, tsEnd = chronolib.GetTimespanForToday()
 			}
 
-			filteredFrames := chronolib.FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, forAllTime)
+			filteredFrames := chronolib.FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, forAllTime, logTags)
 			dates := chronolib.SortTimeMapKeys(&filteredFrames)
 			for _, date := range dates {
 				fmt.Println(chronolib.FormatDateHeader(date))
@@ -70,6 +71,7 @@ func newLogCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&forAllTime, "all", "a", false, "show all frames")
 	cmd.Flags().BoolVarP(&round, "round", "r", false, "round frames start and end times to the nearest interval (default: 5 mins)")
 	cmd.Flags().IntVarP(&interval, "interval", "i", 5, "the interval to round to in minutes")
+	cmd.Flags().StringSliceVarP(&logTags, "tag", "t", []string{}, "only show frames that contain the given tag - can be used multiple times")
 	return cmd
 }
 

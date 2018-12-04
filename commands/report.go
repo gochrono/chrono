@@ -44,7 +44,7 @@ func newReportCmd() *cobra.Command {
 				tsStart, tsEnd = chronolib.GetTimespanForToday()
 			}
 
-			filteredFrames := chronolib.FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, reportForAllTime)
+			filteredFrames := chronolib.FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, reportForAllTime, []string{})
 			dates := chronolib.SortTimeMapKeys(&filteredFrames)
 			totals := make(map[string]frameTotals)
 			fmt.Println(chronolib.FormatReportDuration(tsStart))
