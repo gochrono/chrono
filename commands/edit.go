@@ -90,7 +90,7 @@ func newEditCmd() *cobra.Command {
 			} else {
 				data.Frames[targetIndex] = frameEdited
 				chronolib.SaveFrames(framesPath, data)
-				fmt.Printf(chronolib.FormatEditFrameMessage(frameEdited))
+				fmt.Println(chronolib.FormatEditFrameMessage(frameEdited))
 			}
 		},
 	}
