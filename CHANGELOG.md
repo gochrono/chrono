@@ -8,7 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Added coloring to notes show command
-- Updated help documentation for start and notes command
+- Updated help documentation for `start` and `notes` command
+- Added `--at` flag to `stop` command to specify a time other than now for the new frame's end time.
+
+### Changes
+- Renamed `--start` flag to `--at` in `start` command
 
 ### Fixed
 - Edge case where frames adjusted through the --round flag had negative times
