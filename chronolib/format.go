@@ -135,6 +135,11 @@ func FormatStatusFrameMessage(frame Frame) string {
 	return fmt.Sprintf("Project %s%s started %s.", project, tags, started)
 }
 
+// FormatStatusNoProjectMessage returns the output when there is no current frame
+func FormatStatusNoProjectMessage() string {
+	return "No project started."
+}
+
 // RenderStatusFormatString returns the status output using Go template string
 func RenderStatusFormatString(frame Frame, format string) string {
 	tmpl := template.New("format")

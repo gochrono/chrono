@@ -3,8 +3,24 @@ package chronolib
 import (
 	"github.com/vmihailenco/msgpack"
 	"io/ioutil"
+	"os"
 	"time"
 )
+
+// ErrFileDoesNotExist represents when a file doesn't exist on the file system
+type ErrFileDoesNotExist struct {
+	message string
+}
+
+// Error returns the error message
+func (e *ErrFileDoesNotExist) Error() string {
+	return e.message
+}
+
+// NewErrFileDoesNotExist creates a new ErrFileDoesNotExist
+func NewErrFileDoesNotExist(message string) *ErrFileDoesNotExist {
+	return &ErrFileDoesNotExist{message}
+}
 
 // MsgpackStateFileStorage stores the current frame in the Msgpack format
 type MsgpackStateFileStorage struct {
@@ -18,6 +34,9 @@ type MsgpackFrameFileStorage struct {
 
 // Get retrieves the current frame if it exists
 func (s MsgpackStateFileStorage) Get() (Frame, error) {
+	if _, err := os.Stat(s.StatePath); os.IsNotExist(err) {
+		return Frame{}, NewErrFileDoesNotExist(s.StatePath + " does not exist")
+	}
 	content, err := ioutil.ReadFile(s.StatePath)
 	var frame Frame
 	if err != nil {
