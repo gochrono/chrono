@@ -32,7 +32,15 @@ func (s MsgpackStateFileStorage) Get() (Frame, error) {
 
 // Update the current frame's information if it exists
 func (s MsgpackStateFileStorage) Update(frame Frame) (Frame, error) {
-	return Frame{}, nil
+	b, err := msgpack.Marshal(&frame)
+	if err != nil {
+		return Frame{}, err
+	}
+	err = ioutil.WriteFile(s.StatePath, b, 0644)
+	if err != nil {
+		return Frame{}, err
+	}
+	return frame, nil
 }
 
 // Clear the current frame

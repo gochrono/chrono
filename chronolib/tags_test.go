@@ -1,6 +1,7 @@
 package chronolib
 
 import (
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -20,6 +21,8 @@ func TestIsTags(t *testing.T) {
 	good := []string{"+tag", "+tag Normal", "+TAG-x"}
 	bad := []string{"+tag", "tag Normal", "+TAG-x"}
 
-	assert.Equal(t, IsAllTags(good), true)
-	assert.Equal(t, IsAllTags(bad), false)
+	goodErr := CheckTags(good)
+	badErr := CheckTags(bad)
+	assert.Equal(t, goodErr, nil)
+	assert.Equal(t, badErr, errors.New("invalid tag: tag Normal"))
 }

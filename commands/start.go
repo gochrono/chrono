@@ -3,10 +3,7 @@ package commands
 import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
-	"github.com/jinzhu/now"
 	"github.com/spf13/cobra"
-	"github.com/vmihailenco/msgpack"
-	"io/ioutil"
 	"os"
 	"time"
 )
@@ -25,53 +22,40 @@ func newStartCmd() *cobra.Command {
 		the 'stop' command.`,
 		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			statePath := chronolib.GetAppFilePath("state", "")
+			stateStorage := chronolib.GetStateStorage()
+			state, err := stateStorage.Get()
 
-			currentFrame := chronolib.LoadState(statePath)
-			if currentFrame.Project != "" {
-				fmt.Println(chronolib.FormatStartError(*currentFrame))
+			if err == nil && state.Project != "" {
+				fmt.Println(chronolib.FormatStartError(state))
 				return
 			}
 
-			var project = args[0]
-			var tags = args[1:]
-			var frameStart = time.Now()
-
-			if !chronolib.IsAllTags(tags) {
-				fmt.Println("Invalid tag")
+			project, tags, err := chronolib.ParseStartArguments(args)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(-1)
+			}
+			frameStart, err := chronolib.ParseTime(startAt)
+			if err != nil {
+				fmt.Println(err)
 				os.Exit(-1)
 			}
 
-			tags = chronolib.NormalizeTags(tags)
-
-			var notes []string
-			if startNote == "" {
-				notes = []string{}
-			} else {
-				notes = []string{startNote}
+			notes := []string{}
+			if startNote != "" {
+				notes = append(notes, startNote)
 			}
 
-			if startAt != "" {
-				t, err := now.Parse(startAt)
-				frameStart = t
-				if err != nil {
-					panic(err)
-				}
-			}
-			frame := chronolib.Frame{
+			newState := chronolib.Frame{
 				UUID: []byte{}, Project: project, StartedAt: frameStart, EndedAt: time.Time{}, Tags: tags, Notes: notes}
 
-			b, err := msgpack.Marshal(&frame)
+			newState, err = stateStorage.Update(newState)
 			if err != nil {
-				panic(err)
+				fmt.Println(err)
+				os.Exit(-1)
 			}
 
-			err = ioutil.WriteFile(statePath, b, 0644)
-			if err != nil {
-				panic(err)
-			}
-
-			fmt.Println(chronolib.FormatNewFrameMessage(frame))
+			fmt.Println(chronolib.FormatNewFrameMessage(newState))
 		},
 	}
 	startCmd.Flags().StringVarP(&startNote, "note", "n", "", "add an initial note to the frame")
