@@ -59,14 +59,14 @@ func newEditCmd() *cobra.Command {
 				}
 			}
 
-			frameRaw := chronolib.ConvertFrameToRawFrame(target)
-			frameRawJson, err := json.MarshalIndent(frameRaw, "", "    ")
+			simpleFrame := chronolib.ConvertFrameToSimpleFrame(target)
+			simpleFrameJSON, err := json.MarshalIndent(simpleFrame, "", "    ")
 			if err != nil {
 				panic(err)
 			}
 
 			fpath := os.TempDir() + "/chrono-" + hex.EncodeToString(target.UUID) + ".json"
-			err = ioutil.WriteFile(fpath, frameRawJson, 0644)
+			err = ioutil.WriteFile(fpath, simpleFrameJSON, 0644)
 			if err != nil {
 				panic(err)
 			}
@@ -79,12 +79,12 @@ func newEditCmd() *cobra.Command {
 				panic(err)
 			}
 
-			var frameRawEdited chronolib.FrameRaw
-			err = json.Unmarshal(content, &frameRawEdited)
+			var newSimpleFrame chronolib.SimpleFrame
+			err = json.Unmarshal(content, &newSimpleFrame)
 			if err != nil {
 				panic(err)
 			}
-			frameEdited := chronolib.ConvertRawFrameToFrame(target.UUID, frameRawEdited)
+			frameEdited := chronolib.ConvertSimpleFrameToFrame(target.UUID, newSimpleFrame)
 			if chronolib.FramesEqual(target, frameEdited) {
 				fmt.Println("No changes made")
 			} else {

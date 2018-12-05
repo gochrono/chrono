@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// FrameRaw is used for converting to and from JSON
-type FrameRaw struct {
+// SimpleFrame is used for converting to and from JSON
+type SimpleFrame struct {
 	Project   string
 	StartedAt string
 	EndedAt   string
@@ -68,9 +68,9 @@ func SortTimeMapKeys(timemap *map[time.Time][]Frame) []time.Time {
 	return keys
 }
 
-// ConvertFrameToRawFrame converts a frame to a raw frame
-func ConvertFrameToRawFrame(frame Frame) FrameRaw {
-	return FrameRaw{
+// ConvertFrameToSimpleFrame converts a frame to a raw frame
+func ConvertFrameToSimpleFrame(frame Frame) SimpleFrame {
+	return SimpleFrame{
 		frame.Project,
 		frame.StartedAt.Format("2006-01-02 15:04:05"),
 		frame.EndedAt.Format("2006-01-02 15:04:05"),
@@ -79,8 +79,8 @@ func ConvertFrameToRawFrame(frame Frame) FrameRaw {
 	}
 }
 
-// ConvertRawFrameToFrame converts a raw frame back to a frame
-func ConvertRawFrameToFrame(uuid []byte, rawFrame FrameRaw) Frame {
+// ConvertSimpleFrameToFrame converts a raw frame back to a frame
+func ConvertSimpleFrameToFrame(uuid []byte, rawFrame SimpleFrame) Frame {
 	started, err := now.Parse(rawFrame.StartedAt)
 	if err != nil {
 		panic(err)
@@ -104,7 +104,7 @@ func ContainsMoreThanOneBooleanFlag(flags ...bool) bool {
 	count := 0
 	for _, flag := range flags {
 		if flag {
-			count += 1
+			count++
 		}
 		if count == 2 {
 			return true
