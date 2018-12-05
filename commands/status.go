@@ -16,12 +16,12 @@ func newStatusCmd() *cobra.Command {
 		Short: "Get status of current frame",
 		Long:  "Get the status of the current frame",
 		Run: func(cmd *cobra.Command, args []string) {
-			statePath := chronolib.GetAppFilePath("state", "")
-			frame := chronolib.LoadState(statePath)
-			if frame.Project == "" {
-				fmt.Println("No project started")
+			stateStorage := chronolib.GetStateStorage()
+			state, err := stateStorage.Get()
+			if err != nil {
+				fmt.Println("Current frame exists")
 			} else {
-				fmt.Println(chronolib.RenderStatusFormatString(*frame, format))
+				fmt.Println(chronolib.RenderStatusFormatString(state, format))
 			}
 		},
 	}
