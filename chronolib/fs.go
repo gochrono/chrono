@@ -35,13 +35,13 @@ func SaveState(statePath string, frame *Frame) {
 
 // LoadFrames loads frames using the MessagePack format
 func LoadFrames(framesPath string) *Data {
-	content, err := ioutil.ReadFile(framesPath)
-	if err != nil {
-		panic(err)
-	}
 	var data Data
 	if _, err := os.Stat(framesPath); os.IsNotExist(err) {
 		return &Data{}
+	}
+	content, err := ioutil.ReadFile(framesPath)
+	if err != nil {
+		panic(err)
 	}
 	err = msgpack.Unmarshal(content, &data)
 	if err != nil {
