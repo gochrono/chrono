@@ -11,23 +11,28 @@ import (
     "strings"
     "sync"
     "path/filepath"
+    "bytes"
+    "io/ioutil"
     "time"
 	"os"
 )
 
-var Default = Test
-var goexe = "go"
-
 const (
-	packageName  = "github.com/gochrono/chrono"
 )
 
-var ldflags = "-X $PACKAGE/commands.commit=$COMMIT_HASH -X $PACKAGE/commands.date=$BUILD_DATE -X $PACKAGE/commands.version=$VERSION"
+var ldflags = strings.Join([]string{
+    "-X $PACKAGE/commands.commit=$COMMIT_HASH",
+    "-X $PACKAGE/commands.date=$BUILD_DATE",
+    "-X $PACKAGE/commands.version=$VERSION",
+}, " ")
 
 var (
+	packageName  = "github.com/gochrono/chrono"
+    goexe = "go"
 	pkgPrefixLen = len(packageName)
 	pkgs         []string
 	pkgsInit     sync.Once
+    Default = Test
 )
 
 func flagEnv() map[string]string {
@@ -66,6 +71,7 @@ func init() {
 	if exe := os.Getenv("GOEXE"); exe != "" {
 		goexe = exe
 	}
+    os.Setenv("GO111MODULE", "on")
 }
 
 func Build() error {
@@ -165,7 +171,46 @@ func Generate() error {
 	return nil
 }
 
-
+// Generate test coverage report
+func Coverage() error {
+	const (
+		coverAll = "coverage-all.out"
+		cover    = "coverage.out"
+	)
+	f, err := os.Create(coverAll)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	if _, err := f.Write([]byte("mode: count")); err != nil {
+		return err
+	}
+	pkgs, err := packageList()
+	if err != nil {
+		return err
+	}
+	for _, pkg := range pkgs {
+		if err := sh.Run(goexe, "test", "-coverprofile="+cover, "-covermode=count", pkg); err != nil {
+			return err
+		}
+		b, err := ioutil.ReadFile(cover)
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return err
+		}
+		idx := bytes.Index(b, []byte{'\n'})
+		b = b[idx+1:]
+		if _, err := f.Write(b); err != nil {
+			return err
+		}
+	}
+	if err := f.Close(); err != nil {
+		return err
+	}
+	return sh.Run(goexe, "tool", "cover", "-html="+coverAll)
+}
 
 func Clean() {
 	fmt.Println("Cleaning...")
