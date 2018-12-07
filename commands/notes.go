@@ -27,10 +27,21 @@ func newNotesAddCmd() *cobra.Command {
 		Long:  "Add a new note to current frame",
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			statePath := chronolib.GetAppFilePath("state", "")
-			state := chronolib.LoadState(statePath)
+			stateStorage := chronolib.GetStateStorage()
+			state, err := stateStorage.Get()
+			if err != nil {
+				switch err.(type) {
+				case *chronolib.ErrFileDoesNotExist:
+					fmt.Println(chronolib.FormatStatusNoProjectMessage())
+				default:
+					panic(err)
+				}
+			}
 			state.Notes = append(state.Notes, args[0])
-			chronolib.SaveState(statePath, state)
+			state, err = stateStorage.Update(state)
+			if err != nil {
+				panic(err)
+			}
 		},
 	}
 }
@@ -40,8 +51,16 @@ func newNotesShowCmd() *cobra.Command {
 		Short: "Show all notes for the current frame",
 		Long:  "Show all notes for the current frame",
 		Run: func(cmd *cobra.Command, args []string) {
-			statePath := chronolib.GetAppFilePath("state", "")
-			state := chronolib.LoadState(statePath)
+			stateStorage := chronolib.GetStateStorage()
+			state, err := stateStorage.Get()
+			if err != nil {
+				switch err.(type) {
+				case *chronolib.ErrFileDoesNotExist:
+					fmt.Println(chronolib.FormatStatusNoProjectMessage())
+				default:
+					panic(err)
+				}
+			}
 			for index, note := range state.Notes {
 				fmt.Println(chronolib.FormatNoteShowLine(index, note))
 			}
@@ -55,8 +74,16 @@ func newNotesDeleteCmd() *cobra.Command {
 		Short: "Delete a note from the current frame",
 		Long:  "Delete a note from the current frame",
 		Run: func(cmd *cobra.Command, args []string) {
-			statePath := chronolib.GetAppFilePath("state", "")
-			state := chronolib.LoadState(statePath)
+			stateStorage := chronolib.GetStateStorage()
+			state, err := stateStorage.Get()
+			if err != nil {
+				switch err.(type) {
+				case *chronolib.ErrFileDoesNotExist:
+					fmt.Println(chronolib.FormatStatusNoProjectMessage())
+				default:
+					panic(err)
+				}
+			}
 			index, err := strconv.Atoi(args[0])
 			if err != nil {
 				fmt.Println("Index must be a number!")
@@ -67,7 +94,10 @@ func newNotesDeleteCmd() *cobra.Command {
 			}
 			fmt.Printf("Deleting note '%s'\n", state.Notes[index])
 			state.Notes = append(state.Notes[:index], state.Notes[index+1:]...)
-			chronolib.SaveState(statePath, state)
+			state, err = stateStorage.Update(state)
+			if err != nil {
+				panic(err)
+			}
 		},
 	}
 }
