@@ -84,14 +84,9 @@ func Test386() error {
 }
 
 func Test() error {
-	s, err := sh.Output(goexe, "test", "./...")
-	if err != nil {
-		fmt.Println(s)
-		return errors.New("Tests failed")
-	}
-	fmt.Println("Tests passed")
-	return nil
+	return sh.Run(goexe, "test", "./...")
 }
+
 
 // Run gofmt linter
 func Fmt() error {
@@ -215,8 +210,6 @@ func Coverage() error {
 
 // Run tests and linters
 func Check() {
-	mg.Deps(Test)
-
 	mg.Deps(Test386)
 
 	mg.Deps(Fmt, Vet)
