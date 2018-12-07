@@ -140,6 +140,11 @@ func FormatNoProjectMessage() string {
 	return "No project started"
 }
 
+// FormatNoNotesMessage returns the output if there are no notes in the current frame
+func FormatNoNotesMessage() string {
+	return "No notes have been added"
+}
+
 // FormatNoFramesMessage returns the output when there is no current frame
 func FormatNoFramesMessage() string {
 	return "No time has been logged"

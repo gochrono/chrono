@@ -54,8 +54,12 @@ func newNotesShowCmd() *cobra.Command {
 				commandError = err
 				return
 			}
-			for index, note := range state.Notes {
-				fmt.Println(chronolib.FormatNoteShowLine(index, note))
+			if len(state.Notes) != 0 {
+				for index, note := range state.Notes {
+					fmt.Println(chronolib.FormatNoteShowLine(index, note))
+				}
+			} else {
+				fmt.Println(chronolib.FormatNoNotesMessage())
 			}
 		},
 	}
