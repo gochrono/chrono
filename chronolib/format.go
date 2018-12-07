@@ -135,8 +135,8 @@ func FormatStatusFrameMessage(frame Frame) string {
 	return fmt.Sprintf("Project %s%s started %s.", project, tags, started)
 }
 
-// FormatStatusNoProjectMessage returns the output when there is no current frame
-func FormatStatusNoProjectMessage() string {
+// FormatNoProjectMessage returns the output when there is no current frame
+func FormatNoProjectMessage() string {
 	return "No project started"
 }
 

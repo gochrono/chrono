@@ -22,7 +22,7 @@ func newStatusCmd() *cobra.Command {
 				commandError = err
 			} else {
 				if state.Project == "" {
-					fmt.Println(chronolib.FormatStatusNoProjectMessage())
+					fmt.Println(chronolib.FormatNoProjectMessage())
 				} else {
 					fmt.Println(chronolib.RenderStatusFormatString(state, format))
 				}
