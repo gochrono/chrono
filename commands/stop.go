@@ -20,7 +20,14 @@ func newStopCmd() *cobra.Command {
 			statePath := chronolib.GetAppFilePath("state", "")
 			framesPath := chronolib.GetAppFilePath("frames", "")
 
-			frame := chronolib.LoadState(statePath)
+			stateStorage := chronolib.GetStateStorage()
+			// frameStorage := chronolib.GetFrameStorage()
+
+			frame, err := stateStorage.Get()
+			if err != nil {
+				panic(err)
+			}
+
 			if stopAt != "" {
 				t, err := now.Parse(stopAt)
 				frame.EndedAt = t
@@ -37,13 +44,13 @@ func newStopCmd() *cobra.Command {
 			}
 
 			data := chronolib.LoadFrames(framesPath)
-			data.Frames = append(data.Frames, *frame)
+			data.Frames = append(data.Frames, frame)
 			chronolib.SaveFrames(framesPath, data)
 
 			emptyFrame := chronolib.Frame{}
 			chronolib.SaveState(statePath, &emptyFrame)
 
-			fmt.Println(chronolib.FormatStopFrameMessage(*frame))
+			fmt.Println(chronolib.FormatStopFrameMessage(frame))
 		},
 	}
 	stopCmd.Flags().StringVarP(&stopNote, "note", "n", "", "add a final note to current frame")

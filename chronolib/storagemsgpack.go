@@ -4,7 +4,6 @@ import (
 	"github.com/vmihailenco/msgpack"
 	"io/ioutil"
 	"os"
-	"time"
 )
 
 // ErrFileDoesNotExist represents when a file doesn't exist on the file system
@@ -67,14 +66,29 @@ func (s MsgpackStateFileStorage) Clear() (Frame, error) {
 	return Frame{}, nil
 }
 
-// GetAll returns all the frames
-func (s MsgpackFrameFileStorage) GetAll() ([]Frame, error) {
-	return []Frame{}, nil
+func getFrames(framesPath string) ([]Frame, error) {
+	var data Data
+	if _, err := os.Stat(framesPath); os.IsNotExist(err) {
+		return []Frame{}, NewErrFileDoesNotExist(framesPath + " does not exist")
+	}
+	content, err := ioutil.ReadFile(framesPath)
+	if err != nil {
+		return []Frame{}, err
+	}
+	err = msgpack.Unmarshal(content, &data)
+	if err != nil {
+		return []Frame{}, err
+	}
+	return data.Frames, nil
 }
 
-// GetAllInTimespan gets frames in a specific timespan and filtered based on data in filterOptions
-func (s MsgpackFrameFileStorage) GetAllInTimespan(start time.Time, end time.Time, filterOptions FrameFilterOptions) ([]Frame, error) {
-	return []Frame{}, nil
+// All returns all frames, filtered using the given FrameFilterOptions
+func (s MsgpackFrameFileStorage) All(filterOptions FrameFilterOptions) ([]Frame, error) {
+	frames, err := getFrames(s.FramesPath)
+	if err != nil {
+		return []Frame{}, err
+	}
+	return FilterFrames(&frames, filterOptions), nil
 }
 
 // Add a new frame to storage
@@ -90,10 +104,4 @@ func (s MsgpackFrameFileStorage) Remove(frame Frame) (Frame, error) {
 // Update the information for the given frame (matched by frame's UUID)
 func (s MsgpackFrameFileStorage) Update(frame Frame) (Frame, error) {
 	return Frame{}, nil
-}
-
-// GetStateStorage retreives the correct implementation for backend storage
-func GetStateStorage() StateStorage {
-	statePath := GetAppFilePath("state", "")
-	return MsgpackStateFileStorage{statePath}
 }

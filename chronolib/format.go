@@ -137,7 +137,12 @@ func FormatStatusFrameMessage(frame Frame) string {
 
 // FormatStatusNoProjectMessage returns the output when there is no current frame
 func FormatStatusNoProjectMessage() string {
-	return "No project started."
+	return "No project started"
+}
+
+// FormatNoFramesMessage returns the output when there is no current frame
+func FormatNoFramesMessage() string {
+	return "No time has been logged"
 }
 
 // RenderStatusFormatString returns the status output using Go template string

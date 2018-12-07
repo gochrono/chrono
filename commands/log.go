@@ -22,8 +22,7 @@ func newLogCmd() *cobra.Command {
 		Short: "Get the frames logged for a single day",
 		Long:  "Get the frames logged for a single day",
 		Run: func(cmd *cobra.Command, args []string) {
-			framesPath := chronolib.GetAppFilePath("frames", "")
-			data := chronolib.LoadFrames(framesPath)
+			frameStorage := chronolib.GetFrameStorage()
 
 			if chronolib.ContainsMoreThanOneBooleanFlag(forCurrentWeek, forCurrentMonth, forCurrentYear) {
 				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month']")
@@ -31,18 +30,34 @@ func newLogCmd() *cobra.Command {
 			}
 
 			var tsStart, tsEnd time.Time
+			var timespanFilterOptions chronolib.TimespanFilterOptions
 
-			if forCurrentWeek {
-				tsStart, tsEnd = chronolib.GetTimespanForWeek()
-			} else if forCurrentMonth {
-				tsStart, tsEnd = chronolib.GetTimespanForMonth()
-			} else if forCurrentYear {
-				tsStart, tsEnd = chronolib.GetTimespanForYear()
+			if forAllTime {
+				timespanFilterOptions = chronolib.TimespanFilterOptions{}
 			} else {
-				tsStart, tsEnd = chronolib.GetTimespanForToday()
+				if forCurrentWeek {
+					tsStart, tsEnd = chronolib.GetTimespanForWeek()
+				} else if forCurrentMonth {
+					tsStart, tsEnd = chronolib.GetTimespanForMonth()
+				} else if forCurrentYear {
+					tsStart, tsEnd = chronolib.GetTimespanForYear()
+				} else {
+					tsStart, tsEnd = chronolib.GetTimespanForToday()
+				}
+				timespanFilterOptions = chronolib.TimespanFilterOptions{Start: tsStart, End: tsEnd}
 			}
 
-			filteredFrames := chronolib.FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, forAllTime, logTags)
+			frames, err := frameStorage.All(chronolib.FrameFilterOptions{TimespanFilter: timespanFilterOptions, Tags: logTags})
+			if err != nil {
+				switch err.(type) {
+				case *chronolib.ErrFileDoesNotExist:
+					fmt.Println(chronolib.FormatNoFramesMessage())
+				default:
+					panic(err)
+				}
+			}
+
+			filteredFrames := chronolib.OrganizeFrameByTime(&frames)
 			dates := chronolib.SortTimeMapKeys(&filteredFrames)
 			for _, date := range dates {
 				fmt.Println(chronolib.FormatDateHeader(date))
