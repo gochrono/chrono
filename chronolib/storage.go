@@ -4,6 +4,41 @@ import (
 	"time"
 )
 
+// ErrFileDoesNotExist represents when a file doesn't exist on the file system
+type ErrFileDoesNotExist struct {
+	message string
+}
+
+// ErrStateFileDoesNotExist represents when a file doesn't exist on the file system
+type ErrStateFileDoesNotExist struct {
+	message string
+}
+
+// ErrFramesFileDoesNotExist represents when a file doesn't exist on the file system
+type ErrFramesFileDoesNotExist struct {
+	message string
+}
+
+// Error returns the error message
+func (e *ErrFileDoesNotExist) Error() string {
+	return e.message
+}
+
+// Error returns the error message
+func (e *ErrStateFileDoesNotExist) Error() string {
+	return e.message
+}
+
+// Error returns the error message
+func (e *ErrFramesFileDoesNotExist) Error() string {
+	return e.message
+}
+
+// NewErrFileDoesNotExist creates a new ErrFileDoesNotExist
+func NewErrFileDoesNotExist(message string) *ErrFileDoesNotExist {
+	return &ErrFileDoesNotExist{message}
+}
+
 // TimespanFilterOptions contains a start and end date to filter frames by
 type TimespanFilterOptions struct {
 	Start time.Time
@@ -34,13 +69,11 @@ type StateStorage interface {
 }
 
 // GetStateStorage retreives the correct implementation for backend storage
-func GetStateStorage() StateStorage {
-	statePath := GetAppFilePath("state", "")
-	return MsgpackStateFileStorage{statePath}
+func GetStateStorage(config ChronoConfig) StateStorage {
+	return MsgpackStateFileStorage{config}
 }
 
 // GetFrameStorage retreives the correct implementation for backend storage
-func GetFrameStorage() FrameStorage {
-	framesPath := GetAppFilePath("frames", "")
-	return MsgpackFrameFileStorage{framesPath}
+func GetFrameStorage(config ChronoConfig) FrameStorage {
+	return MsgpackFrameFileStorage{config}
 }

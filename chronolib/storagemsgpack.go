@@ -2,92 +2,30 @@ package chronolib
 
 import (
 	"github.com/vmihailenco/msgpack"
+	"path/filepath"
 	"io/ioutil"
 	"os"
 )
 
-// ErrFileDoesNotExist represents when a file doesn't exist on the file system
-type ErrFileDoesNotExist struct {
-	message string
-}
-
-// ErrStateFileDoesNotExist represents when a file doesn't exist on the file system
-type ErrStateFileDoesNotExist struct {
-	message string
-}
-
-// ErrFramesFileDoesNotExist represents when a file doesn't exist on the file system
-type ErrFramesFileDoesNotExist struct {
-	message string
-}
-
-// Error returns the error message
-func (e *ErrFileDoesNotExist) Error() string {
-	return e.message
-}
-
-// Error returns the error message
-func (e *ErrStateFileDoesNotExist) Error() string {
-	return e.message
-}
-
-// Error returns the error message
-func (e *ErrFramesFileDoesNotExist) Error() string {
-	return e.message
-}
-
-// NewErrFileDoesNotExist creates a new ErrFileDoesNotExist
-func NewErrFileDoesNotExist(message string) *ErrFileDoesNotExist {
-	return &ErrFileDoesNotExist{message}
-}
+const StateFilename = "state.msgpack"
+const FramesFilename = "frames.msgpack"
 
 // MsgpackStateFileStorage stores the current frame in the Msgpack format
 type MsgpackStateFileStorage struct {
-	StatePath string
+	Config ChronoConfig
 }
 
 // MsgpackFrameFileStorage stores frames in the Msgpack format
 type MsgpackFrameFileStorage struct {
-	FramesPath string
+	Config ChronoConfig
 }
 
-func saveState(statePath string, frame Frame) (Frame, error) {
-	b, err := msgpack.Marshal(&frame)
-	if err != nil {
-		return Frame{}, err
-	}
-	err = ioutil.WriteFile(statePath, b, 0644)
-	if err != nil {
-		return Frame{}, err
-	}
-	return frame, nil
+func (s *MsgpackStateFileStorage) GetPath() string {
+	return filepath.Join(s.Config.ConfigDir, FramesFilename)
 }
 
-// Get retrieves the current frame if it exists
-func (s MsgpackStateFileStorage) Get() (Frame, error) {
-	if _, err := os.Stat(s.StatePath); os.IsNotExist(err) {
-		return Frame{}, &ErrStateFileDoesNotExist{s.StatePath}
-	}
-	content, err := ioutil.ReadFile(s.StatePath)
-	var frame Frame
-	if err != nil {
-		return Frame{}, err
-	}
-	err = msgpack.Unmarshal(content, &frame)
-	if err != nil {
-		return Frame{}, err
-	}
-	return frame, nil
-}
-
-// Update the current frame's information if it exists
-func (s MsgpackStateFileStorage) Update(frame Frame) (Frame, error) {
-	return saveState(s.StatePath, frame)
-}
-
-// Clear the current frame
-func (s MsgpackStateFileStorage) Clear() (Frame, error) {
-	return saveState(s.StatePath, Frame{})
+func (s *MsgpackFrameFileStorage) GetPath() string {
+	return filepath.Join(s.Config.ConfigDir, StateFilename)
 }
 
 func getFrames(framesPath string) ([]Frame, error) {
@@ -118,9 +56,49 @@ func saveFrames(framesPath string, frames []Frame) error {
 	return nil
 }
 
+
+func saveState(statePath string, frame Frame) (Frame, error) {
+	b, err := msgpack.Marshal(&frame)
+	if err != nil {
+		return Frame{}, err
+	}
+	err = ioutil.WriteFile(statePath, b, 0644)
+	if err != nil {
+		return Frame{}, err
+	}
+	return frame, nil
+}
+
+// Get retrieves the current frame if it exists
+func (s MsgpackStateFileStorage) Get() (Frame, error) {
+    if _, err := os.Stat(s.GetPath()); os.IsNotExist(err) {
+        return Frame{}, &ErrStateFileDoesNotExist{s.GetPath()}
+	}
+    content, err := ioutil.ReadFile(s.GetPath())
+	var frame Frame
+	if err != nil {
+		return Frame{}, err
+	}
+	err = msgpack.Unmarshal(content, &frame)
+	if err != nil {
+		return Frame{}, err
+	}
+	return frame, nil
+}
+
+// Update the current frame's information if it exists
+func (s MsgpackStateFileStorage) Update(frame Frame) (Frame, error) {
+    return saveState(s.GetPath(), frame)
+}
+
+// Clear the current frame
+func (s MsgpackStateFileStorage) Clear() (Frame, error) {
+    return saveState(s.GetPath(), Frame{})
+}
+
 // All returns all frames, filtered using the given FrameFilterOptions
 func (s MsgpackFrameFileStorage) All(filterOptions FrameFilterOptions) ([]Frame, error) {
-	frames, err := getFrames(s.FramesPath)
+    frames, err := getFrames(s.GetPath())
 	if err != nil {
 		return []Frame{}, err
 	}
@@ -129,7 +107,7 @@ func (s MsgpackFrameFileStorage) All(filterOptions FrameFilterOptions) ([]Frame,
 
 // Add a new frame to storage
 func (s MsgpackFrameFileStorage) Add(frame Frame) (Frame, error) {
-	frames, err := getFrames(s.FramesPath)
+    frames, err := getFrames(s.GetPath())
 	if err != nil {
 		switch err.(type) {
 		case *ErrFileDoesNotExist:
@@ -139,7 +117,7 @@ func (s MsgpackFrameFileStorage) Add(frame Frame) (Frame, error) {
 		}
 	}
 	frames = append(frames, frame)
-	err = saveFrames(s.FramesPath, frames)
+    err = saveFrames(s.GetPath(), frames)
 	if err != nil {
 		return Frame{}, err
 	}
@@ -153,7 +131,7 @@ func (s MsgpackFrameFileStorage) Projects() ([]string, error) {
 
 // Tags returns a unique list of all tags used in frames
 func (s MsgpackFrameFileStorage) Tags() ([]string, error) {
-	frames, err := getFrames(s.FramesPath)
+    frames, err := getFrames(s.GetPath())
 	if err != nil {
 		return []string{}, err
 	}

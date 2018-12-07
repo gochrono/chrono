@@ -22,7 +22,9 @@ func newLogCmd() *cobra.Command {
 		Short: "Get the frames logged for a single day",
 		Long:  "Get the frames logged for a single day",
 		Run: func(cmd *cobra.Command, args []string) {
-			frameStorage := chronolib.GetFrameStorage()
+            configDir := chronolib.GetCorrectConfigDirectory("")
+            config := chronolib.GetConfig(configDir)
+			frameStorage := chronolib.GetFrameStorage(config)
 
 			if chronolib.ContainsMoreThanOneBooleanFlag(forCurrentWeek, forCurrentMonth, forCurrentYear) {
 				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month']")

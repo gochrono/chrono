@@ -12,7 +12,9 @@ func newTagsCmd() *cobra.Command {
 		Short: "Get a list of all tags used",
 		Long:  "Get a list of all tags used",
 		Run: func(cmd *cobra.Command, args []string) {
-			frameStorage := chronolib.GetFrameStorage()
+            configDir := chronolib.GetCorrectConfigDirectory("")
+            config := chronolib.GetConfig(configDir)
+			frameStorage := chronolib.GetFrameStorage(config)
 			tags, err := frameStorage.Tags()
 			if err != nil {
 				commandError = err
