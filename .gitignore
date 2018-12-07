@@ -3,3 +3,5 @@ vendor
 data
 chrono
 chrono.exe
+
+*.out
