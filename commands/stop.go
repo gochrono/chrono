@@ -17,11 +17,8 @@ func newStopCmd() *cobra.Command {
 		Short: "Stop the current frame",
 		Long:  "Stop the current frame",
 		Run: func(cmd *cobra.Command, args []string) {
-			statePath := chronolib.GetAppFilePath("state", "")
-			framesPath := chronolib.GetAppFilePath("frames", "")
-
 			stateStorage := chronolib.GetStateStorage()
-			// frameStorage := chronolib.GetFrameStorage()
+			frameStorage := chronolib.GetFrameStorage()
 
 			frame, err := stateStorage.Get()
 			if err != nil {
@@ -43,12 +40,8 @@ func newStopCmd() *cobra.Command {
 				frame.Notes = append(frame.Notes, stopNote)
 			}
 
-			data := chronolib.LoadFrames(framesPath)
-			data.Frames = append(data.Frames, frame)
-			chronolib.SaveFrames(framesPath, data)
-
-			emptyFrame := chronolib.Frame{}
-			chronolib.SaveState(statePath, &emptyFrame)
+			_, err = frameStorage.Add(frame)
+			_, err = stateStorage.Clear()
 
 			fmt.Println(chronolib.FormatStopFrameMessage(frame))
 		},

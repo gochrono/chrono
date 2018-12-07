@@ -31,6 +31,18 @@ type MsgpackFrameFileStorage struct {
 	FramesPath string
 }
 
+func saveState(statePath string, frame Frame) (Frame, error) {
+	b, err := msgpack.Marshal(&frame)
+	if err != nil {
+		return Frame{}, err
+	}
+	err = ioutil.WriteFile(statePath, b, 0644)
+	if err != nil {
+		return Frame{}, err
+	}
+	return frame, nil
+}
+
 // Get retrieves the current frame if it exists
 func (s MsgpackStateFileStorage) Get() (Frame, error) {
 	if _, err := os.Stat(s.StatePath); os.IsNotExist(err) {
@@ -50,20 +62,12 @@ func (s MsgpackStateFileStorage) Get() (Frame, error) {
 
 // Update the current frame's information if it exists
 func (s MsgpackStateFileStorage) Update(frame Frame) (Frame, error) {
-	b, err := msgpack.Marshal(&frame)
-	if err != nil {
-		return Frame{}, err
-	}
-	err = ioutil.WriteFile(s.StatePath, b, 0644)
-	if err != nil {
-		return Frame{}, err
-	}
-	return frame, nil
+	return saveState(s.StatePath, frame)
 }
 
 // Clear the current frame
 func (s MsgpackStateFileStorage) Clear() (Frame, error) {
-	return Frame{}, nil
+	return saveState(s.StatePath, Frame{})
 }
 
 func getFrames(framesPath string) ([]Frame, error) {
@@ -82,6 +86,18 @@ func getFrames(framesPath string) ([]Frame, error) {
 	return data.Frames, nil
 }
 
+func saveFrames(framesPath string, frames []Frame) error {
+	b, err := msgpack.Marshal(Data{frames})
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(framesPath, b, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // All returns all frames, filtered using the given FrameFilterOptions
 func (s MsgpackFrameFileStorage) All(filterOptions FrameFilterOptions) ([]Frame, error) {
 	frames, err := getFrames(s.FramesPath)
@@ -93,7 +109,21 @@ func (s MsgpackFrameFileStorage) All(filterOptions FrameFilterOptions) ([]Frame,
 
 // Add a new frame to storage
 func (s MsgpackFrameFileStorage) Add(frame Frame) (Frame, error) {
-	return Frame{}, nil
+	frames, err := getFrames(s.FramesPath)
+	if err != nil {
+		switch err.(type) {
+		case *ErrFileDoesNotExist:
+			frames = []Frame{}
+		default:
+			return Frame{}, err
+		}
+	}
+	frames = append(frames, frame)
+	err = saveFrames(s.FramesPath, frames)
+	if err != nil {
+		return Frame{}, err
+	}
+	return frame, nil
 }
 
 // Remove a frame (matched by frame's UUID)
@@ -104,4 +134,5 @@ func (s MsgpackFrameFileStorage) Remove(frame Frame) (Frame, error) {
 // Update the information for the given frame (matched by frame's UUID)
 func (s MsgpackFrameFileStorage) Update(frame Frame) (Frame, error) {
 	return Frame{}, nil
+
 }
