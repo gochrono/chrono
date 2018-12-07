@@ -51,12 +51,8 @@ func newReportCmd() *cobra.Command {
 
 			frames, err := frameStorage.All(chronolib.FrameFilterOptions{TimespanFilter: timespanFilterOptions, Tags: logTags})
 			if err != nil {
-				switch err.(type) {
-				case *chronolib.ErrFileDoesNotExist:
-					fmt.Println(chronolib.FormatNoFramesMessage())
-				default:
-					panic(err)
-				}
+				commandError = err
+				return
 			}
 
 			filteredFrames := chronolib.OrganizeFrameByTime(&frames)

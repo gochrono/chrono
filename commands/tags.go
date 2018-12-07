@@ -15,12 +15,8 @@ func newTagsCmd() *cobra.Command {
 			frameStorage := chronolib.GetFrameStorage()
 			tags, err := frameStorage.Tags()
 			if err != nil {
-				switch err.(type) {
-				case *chronolib.ErrFileDoesNotExist:
-					fmt.Println(chronolib.FormatNoFramesMessage())
-				default:
-					panic(err)
-				}
+				commandError = err
+				return
 			}
 
 			for _, tag := range tags {

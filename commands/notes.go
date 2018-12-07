@@ -30,17 +30,14 @@ func newNotesAddCmd() *cobra.Command {
 			stateStorage := chronolib.GetStateStorage()
 			state, err := stateStorage.Get()
 			if err != nil {
-				switch err.(type) {
-				case *chronolib.ErrFileDoesNotExist:
-					fmt.Println(chronolib.FormatStatusNoProjectMessage())
-				default:
-					panic(err)
-				}
+				commandError = err
+				return
 			}
 			state.Notes = append(state.Notes, args[0])
 			state, err = stateStorage.Update(state)
 			if err != nil {
-				panic(err)
+				commandError = err
+				return
 			}
 		},
 	}
@@ -54,12 +51,8 @@ func newNotesShowCmd() *cobra.Command {
 			stateStorage := chronolib.GetStateStorage()
 			state, err := stateStorage.Get()
 			if err != nil {
-				switch err.(type) {
-				case *chronolib.ErrFileDoesNotExist:
-					fmt.Println(chronolib.FormatStatusNoProjectMessage())
-				default:
-					panic(err)
-				}
+				commandError = err
+				return
 			}
 			for index, note := range state.Notes {
 				fmt.Println(chronolib.FormatNoteShowLine(index, note))
@@ -77,12 +70,8 @@ func newNotesDeleteCmd() *cobra.Command {
 			stateStorage := chronolib.GetStateStorage()
 			state, err := stateStorage.Get()
 			if err != nil {
-				switch err.(type) {
-				case *chronolib.ErrFileDoesNotExist:
-					fmt.Println(chronolib.FormatStatusNoProjectMessage())
-				default:
-					panic(err)
-				}
+				commandError = err
+				return
 			}
 			index, err := strconv.Atoi(args[0])
 			if err != nil {
@@ -96,7 +85,8 @@ func newNotesDeleteCmd() *cobra.Command {
 			state.Notes = append(state.Notes[:index], state.Notes[index+1:]...)
 			state, err = stateStorage.Update(state)
 			if err != nil {
-				panic(err)
+				commandError = err
+				return
 			}
 		},
 	}

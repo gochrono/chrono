@@ -22,14 +22,16 @@ func newStopCmd() *cobra.Command {
 
 			frame, err := stateStorage.Get()
 			if err != nil {
-				panic(err)
+				commandError = err
+				return
 			}
 
 			if stopAt != "" {
 				t, err := now.Parse(stopAt)
 				frame.EndedAt = t
 				if err != nil {
-					panic(err)
+					commandError = err
+					return
 				}
 			} else {
 				frame.EndedAt = time.Now()

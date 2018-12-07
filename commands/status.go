@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 const defaultFormat = "Project {{ .Project | magenta }}{{ if .Tags }} [{{ joinTags .Tags | blue }}]{{ end }} started {{ humanize .StartedAt | green }}."
@@ -20,13 +19,7 @@ func newStatusCmd() *cobra.Command {
 			stateStorage := chronolib.GetStateStorage()
 			state, err := stateStorage.Get()
 			if err != nil {
-				switch err.(type) {
-				case *chronolib.ErrFileDoesNotExist:
-					fmt.Println(chronolib.FormatStatusNoProjectMessage())
-				default:
-					fmt.Println(err)
-					os.Exit(-1)
-				}
+				commandError = err
 			} else {
 				if state.Project == "" {
 					fmt.Println(chronolib.FormatStatusNoProjectMessage())

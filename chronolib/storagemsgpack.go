@@ -11,8 +11,28 @@ type ErrFileDoesNotExist struct {
 	message string
 }
 
+// ErrStateFileDoesNotExist represents when a file doesn't exist on the file system
+type ErrStateFileDoesNotExist struct {
+	message string
+}
+
+// ErrFramesFileDoesNotExist represents when a file doesn't exist on the file system
+type ErrFramesFileDoesNotExist struct {
+	message string
+}
+
 // Error returns the error message
 func (e *ErrFileDoesNotExist) Error() string {
+	return e.message
+}
+
+// Error returns the error message
+func (e *ErrStateFileDoesNotExist) Error() string {
+	return e.message
+}
+
+// Error returns the error message
+func (e *ErrFramesFileDoesNotExist) Error() string {
 	return e.message
 }
 
@@ -46,7 +66,7 @@ func saveState(statePath string, frame Frame) (Frame, error) {
 // Get retrieves the current frame if it exists
 func (s MsgpackStateFileStorage) Get() (Frame, error) {
 	if _, err := os.Stat(s.StatePath); os.IsNotExist(err) {
-		return Frame{}, NewErrFileDoesNotExist(s.StatePath + " does not exist")
+		return Frame{}, &ErrStateFileDoesNotExist{s.StatePath}
 	}
 	content, err := ioutil.ReadFile(s.StatePath)
 	var frame Frame
