@@ -5,6 +5,7 @@ package main
 import (
 	"errors"
 	"fmt"
+    "github.com/magefile/mage/mg"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/google/gofuzz"
 	"github.com/magefile/mage/sh"
@@ -210,6 +211,15 @@ func Coverage() error {
 		return err
 	}
 	return sh.Run(goexe, "tool", "cover", "-html="+coverAll)
+}
+
+// Run tests and linters
+func Check() {
+	mg.Deps(Test)
+
+	mg.Deps(Test386)
+
+	mg.Deps(Fmt, Vet)
 }
 
 func Clean() {
