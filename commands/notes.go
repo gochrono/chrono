@@ -33,11 +33,15 @@ func newNotesAddCmd() *cobra.Command {
 				commandError = err
 				return
 			}
-			state.Notes = append(state.Notes, args[0])
-			state, err = stateStorage.Update(state)
-			if err != nil {
-				commandError = err
-				return
+			if state.Project == "" {
+				fmt.Println(chronolib.FormatNoProjectMessage())
+			} else {
+				state.Notes = append(state.Notes, args[0])
+				state, err = stateStorage.Update(state)
+				if err != nil {
+					commandError = err
+					return
+				}
 			}
 		},
 	}
@@ -54,12 +58,16 @@ func newNotesShowCmd() *cobra.Command {
 				commandError = err
 				return
 			}
-			if len(state.Notes) != 0 {
-				for index, note := range state.Notes {
-					fmt.Println(chronolib.FormatNoteShowLine(index, note))
-				}
+			if state.Project == "" {
+				fmt.Println(chronolib.FormatNoProjectMessage())
 			} else {
-				fmt.Println(chronolib.FormatNoNotesMessage())
+				if len(state.Notes) != 0 {
+					for index, note := range state.Notes {
+						fmt.Println(chronolib.FormatNoteShowLine(index, note))
+					}
+				} else {
+					fmt.Println(chronolib.FormatNoNotesMessage())
+				}
 			}
 		},
 	}
@@ -77,20 +85,24 @@ func newNotesDeleteCmd() *cobra.Command {
 				commandError = err
 				return
 			}
-			index, err := strconv.Atoi(args[0])
-			if err != nil {
-				fmt.Println("Index must be a number!")
-				os.Exit(0)
-			} else if index > len(state.Notes) || index < 0 {
-				fmt.Println("Index must be a number!")
-				os.Exit(0)
-			}
-			fmt.Printf("Deleting note '%s'\n", state.Notes[index])
-			state.Notes = append(state.Notes[:index], state.Notes[index+1:]...)
-			state, err = stateStorage.Update(state)
-			if err != nil {
-				commandError = err
-				return
+			if state.Project == "" {
+				fmt.Println(chronolib.FormatNoProjectMessage())
+			} else {
+				index, err := strconv.Atoi(args[0])
+				if err != nil {
+					fmt.Println("Index must be a number!")
+					os.Exit(0)
+				} else if index > len(state.Notes) || index < 0 {
+					fmt.Println("Index must be a number!")
+					os.Exit(0)
+				}
+				fmt.Printf("Deleting note '%s'\n", state.Notes[index])
+				state.Notes = append(state.Notes[:index], state.Notes[index+1:]...)
+				state, err = stateStorage.Update(state)
+				if err != nil {
+					commandError = err
+					return
+				}
 			}
 		},
 	}
