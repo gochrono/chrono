@@ -26,7 +26,7 @@ func Execute() {
 				case *chronolib.ErrStateFileDoesNotExist:
 					fmt.Println(chronolib.FormatNoProjectMessage())
 				case *chronolib.ErrFramesFileDoesNotExist:
-					fmt.Println("No frames exist")
+					fmt.Println(chronolib.FormatNoFramesMessage())
 				default:
 					panic(commandError)
 				}
