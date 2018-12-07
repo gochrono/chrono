@@ -31,12 +31,23 @@ type Data struct {
 	Frames []Frame
 }
 
+
 // GetFrameByIndex retrieves a frame by its index
 func (d Data) GetFrameByIndex(index int) (Frame, error) {
 	if index <= 0 && index >= len(d.Frames) {
 		return Frame{}, errors.New("No frame found")
 	}
 	return d.Frames[index], nil
+}
+
+// GetFrameByShortHex gets a frame using the short form of its UUID
+func GetFrameByShortHex(frames []Frame, hex string) (int, Frame, error) {
+	for idx, frame := range frames {
+		if GetShortHex(frame.UUID) == hex {
+			return idx, frame, nil
+		}
+	}
+	return 0, Frame{}, errors.New("No frame found")
 }
 
 // GetFrameByShortHex gets a frame using the short form of its UUID
