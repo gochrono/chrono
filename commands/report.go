@@ -24,8 +24,7 @@ func newReportCmd() *cobra.Command {
 		Short: "Get the total time spent on projects",
 		Long:  "Get the total time spent on projects",
 		Run: func(cmd *cobra.Command, args []string) {
-			framesPath := chronolib.GetAppFilePath("frames", "")
-			data := chronolib.LoadFrames(framesPath)
+			frameStorage := chronolib.GetFrameStorage()
 
 			if chronolib.ContainsMoreThanOneBooleanFlag(reportForCurrentWeek, reportForCurrentMonth, reportForCurrentYear, reportForAllTime) {
 				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month', `--all`]")
@@ -33,18 +32,34 @@ func newReportCmd() *cobra.Command {
 			}
 
 			var tsStart, tsEnd time.Time
+			var timespanFilterOptions chronolib.TimespanFilterOptions
 
-			if reportForCurrentWeek {
-				tsStart, tsEnd = chronolib.GetTimespanForWeek()
-			} else if reportForCurrentMonth {
-				tsStart, tsEnd = chronolib.GetTimespanForMonth()
-			} else if reportForCurrentYear {
-				tsStart, tsEnd = chronolib.GetTimespanForYear()
+			if reportForAllTime {
+				timespanFilterOptions = chronolib.TimespanFilterOptions{}
 			} else {
-				tsStart, tsEnd = chronolib.GetTimespanForToday()
+				if reportForCurrentWeek {
+					tsStart, tsEnd = chronolib.GetTimespanForWeek()
+				} else if reportForCurrentMonth {
+					tsStart, tsEnd = chronolib.GetTimespanForMonth()
+				} else if reportForCurrentYear {
+					tsStart, tsEnd = chronolib.GetTimespanForYear()
+				} else {
+					tsStart, tsEnd = chronolib.GetTimespanForToday()
+				}
+				timespanFilterOptions = chronolib.TimespanFilterOptions{Start: tsStart, End: tsEnd}
 			}
 
-			filteredFrames := chronolib.FilterFramesByTimespan(tsStart, tsEnd, &data.Frames, reportForAllTime, []string{})
+			frames, err := frameStorage.All(chronolib.FrameFilterOptions{TimespanFilter: timespanFilterOptions, Tags: logTags})
+			if err != nil {
+				switch err.(type) {
+				case *chronolib.ErrFileDoesNotExist:
+					fmt.Println(chronolib.FormatNoFramesMessage())
+				default:
+					panic(err)
+				}
+			}
+
+			filteredFrames := chronolib.OrganizeFrameByTime(&frames)
 			dates := chronolib.SortTimeMapKeys(&filteredFrames)
 			totals := make(map[string]frameTotals)
 			fmt.Println(chronolib.FormatReportDuration(tsStart))
