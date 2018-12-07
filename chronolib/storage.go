@@ -22,6 +22,8 @@ type FrameStorage interface {
 	Add(frame Frame) (Frame, error)
 	Remove(frame Frame) (Frame, error)
 	Update(frame Frame) (Frame, error)
+	Projects() ([]string, error)
+	Tags() ([]string, error)
 }
 
 // StateStorage is an interface for the current frame storage backend

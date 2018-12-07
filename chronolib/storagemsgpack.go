@@ -126,6 +126,30 @@ func (s MsgpackFrameFileStorage) Add(frame Frame) (Frame, error) {
 	return frame, nil
 }
 
+// Projects returns a unique list of all project names used in frames
+func (s MsgpackFrameFileStorage) Projects() ([]string, error) {
+	return []string{}, nil
+}
+
+// Tags returns a unique list of all tags used in frames
+func (s MsgpackFrameFileStorage) Tags() ([]string, error) {
+	frames, err := getFrames(s.FramesPath)
+	if err != nil {
+		return []string{}, err
+	}
+	encountered := map[string]bool{}
+	for _, frame := range frames {
+		for _, tag := range frame.Tags {
+			encountered[tag] = true
+		}
+	}
+	keys := make([]string, 0, len(encountered))
+	for k := range encountered {
+		keys = append(keys, k)
+	}
+	return keys, nil
+}
+
 // Remove a frame (matched by frame's UUID)
 func (s MsgpackFrameFileStorage) Remove(frame Frame) (Frame, error) {
 	return Frame{}, nil

@@ -12,19 +12,19 @@ func newTagsCmd() *cobra.Command {
 		Short: "Get a list of all tags used",
 		Long:  "Get a list of all tags used",
 		Run: func(cmd *cobra.Command, args []string) {
-			framesPath := chronolib.GetAppFilePath("frames", "")
-			data := chronolib.LoadFrames(framesPath)
-
-			encountered := map[string]bool{}
-
-			for _, frame := range data.Frames {
-				for _, tag := range frame.Tags {
-					encountered[tag] = true
+			frameStorage := chronolib.GetFrameStorage()
+			tags, err := frameStorage.Tags()
+			if err != nil {
+				switch err.(type) {
+				case *chronolib.ErrFileDoesNotExist:
+					fmt.Println(chronolib.FormatNoFramesMessage())
+				default:
+					panic(err)
 				}
 			}
 
-			for key := range encountered {
-				fmt.Println(key)
+			for _, tag := range tags {
+				fmt.Println(tag)
 			}
 		},
 	}
