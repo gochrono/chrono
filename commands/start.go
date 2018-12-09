@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
-	"time"
 )
 
 var startNote string
@@ -30,36 +29,18 @@ func newStartCmd() *cobra.Command {
 				fmt.Println(chronolib.FormatStartError(state))
 				return
 			}
-
-			project, tags, err := chronolib.ParseStartArguments(args)
-			if err != nil {
-				commandError = err
-				return
-			}
-			frameStart, err := chronolib.ParseTime(startAt)
-			if err != nil {
-				commandError = err
-				return
-			}
-
-			notes := []string{}
-			if startNote != "" {
-				notes = append(notes, startNote)
-			}
-
-			newState := chronolib.Frame{
-				UUID: []byte{}, Project: project, 
-                StartedAt: frameStart, EndedAt: time.Time{}, 
-                Tags: tags, Notes: notes,
-                UpdatedAt: time.Now(),
+            project, tags, err := chronolib.ParseStartArguments(args)
+            if err != nil {
+                PrintErrorAndExit(err)
             }
-
+            newState, err := ParseNewFrameFlags(project, tags, startAt, startNote)
+            if err != nil {
+                PrintErrorAndExit(err)
+            }
 			newState, err = stateStorage.Update(newState)
 			if err != nil {
-				commandError = err
-				return
+                PrintErrorAndExit(err)
 			}
-
 			fmt.Println(chronolib.FormatNewFrameMessage(newState))
 		},
 	}

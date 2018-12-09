@@ -26,3 +26,23 @@ func ParseTimespanFlags(timespanFlags TimespanFlags) chronolib.TimespanFilterOpt
     }
 	return chronolib.TimespanFilterOptions{Start: tsStart, End: tsEnd}
 }
+
+
+func ParseNewFrameFlags(project string, tags []string, startAt string, startNote string) (chronolib.Frame, error) {
+    frameStart, err := chronolib.ParseTime(startAt)
+    if err != nil {
+        return chronolib.Frame{}, err
+    }
+
+    notes := []string{}
+    if startNote != "" {
+        notes = append(notes, startNote)
+    }
+
+    return chronolib.Frame{
+        UUID: []byte{}, Project: project, 
+        StartedAt: frameStart, EndedAt: time.Time{}, 
+        Tags: tags, Notes: notes,
+        UpdatedAt: time.Now(),
+    }, nil
+}

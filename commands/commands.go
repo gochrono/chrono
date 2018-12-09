@@ -1,6 +1,7 @@
 package commands
 
 import (
+    "os"
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
@@ -31,6 +32,21 @@ Commit: %s
 Built: %s`, banner, version, commit, date)
 
 
+func PrintErrorAndExit(e error) {
+    switch e.(type) {
+    case *chronolib.ErrFileDoesNotExist:
+        fmt.Println("error: " + commandError.Error())
+        os.Exit(-1)
+    case *chronolib.ErrStateFileDoesNotExist:
+        fmt.Println(chronolib.FormatNoProjectMessage())
+        os.Exit(-2)
+    case *chronolib.ErrFramesFileDoesNotExist:
+        fmt.Println(chronolib.FormatNoFramesMessage())
+        os.Exit(-3)
+    default:
+        panic(commandError)
+    }
+}
 
 var commandError error
 
@@ -42,23 +58,13 @@ func Execute() {
         Version: version,
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
 			if commandError != nil {
-				switch commandError.(type) {
-				case *chronolib.ErrFileDoesNotExist:
-					fmt.Println("error: " + commandError.Error())
-				case *chronolib.ErrStateFileDoesNotExist:
-					fmt.Println(chronolib.FormatNoProjectMessage())
-				case *chronolib.ErrFramesFileDoesNotExist:
-					fmt.Println(chronolib.FormatNoFramesMessage())
-				default:
-					panic(commandError)
-				}
 			}
 		},
 	}
     rootCmd.SetVersionTemplate(versionTemplate)
 	rootCmd.AddCommand(newStartCmd(), newStatusCmd(), newStopCmd(), newReportCmd(),
                        newLogCmd(), newCancelCmd(), newDeleteCmd(), newFramesCmd(),
-                       newProjectsCmd(),
+                       newProjectsCmd(), newRestartCmd(),
                        newEditCmd(), newVersionCmd(), newNotesCmd(), newTagsCmd())
 	rootCmd.Execute()
 }

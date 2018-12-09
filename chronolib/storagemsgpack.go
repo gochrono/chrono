@@ -163,6 +163,33 @@ func (s MsgpackFrameFileStorage) Tags() ([]string, error) {
 	return keys, nil
 }
 
+
+func (s MsgpackFrameFileStorage) Get(getOptions FrameGetOptions) (Frame, error) {
+    frames, err := s.All(FrameFilterOptions{})
+    if err != nil {
+        return Frame{}, err
+    }
+    idx, err := strconv.Atoi(getOptions.Target)
+    if err == nil {
+        var targetIndex int
+        if idx >= 0 {
+            targetIndex = idx
+        } else {
+            targetIndex = idx + len(frames)
+        }
+        
+        if targetIndex >= 0 && targetIndex < len(frames) {
+            return frames[targetIndex], nil
+        }
+    }
+    for _, frame := range frames {
+        if strings.HasPrefix(hex.EncodeToString(frame.UUID), getOptions.Target) {
+            return frame, err
+        }
+    }
+    return Frame{}, NewErrFrameNotFound(getOptions.Target)
+}
+
 // Delete a frame (matched by frame's UUID)
 func (s MsgpackFrameFileStorage) Delete(deleteOptions FrameDeleteOptions) (Frame, error) {
     frames, err := s.All(FrameFilterOptions{})

@@ -70,10 +70,15 @@ type FrameDeleteOptions struct {
     Target    string
 }
 
+type FrameGetOptions struct {
+    Target    string
+}
+
 // FrameStorage is an interface for a frame storage backend
 type FrameStorage interface {
 	All(filterOptions FrameFilterOptions) ([]Frame, error)
 	Add(frame Frame) (Frame, error)
+    Get(getOptions FrameGetOptions) (Frame, error)
 	Delete(deleteOptions FrameDeleteOptions) (Frame, error)
 	Update(frame Frame) (Frame, error)
 	Projects() ([]string, error)
