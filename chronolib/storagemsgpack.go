@@ -5,6 +5,9 @@ import (
 	"path/filepath"
 	"io/ioutil"
 	"os"
+    "strings"
+	"encoding/hex"
+    "strconv"
 )
 
 const StateFilename = "state.msgpack"
@@ -148,9 +151,34 @@ func (s MsgpackFrameFileStorage) Tags() ([]string, error) {
 	return keys, nil
 }
 
-// Remove a frame (matched by frame's UUID)
-func (s MsgpackFrameFileStorage) Remove(frame Frame) (Frame, error) {
-	return Frame{}, nil
+// Delete a frame (matched by frame's UUID)
+func (s MsgpackFrameFileStorage) Delete(deleteOptions FrameDeleteOptions) (Frame, error) {
+    frames, err := s.All(FrameFilterOptions{})
+    if err != nil {
+        return Frame{}, err
+    }
+    idx, err := strconv.Atoi(deleteOptions.Target)
+    if err == nil {
+        var targetIndex int
+        if idx >= 0 {
+            targetIndex = idx
+        } else {
+            targetIndex = idx + len(frames)
+        }
+        
+        if targetIndex >= 0 && targetIndex < len(frames) {
+	        frames = append(frames[:targetIndex], frames[targetIndex+1:]...)
+            return frames[targetIndex], nil
+        }
+    }
+    for targetIndex, frame := range frames {
+        if strings.HasPrefix(hex.EncodeToString(frame.UUID), deleteOptions.Target) {
+	        frames = append(frames[:targetIndex], frames[targetIndex+1:]...)
+            err = saveFrames(s.GetPath(), frames)
+            return frame, err
+        }
+    }
+    return Frame{}, NewErrFrameNotFound(deleteOptions.Target)
 }
 
 // Update the information for the given frame (matched by frame's UUID)

@@ -22,6 +22,7 @@ type Frame struct {
 	Project   string
 	StartedAt time.Time
 	EndedAt   time.Time
+	UpdatedAt time.Time
 	Tags      []string
 	Notes     []string
 }
