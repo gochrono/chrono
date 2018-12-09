@@ -8,20 +8,7 @@ import (
 	"gopkg.in/resty.v1"
 )
 
-var (
-	version = "dev"
-	commit  = "none"
-	date    = "unknown"
-)
-
 const latestReleaseUrl = "https://api.github.com/repos/gochrono/chrono/releases/latest"
-
-var banner = `   _____ _
-  / ____| |
- | |    | |__  _ __ ___  _ __   ___
- | |    | '_ \| '__/ _ \| '_ \ / _ \ 
- | |____| | | | | | (_) | | | | (_) |
-  \_____|_| |_|_|  \___/|_| |_|\___/`
 
 func newVersionCmd() *cobra.Command {
 	versionCmd := &cobra.Command{
@@ -29,8 +16,7 @@ func newVersionCmd() *cobra.Command {
 		Short: "Prints the version then exits",
 		Long:  "Prints the version then exits",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println(banner)
-			fmt.Printf("\nversion: %s\ncommit: %s\nbuilt: %s\n", version, commit, date)
+			fmt.Print(versionTemplate)
 		},
 	}
 
