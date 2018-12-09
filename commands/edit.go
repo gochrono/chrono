@@ -82,9 +82,14 @@ func newEditCmd() *cobra.Command {
 			var newSimpleFrame chronolib.SimpleFrame
 			err = json.Unmarshal(content, &newSimpleFrame)
 			if err != nil {
-				panic(err)
+                fmt.Println(err)
+                os.Exit(-1)
 			}
-			frameEdited := chronolib.ConvertSimpleFrameToFrame(target.UUID, newSimpleFrame)
+			frameEdited, err := chronolib.ConvertSimpleFrameToFrame(target.UUID, newSimpleFrame)
+            if err != nil {
+                fmt.Println(err)
+                os.Exit(-1)
+            }
 			if chronolib.FramesEqual(target, frameEdited) {
 				fmt.Println("No changes made")
 			} else {

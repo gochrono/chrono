@@ -33,23 +33,12 @@ func newReportCmd() *cobra.Command {
 				os.Exit(0)
 			}
 
-			var tsStart, tsEnd time.Time
-			var timespanFilterOptions chronolib.TimespanFilterOptions
-
-			if reportForAllTime {
-				timespanFilterOptions = chronolib.TimespanFilterOptions{}
-			} else {
-				if reportForCurrentWeek {
-					tsStart, tsEnd = chronolib.GetTimespanForWeek()
-				} else if reportForCurrentMonth {
-					tsStart, tsEnd = chronolib.GetTimespanForMonth()
-				} else if reportForCurrentYear {
-					tsStart, tsEnd = chronolib.GetTimespanForYear()
-				} else {
-					tsStart, tsEnd = chronolib.GetTimespanForToday()
-				}
-				timespanFilterOptions = chronolib.TimespanFilterOptions{Start: tsStart, End: tsEnd}
-			}
+            timespanFilterOptions := ParseTimespanFlags(TimespanFlags{
+                AllTime: reportForAllTime,
+                CurrentWeek: reportForCurrentWeek,
+                CurrentMonth: reportForCurrentMonth,
+                CurrentYear: reportForCurrentYear,
+            })
 
 			frames, err := frameStorage.All(chronolib.FrameFilterOptions{TimespanFilter: timespanFilterOptions, Tags: logTags})
 			if err != nil {
@@ -60,7 +49,9 @@ func newReportCmd() *cobra.Command {
 			filteredFrames := chronolib.OrganizeFrameByTime(&frames)
 			dates := chronolib.SortTimeMapKeys(&filteredFrames)
 			totals := make(map[string]frameTotals)
-			fmt.Println(chronolib.FormatReportDuration(tsStart))
+			fmt.Println(chronolib.FormatReportDuration(
+                timespanFilterOptions.Start,
+            ))
 			for _, date := range dates {
 				for _, frame := range filteredFrames[date] {
 					frameTotal, ok := totals[frame.Project]

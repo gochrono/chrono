@@ -64,7 +64,7 @@ func (d Data) GetFrameByShortHex(hex string) (int, Frame, error) {
 // SortFramesByDate sorts frame by its start date
 func SortFramesByDate(frames []Frame) {
 	sort.Slice(frames, func(i, j int) bool {
-		return frames[i].StartedAt.Before(frames[j].StartedAt)
+		return frames[i].UpdatedAt.Before(frames[j].StartedAt)
 	})
 }
 
@@ -92,23 +92,24 @@ func ConvertFrameToSimpleFrame(frame Frame) SimpleFrame {
 }
 
 // ConvertSimpleFrameToFrame converts a raw frame back to a frame
-func ConvertSimpleFrameToFrame(uuid []byte, rawFrame SimpleFrame) Frame {
+func ConvertSimpleFrameToFrame(uuid []byte, rawFrame SimpleFrame) (Frame, error) {
 	started, err := now.Parse(rawFrame.StartedAt)
 	if err != nil {
-		panic(err)
+        return Frame{}, err
 	}
 	ended, err := now.Parse(rawFrame.EndedAt)
 	if err != nil {
-		panic(err)
+        return Frame{}, err
 	}
 	return Frame{
 		uuid,
 		rawFrame.Project,
 		started,
 		ended,
+        time.Now(),
 		rawFrame.Tags,
 		rawFrame.Notes,
-	}
+	}, nil
 }
 
 // ContainsMoreThanOneBooleanFlag is a helper method for checking if more than one boolean is true

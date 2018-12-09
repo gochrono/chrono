@@ -48,7 +48,11 @@ func newStartCmd() *cobra.Command {
 			}
 
 			newState := chronolib.Frame{
-				UUID: []byte{}, Project: project, StartedAt: frameStart, EndedAt: time.Time{}, Tags: tags, Notes: notes}
+				UUID: []byte{}, Project: project, 
+                StartedAt: frameStart, EndedAt: time.Time{}, 
+                Tags: tags, Notes: notes,
+                UpdatedAt: time.Now()
+            }
 
 			newState, err = stateStorage.Update(newState)
 			if err != nil {

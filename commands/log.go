@@ -9,10 +9,10 @@ import (
 )
 
 var interval int
-var forCurrentWeek bool
-var forCurrentMonth bool
-var forCurrentYear bool
-var forAllTime bool
+var logForCurrentWeek bool
+var logForCurrentMonth bool
+var logForCurrentYear bool
+var logForAllTime bool
 var round bool
 var logTags []string
 
@@ -26,30 +26,21 @@ func newLogCmd() *cobra.Command {
             config := chronolib.GetConfig(configDir)
 			frameStorage := chronolib.GetFrameStorage(config)
 
-			if chronolib.ContainsMoreThanOneBooleanFlag(forCurrentWeek, forCurrentMonth, forCurrentYear) {
+			if chronolib.ContainsMoreThanOneBooleanFlag(logForCurrentWeek, logForCurrentMonth, logForCurrentYear) {
 				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month']")
 				os.Exit(0)
 			}
 
-			var tsStart, tsEnd time.Time
-			var timespanFilterOptions chronolib.TimespanFilterOptions
+            timespanFilterOptions := ParseTimespanFlags(TimespanFlags{
+                AllTime: logForAllTime,
+                CurrentWeek: logForCurrentWeek,
+                CurrentMonth: logForCurrentMonth,
+                CurrentYear: logForCurrentYear,
+            })
 
-			if forAllTime {
-				timespanFilterOptions = chronolib.TimespanFilterOptions{}
-			} else {
-				if forCurrentWeek {
-					tsStart, tsEnd = chronolib.GetTimespanForWeek()
-				} else if forCurrentMonth {
-					tsStart, tsEnd = chronolib.GetTimespanForMonth()
-				} else if forCurrentYear {
-					tsStart, tsEnd = chronolib.GetTimespanForYear()
-				} else {
-					tsStart, tsEnd = chronolib.GetTimespanForToday()
-				}
-				timespanFilterOptions = chronolib.TimespanFilterOptions{Start: tsStart, End: tsEnd}
-			}
-
-			frames, err := frameStorage.All(chronolib.FrameFilterOptions{TimespanFilter: timespanFilterOptions, Tags: logTags})
+			frames, err := frameStorage.All(chronolib.FrameFilterOptions{
+                TimespanFilter: timespanFilterOptions, Tags: logTags,
+            })
 			if err != nil {
 				commandError = err
 				return
@@ -78,10 +69,10 @@ func newLogCmd() *cobra.Command {
 			}
 		},
 	}
-	cmd.Flags().BoolVarP(&forCurrentWeek, "week", "w", false, "show frames for entire week")
-	cmd.Flags().BoolVarP(&forCurrentMonth, "month", "m", false, "show frames for entire month")
-	cmd.Flags().BoolVarP(&forCurrentYear, "year", "y", false, "show frames for entire year")
-	cmd.Flags().BoolVarP(&forAllTime, "all", "a", false, "show all frames")
+	cmd.Flags().BoolVarP(&logForCurrentWeek, "week", "w", false, "show frames for entire week")
+	cmd.Flags().BoolVarP(&logForCurrentMonth, "month", "m", false, "show frames for entire month")
+	cmd.Flags().BoolVarP(&logForCurrentYear, "year", "y", false, "show frames for entire year")
+	cmd.Flags().BoolVarP(&logForAllTime, "all", "a", false, "show all frames")
 	cmd.Flags().BoolVarP(&round, "round", "r", false, "round frames start and end times to the nearest interval (default: 5 mins)")
 	cmd.Flags().IntVarP(&interval, "interval", "i", 5, "the interval to round to in minutes")
 	cmd.Flags().StringSliceVarP(&logTags, "tag", "t", []string{}, "only show frames that contain the given tag - can be used multiple times")
