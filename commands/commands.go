@@ -34,6 +34,7 @@ func Execute() {
 		},
 	}
 	rootCmd.AddCommand(newStartCmd(), newStatusCmd(), newStopCmd(), newReportCmd(),
-		newLogCmd(), newEditCmd(), newVersionCmd(), newNotesCmd(), newTagsCmd())
+                       newLogCmd(), newCancelCmd(), 
+                       newEditCmd(), newVersionCmd(), newNotesCmd(), newTagsCmd())
 	rootCmd.Execute()
 }
