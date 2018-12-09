@@ -51,7 +51,7 @@ func newStartCmd() *cobra.Command {
 				UUID: []byte{}, Project: project, 
                 StartedAt: frameStart, EndedAt: time.Time{}, 
                 Tags: tags, Notes: notes,
-                UpdatedAt: time.Now()
+                UpdatedAt: time.Now(),
             }
 
 			newState, err = stateStorage.Update(newState)
