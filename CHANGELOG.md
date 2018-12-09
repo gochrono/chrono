@@ -10,8 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added coloring to notes show command
 - Updated help documentation for `start` and `notes` command
 - Added `--at` flag to `stop` command to specify a time other than now for the new frame's end time.
+- Added `projects` command which shows a unique list of all project names used
+- Added `restart` command which starts a new frame, using the last frame's project & tags
+- Added `--version` flag which works the same as the `version` command
+- Added `delete` command which deletes a saved frame by either an index or UUID
+- Added `cancel` command which stops tracking the current frame without saving it
+- Added `frames` command which shows a list of frame ID's
 
-### Changes
+### Changed
 - Renamed `--start` flag to `--at` in `start` command
 
 ### Fixed
