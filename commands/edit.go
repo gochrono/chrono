@@ -32,31 +32,37 @@ func newEditCmd() *cobra.Command {
 		Long:  editDesciption,
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			framesPath := chronolib.GetAppFilePath("frames", "")
-			data := chronolib.LoadFrames(framesPath)
-			chronolib.SortFramesByDate(data.Frames)
+            configDir := chronolib.GetCorrectConfigDirectory("")
+            config := chronolib.GetConfig(configDir)
+            frameStorage := chronolib.GetFrameStorage(config)
+            frames, err := frameStorage.All(chronolib.FrameFilterOptions{})
+            if err != nil {
+                commandError = err
+                return
+            }
+			chronolib.SortFramesByDate(frames)
 
 			var target chronolib.Frame
 			var targetIndex int
 			index, err := strconv.Atoi(args[0])
 			if err != nil {
-				targetIndex, target, err = data.GetFrameByShortHex(args[0])
+				targetIndex, target, err = chronolib.GetFrameByShortHex(frames, args[0])
 				if err != nil {
 					fmt.Println("No frame found with that ID")
 					os.Exit(-1)
 				}
 			} else {
 				if index < 0 {
-					targetIndex = len(data.Frames) + index
+					targetIndex = len(frames) + index
 				} else {
-					targetIndex = len(data.Frames) - index
+					targetIndex = len(frames) - index
 				}
 
-				target, err = data.GetFrameByIndex(targetIndex)
-				if err != nil {
+                if targetIndex >= len(frames) || targetIndex < 0 {
 					fmt.Println("No frame found at that index")
 					os.Exit(-1)
-				}
+                }
+				target = frames[targetIndex]
 			}
 
 			simpleFrame := chronolib.ConvertFrameToSimpleFrame(target)
@@ -93,8 +99,7 @@ func newEditCmd() *cobra.Command {
 			if chronolib.FramesEqual(target, frameEdited) {
 				fmt.Println("No changes made")
 			} else {
-				data.Frames[targetIndex] = frameEdited
-				chronolib.SaveFrames(framesPath, data)
+                frameStorage.Update(frameEdited)
 				fmt.Println(chronolib.FormatEditFrameMessage(frameEdited))
 			}
 		},

@@ -182,7 +182,16 @@ func (s MsgpackFrameFileStorage) Delete(deleteOptions FrameDeleteOptions) (Frame
 }
 
 // Update the information for the given frame (matched by frame's UUID)
-func (s MsgpackFrameFileStorage) Update(frame Frame) (Frame, error) {
-	return Frame{}, nil
-
+func (s MsgpackFrameFileStorage) Update(newFrame Frame) (Frame, error) {
+    frames, err := s.All(FrameFilterOptions{})
+    if err != nil {
+        return Frame{}, err
+    }
+    for index, frame := range frames {
+        if hex.EncodeToString(frame.UUID) == hex.EncodeToString(newFrame.UUID) {
+            frames[index] = newFrame
+            return newFrame, nil
+        }
+    }
+	return newFrame, nil
 }
