@@ -172,6 +172,17 @@ func PrettyDate(t *time.Time) string {
 	return t.Format("_2 January 2006 15:04")
 }
 
+func FormatFrameDescribe(frame Frame) string {
+    shortHex := GetShortHex(frame.UUID)
+	tags := ""
+	if len(frame.Tags) != 0 {
+		tags = FormatTags(frame.Tags)
+	}
+    startTime := green(frame.StartedAt.Format("Jan 2 15:04:05"))
+    endTime := green(frame.EndedAt.Format("Jan 2 15:04:05"))
+    return fmt.Sprintf("(%s) %s%s: %s to %s", shortHex, magenta(frame.Project), tags, startTime, endTime)
+}
+
 // FormatCancelMessage shows a message if the current state is stopped but not saved
 func FormatCancelMessage(frame Frame) string {
     cancelTime := time.Now().Format("15:04")

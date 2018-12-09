@@ -6,8 +6,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var framesDescribe bool
 func newFramesCmd() *cobra.Command {
-	return &cobra.Command{
+    cmd := &cobra.Command{
 		Use:   "frames",
 		Short: "Displays a list of all frame IDs",
 		Long:  "Displays a list of all frame IDs",
@@ -21,8 +22,14 @@ func newFramesCmd() *cobra.Command {
 				return
             }
 			for _, frame := range frames {
-                fmt.Println(chronolib.GetShortHex(frame.UUID))
+                if framesDescribe {
+                    fmt.Println(chronolib.FormatFrameDescribe(frame))
+                } else {
+                    fmt.Println(chronolib.GetShortHex(frame.UUID))
+                }
 			}
 		},
 	}
+	cmd.Flags().BoolVarP(&framesDescribe, "describe", "d", false, "show information about frames instead of just their ID")
+    return cmd
 }
