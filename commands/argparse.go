@@ -3,7 +3,35 @@ package commands
 import (
     "time"
     "github.com/gochrono/chrono/chronolib"
+    "errors"
+	"github.com/jinzhu/now"
 )
+
+// ParseStartArguments splits the argument string list and validates tags
+func ParseStartArguments(args []string) (string, []string, error) {
+	project := args[0]
+	tags := args[1:]
+
+	if err := chronolib.CheckTags(tags); err != nil {
+		return "", []string{}, err
+	}
+
+	return project, chronolib.NormalizeTags(tags), nil
+}
+
+// ParseTime converts a properly formated time string into a time.Time struct
+func ParseTime(t string) (time.Time, error) {
+	if t == "" {
+		return time.Now(), nil
+	}
+	parsedTime, err := now.Parse(t)
+	if err != nil {
+		return time.Time{}, errors.New("invalid time format: " + t)
+	}
+	return parsedTime, nil
+}
+
+// TimespanFlags is a struct containing the four different options for timespans
 type TimespanFlags struct {
     AllTime        bool
     CurrentWeek    bool
@@ -11,6 +39,8 @@ type TimespanFlags struct {
     CurrentYear    bool
 }
 
+// ParseTimespanFlags gets the correct start and end time for filtering frames based
+// on the flags given
 func ParseTimespanFlags(timespanFlags TimespanFlags) chronolib.TimespanFilterOptions {
 	var tsStart, tsEnd time.Time
     if timespanFlags.AllTime {
@@ -28,6 +58,7 @@ func ParseTimespanFlags(timespanFlags TimespanFlags) chronolib.TimespanFilterOpt
 }
 
 
+// ParseNewFrameFlags is a helper method for creating a new frame based on user input
 func ParseNewFrameFlags(project string, tags []string, startAt string, startNote string) (chronolib.Frame, error) {
     frameStart, err := chronolib.ParseTime(startAt)
     if err != nil {

@@ -29,7 +29,7 @@ func newStartCmd() *cobra.Command {
 				fmt.Println(chronolib.FormatStartError(state))
 				return
 			}
-            project, tags, err := chronolib.ParseStartArguments(args)
+            project, tags, err := ParseStartArguments(args)
             if err != nil {
                 PrintErrorAndExit(err)
             }
