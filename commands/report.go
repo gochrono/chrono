@@ -28,7 +28,10 @@ func newReportCmd() *cobra.Command {
             config := chronolib.GetConfig(configDir)
 			frameStorage := chronolib.GetFrameStorage(config)
 
-			if chronolib.ContainsMoreThanOneBooleanFlag(reportForCurrentWeek, reportForCurrentMonth, reportForCurrentYear, reportForAllTime) {
+			if chronolib.ContainsMoreThanOneBooleanFlag(
+                reportForCurrentWeek, reportForCurrentMonth,
+                reportForCurrentYear, reportForAllTime,
+            ) {
 				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month', `--all`]")
 				os.Exit(0)
 			}
@@ -40,7 +43,10 @@ func newReportCmd() *cobra.Command {
                 CurrentYear: reportForCurrentYear,
             })
 
-			frames, err := frameStorage.All(chronolib.FrameFilterOptions{TimespanFilter: timespanFilterOptions, Tags: logTags})
+			frames, err := frameStorage.All(chronolib.FrameFilterOptions{
+                TimespanFilter: timespanFilterOptions, Tags: logTags,
+            })
+            
 			if err != nil {
 				commandError = err
 				return
@@ -59,7 +65,9 @@ func newReportCmd() *cobra.Command {
 					if ok {
 						frameTotal.TotalTime = frameTotal.TotalTime + frameDuration
 					} else {
-						totals[frame.Project] = frameTotals{frameDuration, make(map[string]time.Duration)}
+						totals[frame.Project] = frameTotals{
+                            frameDuration, make(map[string]time.Duration),
+                        }
 					}
 
 					for _, tag := range frame.Tags {
