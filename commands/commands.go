@@ -58,6 +58,7 @@ func Execute() {
     rootCmd.SetVersionTemplate(versionTemplate)
 	rootCmd.AddCommand(newStartCmd(), newStatusCmd(), newStopCmd(), newReportCmd(),
                        newLogCmd(), newCancelCmd(), newDeleteCmd(), newFramesCmd(),
+                       newProjectsCmd(),
                        newEditCmd(), newVersionCmd(), newNotesCmd(), newTagsCmd())
 	rootCmd.Execute()
 }
