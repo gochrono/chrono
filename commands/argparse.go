@@ -60,7 +60,7 @@ func ParseTimespanFlags(timespanFlags TimespanFlags) chronolib.TimespanFilterOpt
 
 // ParseNewFrameFlags is a helper method for creating a new frame based on user input
 func ParseNewFrameFlags(project string, tags []string, startAt string, startNote string) (chronolib.Frame, error) {
-    frameStart, err := chronolib.ParseTime(startAt)
+    frameStart, err := ParseTime(startAt)
     if err != nil {
         return chronolib.Frame{}, err
     }
