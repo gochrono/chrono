@@ -21,7 +21,7 @@ var (
 var banner = `   _____ _
   / ____| |
  | |    | |__  _ __ ___  _ __   ___
- | |    | '_ \| '__/ _ \| '_ \ / _ \ 
+ | |    | '_ \| '__/ _ \| '_ \ / _ \
  | |____| | | | | | (_) | | | | (_) |
   \_____|_| |_|_|  \___/|_| |_|\___/`
 
@@ -29,7 +29,7 @@ var versionTemplate = fmt.Sprintf(`%s
 
 Version: %s
 Commit: %s
-Built: %s`, banner, version, commit, date)
+Built: %s`, banner, version, commit, date+"\n")
 
 func PrintErrorAndExit(e error) {
 	switch e.(type) {
