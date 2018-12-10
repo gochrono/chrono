@@ -4,5 +4,6 @@ vendor
 data
 chrono
 chrono.exe
-
+.bundle
 *.out
+tmp
