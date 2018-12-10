@@ -31,6 +31,8 @@ Version: %s
 Commit: %s
 Built: %s`, banner, version, commit, date+"\n")
 
+// PrintErrorAndExit prints an appropriate message depending on the error type.
+// If the error type is unknown, panics
 func PrintErrorAndExit(e error) {
 	switch e.(type) {
 	case *chronolib.ErrFileDoesNotExist:

@@ -172,6 +172,7 @@ func PrettyDate(t *time.Time) string {
 	return t.Format("_2 January 2006 15:04")
 }
 
+// FormatFrameDescribe shows information about a frame in a consise manner
 func FormatFrameDescribe(frame Frame) string {
 	shortHex := GetShortHex(frame.UUID)
 	tags := ""

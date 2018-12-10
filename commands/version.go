@@ -8,7 +8,7 @@ import (
 	"gopkg.in/resty.v1"
 )
 
-const latestReleaseUrl = "https://api.github.com/repos/gochrono/chrono/releases/latest"
+const latestReleaseURL = "https://api.github.com/repos/gochrono/chrono/releases/latest"
 
 func newVersionCmd() *cobra.Command {
 	versionCmd := &cobra.Command{
@@ -30,7 +30,7 @@ func newVersionCheckCmd() *cobra.Command {
 		Short: "Checks if there is a new version",
 		Long:  "Checks if there is a new version release on GitHub",
 		Run: func(cmd *cobra.Command, args []string) {
-			resp, err := resty.R().Get(latestReleaseUrl)
+			resp, err := resty.R().Get(latestReleaseURL)
 			if err != nil {
 				panic(err)
 			}

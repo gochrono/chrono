@@ -10,7 +10,10 @@ import (
 	"strings"
 )
 
+// StateFilename is the filename of the states file
 const StateFilename = "state.msgpack"
+
+// FramesFilename is the filename of the frames file
 const FramesFilename = "frames.msgpack"
 
 // MsgpackStateFileStorage stores the current frame in the Msgpack format
@@ -23,10 +26,12 @@ type MsgpackFrameFileStorage struct {
 	Config ChronoConfig
 }
 
+// GetPath returns the fully qualified filepath to the state file
 func (s *MsgpackStateFileStorage) GetPath() string {
 	return filepath.Join(s.Config.ConfigDir, StateFilename)
 }
 
+// GetPath returns the fully qualified filepath to the frames file
 func (s *MsgpackFrameFileStorage) GetPath() string {
 	return filepath.Join(s.Config.ConfigDir, FramesFilename)
 }
@@ -162,6 +167,7 @@ func (s MsgpackFrameFileStorage) Tags() ([]string, error) {
 	return keys, nil
 }
 
+// Get retrieves a single frame based on the FrameGetOptions
 func (s MsgpackFrameFileStorage) Get(getOptions FrameGetOptions) (Frame, error) {
 	frames, err := s.All(FrameFilterOptions{})
 	if err != nil {

@@ -71,6 +71,7 @@ type FrameDeleteOptions struct {
 	Target string
 }
 
+// FrameGetOptions contains filtering information needed to find a single Frame
 type FrameGetOptions struct {
 	Target string
 }
