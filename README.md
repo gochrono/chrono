@@ -105,11 +105,11 @@ $ chrono log --help
 * [Go (at least Go 1.11)](https://golang.org/dl/)
 
 
-### Downloading the source ###
+### Downloading & building the source ###
 
 Chrono uses [Go Modules](https://github.com/golang/go/wiki/Modules) to handle dependencies.
 
-The easiest to get the source is to clone Chrono in a directory outside of `GOPATH`, for example:
+The easiest way to build from the source is to clone Chrono in a directory outsite of `GOPATH`, for example:
 
 ``` bash
 mkdir ~/src && cd ~/src
