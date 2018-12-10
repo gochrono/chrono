@@ -19,23 +19,30 @@ you did.
 
 ![Preview](./.github/preview.gif)
 
-# Quickstart #
 
-## Installation ##
+# Installation #
 
-The simplest way to install Chrono is to download the latest binary from the [releases page](https://github.com/gochrono/chrono/releases).
+## Binaries Releases ##
 
-The binaries have no external dependencies. After downloading it, place it somewhere on the PATH (such as `/usr/local/bin` on Linux).
+To install the latest stable release:
 
-Alternatively you can install Chrono by building it yourself. This ensures you're running the absolute bleeding edge version.
+``` bash
+curl -L https://git.io/fpHAj | sh
+```
+
+If you'd like to install a specific version or would like to install from a .deb package, checkout the [releases page](https://github.com/gochrono/chrono/releases).
 
 ### Supported Architectures ###
 
 We provide pre-built Chrono binaries for Windows, Linux, and macOS (Darwin) for x64, i386 and ARM architectures.
 
+We also provide .deb packages.
+
 Alternatively, Chrono can be compiled from source where ever the Go compiler tool chain can run.
 
 **For more information on which architectures you can install Chrono on, check out the [Go documentation](https://golang.org/doc/install).**
+
+# Quickstart #
 
 ## Usage ##
 
