@@ -19,7 +19,7 @@ func newRestartCmd() *cobra.Command {
 			config := chronolib.GetConfig(configDir)
 			frameStorage := chronolib.GetFrameStorage(config)
 			stateStorage := chronolib.GetStateStorage(config)
-			lastFrame, err := frameStorage.Get(chronolib.FrameGetOptions{"-1"})
+			lastFrame, err := frameStorage.Get(chronolib.FrameGetOptions{Target: "-1"})
 			if err != nil {
 				PrintErrorAndExit(err)
 			}
