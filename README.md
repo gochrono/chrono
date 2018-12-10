@@ -20,9 +20,9 @@ you did.
 ![Preview](./.github/preview.gif)
 
 
-# Installation #
+## Installation ##
 
-## Binaries Releases ##
+### Binaries Releases ###
 
 To install the latest stable release:
 
@@ -42,9 +42,9 @@ Alternatively, Chrono can be compiled from source where ever the Go compiler too
 
 **For more information on which architectures you can install Chrono on, check out the [Go documentation](https://golang.org/doc/install).**
 
-# Quickstart #
+## Quickstart ##
 
-## Usage ##
+### Usage ###
 
 To start tracking time a project, use the `start` command:
 
@@ -138,7 +138,7 @@ the GitHub issue tracker to report the problem to the Chrono maintainers.
 
 When reporting an issue, please provide the version of chrono is use (`chrono version`)
 
-### Dependecies ###
+## Dependecies ##
 
 Below is a list of Go libraries used and their license.
 
