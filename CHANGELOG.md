@@ -29,4 +29,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Data storage format stabilized
 
 [Unreleased]: https://github.com/gochrono/chrono/compare/v1.0.0-beta...HEAD
-

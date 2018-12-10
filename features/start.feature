@@ -9,4 +9,3 @@ Feature: Start
         When I run `chrono start something --at 15:33`
         Then the output should contain "Starting project something at 15:33"
         And a file named "appdir/state.msgpack" should exist
-
