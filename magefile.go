@@ -16,6 +16,8 @@ import (
 	"time"
 )
 
+type Format mg.Namespace
+
 var ldflags = strings.Join([]string{
 	"-X $PACKAGE/commands.commit=$COMMIT_HASH",
 	"-X $PACKAGE/commands.date=$BUILD_DATE",
@@ -81,8 +83,12 @@ func Test() error {
 	return sh.Run(goexe, "test", "./...")
 }
 
+func (Format) Reformt() error {
+	return sh.Run("gofmt", "-s", "-w", ".")
+}
+
 // Run gofmt linter
-func Fmt() error {
+func (Format) Check() error {
 	pkgs, err := packageList()
 	if err != nil {
 		return err
@@ -193,7 +199,7 @@ func Coverage() error {
 func Check() {
 	mg.Deps(Test386)
 
-	mg.Deps(Fmt, Vet)
+	mg.Deps(Format.Check, Vet)
 }
 
 func Clean() {
