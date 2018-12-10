@@ -21,7 +21,7 @@ func newStatusCmd() *cobra.Command {
 			stateStorage := chronolib.GetStateStorage(config)
 			state, err := stateStorage.Get()
 			if err != nil {
-				commandError = err
+				PrintErrorAndExit(err)
 			} else {
 				if state.Project == "" {
 					fmt.Println(chronolib.FormatNoProjectMessage())
