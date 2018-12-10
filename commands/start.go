@@ -20,8 +20,8 @@ func newStartCmd() *cobra.Command {
 		the 'stop' command.`,
 		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			stateStorage := chronolib.GetStateStorage(config)
 			state, err := stateStorage.Get()
 
@@ -29,17 +29,17 @@ func newStartCmd() *cobra.Command {
 				fmt.Println(chronolib.FormatStartError(state))
 				return
 			}
-            project, tags, err := ParseStartArguments(args)
-            if err != nil {
-                PrintErrorAndExit(err)
-            }
-            newState, err := ParseNewFrameFlags(project, tags, startAt, startNote)
-            if err != nil {
-                PrintErrorAndExit(err)
-            }
+			project, tags, err := ParseStartArguments(args)
+			if err != nil {
+				PrintErrorAndExit(err)
+			}
+			newState, err := ParseNewFrameFlags(project, tags, startAt, startNote)
+			if err != nil {
+				PrintErrorAndExit(err)
+			}
 			newState, err = stateStorage.Update(newState)
 			if err != nil {
-                PrintErrorAndExit(err)
+				PrintErrorAndExit(err)
 			}
 			fmt.Println(chronolib.FormatNewFrameMessage(newState))
 		},

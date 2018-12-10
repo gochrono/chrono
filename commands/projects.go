@@ -12,8 +12,8 @@ func newProjectsCmd() *cobra.Command {
 		Short: "Get a list of all projects used",
 		Long:  "Get a list of all projects used",
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			frameStorage := chronolib.GetFrameStorage(config)
 			projects, err := frameStorage.Projects()
 			if err != nil {

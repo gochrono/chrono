@@ -24,29 +24,29 @@ func newReportCmd() *cobra.Command {
 		Short: "Get the total time spent on projects",
 		Long:  "Get the total time spent on projects",
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			frameStorage := chronolib.GetFrameStorage(config)
 
 			if chronolib.ContainsMoreThanOneBooleanFlag(
-                reportForCurrentWeek, reportForCurrentMonth,
-                reportForCurrentYear, reportForAllTime,
-            ) {
+				reportForCurrentWeek, reportForCurrentMonth,
+				reportForCurrentYear, reportForAllTime,
+			) {
 				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month', `--all`]")
 				os.Exit(0)
 			}
 
-            timespanFilterOptions := ParseTimespanFlags(TimespanFlags{
-                AllTime: reportForAllTime,
-                CurrentWeek: reportForCurrentWeek,
-                CurrentMonth: reportForCurrentMonth,
-                CurrentYear: reportForCurrentYear,
-            })
+			timespanFilterOptions := ParseTimespanFlags(TimespanFlags{
+				AllTime:      reportForAllTime,
+				CurrentWeek:  reportForCurrentWeek,
+				CurrentMonth: reportForCurrentMonth,
+				CurrentYear:  reportForCurrentYear,
+			})
 
 			frames, err := frameStorage.All(chronolib.FrameFilterOptions{
-                TimespanFilter: timespanFilterOptions, Tags: logTags,
-            })
-            
+				TimespanFilter: timespanFilterOptions, Tags: logTags,
+			})
+
 			if err != nil {
 				commandError = err
 				return
@@ -56,8 +56,8 @@ func newReportCmd() *cobra.Command {
 			dates := chronolib.SortTimeMapKeys(&filteredFrames)
 			totals := make(map[string]frameTotals)
 			fmt.Println(chronolib.FormatReportDuration(
-                timespanFilterOptions.Start,
-            ))
+				timespanFilterOptions.Start,
+			))
 			for _, date := range dates {
 				for _, frame := range filteredFrames[date] {
 					frameTotal, ok := totals[frame.Project]
@@ -66,8 +66,8 @@ func newReportCmd() *cobra.Command {
 						frameTotal.TotalTime = frameTotal.TotalTime + frameDuration
 					} else {
 						totals[frame.Project] = frameTotals{
-                            frameDuration, make(map[string]time.Duration),
-                        }
+							frameDuration, make(map[string]time.Duration),
+						}
 					}
 
 					for _, tag := range frame.Tags {

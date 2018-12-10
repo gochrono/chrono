@@ -16,8 +16,8 @@ func newStatusCmd() *cobra.Command {
 		Short: "Get status of current frame",
 		Long:  "Get the status of the current frame",
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			stateStorage := chronolib.GetStateStorage(config)
 			state, err := stateStorage.Get()
 			if err != nil {

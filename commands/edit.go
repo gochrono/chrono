@@ -32,14 +32,14 @@ func newEditCmd() *cobra.Command {
 		Long:  editDesciption,
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
-            frameStorage := chronolib.GetFrameStorage(config)
-            frames, err := frameStorage.All(chronolib.FrameFilterOptions{})
-            if err != nil {
-                commandError = err
-                return
-            }
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
+			frameStorage := chronolib.GetFrameStorage(config)
+			frames, err := frameStorage.All(chronolib.FrameFilterOptions{})
+			if err != nil {
+				commandError = err
+				return
+			}
 			chronolib.SortFramesByDate(frames)
 
 			var target chronolib.Frame
@@ -58,10 +58,10 @@ func newEditCmd() *cobra.Command {
 					targetIndex = len(frames) - index
 				}
 
-                if targetIndex >= len(frames) || targetIndex < 0 {
+				if targetIndex >= len(frames) || targetIndex < 0 {
 					fmt.Println("No frame found at that index")
 					os.Exit(-1)
-                }
+				}
 				target = frames[targetIndex]
 			}
 
@@ -88,18 +88,18 @@ func newEditCmd() *cobra.Command {
 			var newSimpleFrame chronolib.SimpleFrame
 			err = json.Unmarshal(content, &newSimpleFrame)
 			if err != nil {
-                fmt.Println(err)
-                os.Exit(-1)
+				fmt.Println(err)
+				os.Exit(-1)
 			}
 			frameEdited, err := chronolib.ConvertSimpleFrameToFrame(target.UUID, newSimpleFrame)
-            if err != nil {
-                fmt.Println(err)
-                os.Exit(-1)
-            }
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(-1)
+			}
 			if chronolib.FramesEqual(target, frameEdited) {
 				fmt.Println("No changes made")
 			} else {
-                frameStorage.Update(frameEdited)
+				frameStorage.Update(frameEdited)
 				fmt.Println(chronolib.FormatEditFrameMessage(frameEdited))
 			}
 		},

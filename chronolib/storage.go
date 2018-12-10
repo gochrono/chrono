@@ -16,8 +16,9 @@ type ErrStateFileDoesNotExist struct {
 
 // ErrFrameNotFound means a frame wasn't found
 type ErrFrameNotFound struct {
-    message string
+	message string
 }
+
 // Error returns the error message
 func (e *ErrFrameNotFound) Error() string {
 	return e.message
@@ -45,7 +46,7 @@ func (e *ErrFramesFileDoesNotExist) Error() string {
 
 // NewErrFrameNotFound creates a new ErrFrameNotFound
 func NewErrFrameNotFound(message string) *ErrFrameNotFound {
-    return &ErrFrameNotFound{message}
+	return &ErrFrameNotFound{message}
 }
 
 // NewErrFileDoesNotExist creates a new ErrFileDoesNotExist
@@ -67,18 +68,18 @@ type FrameFilterOptions struct {
 
 // FrameDeleteOptions contains data needed to remove a frame
 type FrameDeleteOptions struct {
-    Target    string
+	Target string
 }
 
 type FrameGetOptions struct {
-    Target    string
+	Target string
 }
 
 // FrameStorage is an interface for a frame storage backend
 type FrameStorage interface {
 	All(filterOptions FrameFilterOptions) ([]Frame, error)
 	Add(frame Frame) (Frame, error)
-    Get(getOptions FrameGetOptions) (Frame, error)
+	Get(getOptions FrameGetOptions) (Frame, error)
 	Delete(deleteOptions FrameDeleteOptions) (Frame, error)
 	Update(frame Frame) (Frame, error)
 	Projects() ([]string, error)

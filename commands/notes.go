@@ -27,8 +27,8 @@ func newNotesAddCmd() *cobra.Command {
 		Long:  "Add a new note to current frame",
 		Args:  cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			stateStorage := chronolib.GetStateStorage(config)
 			state, err := stateStorage.Get()
 			if err != nil {
@@ -54,8 +54,8 @@ func newNotesShowCmd() *cobra.Command {
 		Short: "Show all notes for the current frame",
 		Long:  "Show all notes for the current frame",
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			stateStorage := chronolib.GetStateStorage(config)
 			state, err := stateStorage.Get()
 			if err != nil {
@@ -83,8 +83,8 @@ func newNotesDeleteCmd() *cobra.Command {
 		Short: "Delete a note from the current frame",
 		Long:  "Delete a note from the current frame",
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			stateStorage := chronolib.GetStateStorage(config)
 			state, err := stateStorage.Get()
 			if err != nil {

@@ -173,24 +173,24 @@ func PrettyDate(t *time.Time) string {
 }
 
 func FormatFrameDescribe(frame Frame) string {
-    shortHex := GetShortHex(frame.UUID)
+	shortHex := GetShortHex(frame.UUID)
 	tags := ""
 	if len(frame.Tags) != 0 {
 		tags = FormatTags(frame.Tags)
 	}
-    startTime := green(frame.StartedAt.Format("Jan 2 15:04:05"))
-    endTime := green(frame.EndedAt.Format("Jan 2 15:04:05"))
-    return fmt.Sprintf("(%s) %s%s: %s to %s", shortHex, magenta(frame.Project), tags, startTime, endTime)
+	startTime := green(frame.StartedAt.Format("Jan 2 15:04:05"))
+	endTime := green(frame.EndedAt.Format("Jan 2 15:04:05"))
+	return fmt.Sprintf("(%s) %s%s: %s to %s", shortHex, magenta(frame.Project), tags, startTime, endTime)
 }
 
 // FormatCancelMessage shows a message if the current state is stopped but not saved
 func FormatCancelMessage(frame Frame) string {
-    cancelTime := time.Now().Format("15:04")
+	cancelTime := time.Now().Format("15:04")
 	tags := ""
 	if len(frame.Tags) != 0 {
 		tags = FormatTags(frame.Tags)
 	}
-    return fmt.Sprintf("Cancelled project %s%s at %s", magenta(frame.Project), tags, green(cancelTime))
+	return fmt.Sprintf("Cancelled project %s%s at %s", magenta(frame.Project), tags, green(cancelTime))
 }
 
 // FormatReportDurationDate returns the date using format Mon 02 January 2006

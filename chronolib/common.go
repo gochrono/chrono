@@ -32,7 +32,6 @@ type Data struct {
 	Frames []Frame
 }
 
-
 // GetFrameByShortHex gets a frame using the short form of its UUID
 func GetFrameByShortHex(frames []Frame, hex string) (int, Frame, error) {
 	for idx, frame := range frames {
@@ -42,7 +41,6 @@ func GetFrameByShortHex(frames []Frame, hex string) (int, Frame, error) {
 	}
 	return 0, Frame{}, errors.New("No frame found")
 }
-
 
 // SortFramesByDate sorts frame by its start date
 func SortFramesByDate(frames []Frame) {
@@ -78,18 +76,18 @@ func ConvertFrameToSimpleFrame(frame Frame) SimpleFrame {
 func ConvertSimpleFrameToFrame(uuid []byte, rawFrame SimpleFrame) (Frame, error) {
 	started, err := now.Parse(rawFrame.StartedAt)
 	if err != nil {
-        return Frame{}, err
+		return Frame{}, err
 	}
 	ended, err := now.Parse(rawFrame.EndedAt)
 	if err != nil {
-        return Frame{}, err
+		return Frame{}, err
 	}
 	return Frame{
 		uuid,
 		rawFrame.Project,
 		started,
 		ended,
-        time.Now(),
+		time.Now(),
 		rawFrame.Tags,
 		rawFrame.Notes,
 	}, nil

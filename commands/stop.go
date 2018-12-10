@@ -17,8 +17,8 @@ func newStopCmd() *cobra.Command {
 		Short: "Stop the current frame",
 		Long:  "Stop the current frame",
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			stateStorage := chronolib.GetStateStorage(config)
 			frameStorage := chronolib.GetFrameStorage(config)
 

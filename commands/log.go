@@ -22,8 +22,8 @@ func newLogCmd() *cobra.Command {
 		Short: "Get the frames logged for a single day",
 		Long:  "Get the frames logged for a single day",
 		Run: func(cmd *cobra.Command, args []string) {
-            configDir := chronolib.GetCorrectConfigDirectory("")
-            config := chronolib.GetConfig(configDir)
+			configDir := chronolib.GetCorrectConfigDirectory("")
+			config := chronolib.GetConfig(configDir)
 			frameStorage := chronolib.GetFrameStorage(config)
 
 			if chronolib.ContainsMoreThanOneBooleanFlag(logForCurrentWeek, logForCurrentMonth, logForCurrentYear) {
@@ -31,16 +31,16 @@ func newLogCmd() *cobra.Command {
 				os.Exit(0)
 			}
 
-            timespanFilterOptions := ParseTimespanFlags(TimespanFlags{
-                AllTime: logForAllTime,
-                CurrentWeek: logForCurrentWeek,
-                CurrentMonth: logForCurrentMonth,
-                CurrentYear: logForCurrentYear,
-            })
+			timespanFilterOptions := ParseTimespanFlags(TimespanFlags{
+				AllTime:      logForAllTime,
+				CurrentWeek:  logForCurrentWeek,
+				CurrentMonth: logForCurrentMonth,
+				CurrentYear:  logForCurrentYear,
+			})
 
 			frames, err := frameStorage.All(chronolib.FrameFilterOptions{
-                TimespanFilter: timespanFilterOptions, Tags: logTags,
-            })
+				TimespanFilter: timespanFilterOptions, Tags: logTags,
+			})
 			if err != nil {
 				commandError = err
 				return

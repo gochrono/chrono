@@ -3,52 +3,48 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
-    "github.com/magefile/mage/mg"
+	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
-    "strings"
-    "sync"
-    "path/filepath"
-    "bytes"
-    "io/ioutil"
-    "time"
+	"io/ioutil"
 	"os"
-)
-
-const (
+	"path/filepath"
+	"strings"
+	"sync"
+	"time"
 )
 
 var ldflags = strings.Join([]string{
-    "-X $PACKAGE/commands.commit=$COMMIT_HASH",
-    "-X $PACKAGE/commands.date=$BUILD_DATE",
-    "-X $PACKAGE/commands.version=$VERSION",
+	"-X $PACKAGE/commands.commit=$COMMIT_HASH",
+	"-X $PACKAGE/commands.date=$BUILD_DATE",
+	"-X $PACKAGE/commands.version=$VERSION",
 }, " ")
 
 var (
 	packageName  = "github.com/gochrono/chrono"
-    goexe = "go"
+	goexe        = "go"
 	pkgPrefixLen = len(packageName)
 	pkgs         []string
 	pkgsInit     sync.Once
-    Default = Test
+	Default      = Test
 )
 
 func flagEnv() map[string]string {
 	hash, _ := sh.Output("git", "rev-parse", "--short", "HEAD")
-    currentTag, _ := sh.Output("git", "tag", "-l", "--points-at", "HEAD")
-    if currentTag == "" {
-	    longHash, _ := sh.Output("git", "rev-parse", "HEAD")
-        currentTag = "SNAPSHOT-" + longHash
-    }
+	currentTag, _ := sh.Output("git", "tag", "-l", "--points-at", "HEAD")
+	if currentTag == "" {
+		longHash, _ := sh.Output("git", "rev-parse", "HEAD")
+		currentTag = "SNAPSHOT-" + longHash
+	}
 	return map[string]string{
 		"PACKAGE":     packageName,
 		"COMMIT_HASH": hash,
 		"BUILD_DATE":  time.Now().Format("2006-01-02T15:04:05Z0700"),
-        "VERSION": currentTag,
+		"VERSION":     currentTag,
 	}
 }
-
 
 func packageList() ([]string, error) {
 	var err error
@@ -70,7 +66,7 @@ func init() {
 	if exe := os.Getenv("GOEXE"); exe != "" {
 		goexe = exe
 	}
-    os.Setenv("GO111MODULE", "on")
+	os.Setenv("GO111MODULE", "on")
 }
 
 func Build() error {
@@ -84,7 +80,6 @@ func Test386() error {
 func Test() error {
 	return sh.Run(goexe, "test", "./...")
 }
-
 
 // Run gofmt linter
 func Fmt() error {
@@ -152,7 +147,6 @@ func Lint() error {
 	}
 	return nil
 }
-
 
 // Generate test coverage report
 func Coverage() error {
