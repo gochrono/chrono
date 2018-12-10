@@ -43,6 +43,10 @@ func GetCorrectConfigDirectory(customConfigPath string) string {
 	if customConfigPath != "" {
 		appConfDir = customConfigPath
 	}
+	err := configdir.MakePath(appConfDir)
+	if err != nil {
+		panic(err)
+	}
 	return appConfDir
 }
 

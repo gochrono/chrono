@@ -24,11 +24,11 @@ type MsgpackFrameFileStorage struct {
 }
 
 func (s *MsgpackStateFileStorage) GetPath() string {
-	return filepath.Join(s.Config.ConfigDir, FramesFilename)
+	return filepath.Join(s.Config.ConfigDir, StateFilename)
 }
 
 func (s *MsgpackFrameFileStorage) GetPath() string {
-	return filepath.Join(s.Config.ConfigDir, StateFilename)
+	return filepath.Join(s.Config.ConfigDir, FramesFilename)
 }
 
 func getFrames(framesPath string) ([]Frame, error) {
