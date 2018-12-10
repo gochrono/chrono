@@ -16,6 +16,7 @@ import (
 	"time"
 )
 
+// Format namespace
 type Format mg.Namespace
 
 var ldflags = strings.Join([]string{
@@ -24,13 +25,14 @@ var ldflags = strings.Join([]string{
 	"-X $PACKAGE/commands.version=$VERSION",
 }, " ")
 
+// Default is the target used when mage is ran without specifying a target
+var Default = Test
 var (
 	packageName  = "github.com/gochrono/chrono"
 	goexe        = "go"
 	pkgPrefixLen = len(packageName)
 	pkgs         []string
 	pkgsInit     sync.Once
-	Default      = Test
 )
 
 func flagEnv() map[string]string {
@@ -71,23 +73,27 @@ func init() {
 	os.Setenv("GO111MODULE", "on")
 }
 
+// Build creates a binary with version information
 func Build() error {
 	return sh.RunWith(flagEnv(), goexe, "build", "-ldflags", ldflags, packageName)
 }
 
+// Test386 runs tests on a x86 architecture
 func Test386() error {
 	return sh.RunWith(map[string]string{"GOARCH": "386"}, goexe, "test", "./...")
 }
 
+// Test runs all tests
 func Test() error {
 	return sh.Run(goexe, "test", "./...")
 }
 
-func (Format) Reformt() error {
+// Reformat runs gofmt and overwrites source files with simplified code
+func (Format) Reformat() error {
 	return sh.Run("gofmt", "-s", "-w", ".")
 }
 
-// Run gofmt linter
+// Check runs gofmt linter
 func (Format) Check() error {
 	pkgs, err := packageList()
 	if err != nil {
@@ -125,6 +131,7 @@ func (Format) Check() error {
 	return nil
 }
 
+// Vet runs go vet on all source files
 func Vet() error {
 	if err := sh.Run(goexe, "vet", "./..."); err != nil {
 		return fmt.Errorf("error running go vet: %v", err)
@@ -133,7 +140,7 @@ func Vet() error {
 	return nil
 }
 
-// Run golint linter
+// Lint runs golint on all source files
 func Lint() error {
 	pkgs, err := packageList()
 	if err != nil {
@@ -154,7 +161,7 @@ func Lint() error {
 	return nil
 }
 
-// Generate test coverage report
+// Coverage generates test coverage report
 func Coverage() error {
 	const (
 		coverAll = "coverage-all.out"
@@ -195,14 +202,9 @@ func Coverage() error {
 	return sh.Run(goexe, "tool", "cover", "-html="+coverAll)
 }
 
-// Run tests and linters
+// Check runs tests and linters
 func Check() {
 	mg.Deps(Test386)
 
 	mg.Deps(Format.Check, Vet)
-}
-
-func Clean() {
-	fmt.Println("Cleaning...")
-	os.RemoveAll("dist")
 }
