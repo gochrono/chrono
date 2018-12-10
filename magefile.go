@@ -88,6 +88,23 @@ func Test() error {
 	return sh.Run(goexe, "test", "./...")
 }
 
+// MetaLint runs gometalinter
+func MetaLint() error {
+	pkgs, err := packageList()
+	if err != nil {
+		return err
+	}
+	for _, pkg := range pkgs {
+		if pkg != "." {
+			err = sh.Run("gometalinter", pkg, "--enable", "misspell", "--exclude", "pkg/")
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 // Reformat runs gofmt and overwrites source files with simplified code
 func (Format) Reformat() error {
 	return sh.Run("gofmt", "-s", "-w", ".")
