@@ -9,3 +9,8 @@ Feature: Start
         When I run `chrono start something --at 15:33`
         Then the output should contain "Starting project something at 15:33"
         And a file named "appdir/state.msgpack" should exist
+
+    Scenario: --note flag is passed in
+        When I run `chrono start something -n "a simple note"`
+        Then I successfully run `chrono notes show`
+        And the output should contain "[0]: a simple note"
