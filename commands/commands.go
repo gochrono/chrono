@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 const mainDescription = `Chrono is a time to help track what you spend your time on.
@@ -37,13 +36,10 @@ func PrintErrorAndExit(e error) {
 	switch e.(type) {
 	case *chronolib.ErrFileDoesNotExist:
 		fmt.Println("error: " + commandError.Error())
-		os.Exit(-1)
 	case *chronolib.ErrStateFileDoesNotExist:
 		fmt.Println(chronolib.FormatNoProjectMessage())
-		os.Exit(-2)
 	case *chronolib.ErrFramesFileDoesNotExist:
 		fmt.Println(chronolib.FormatNoFramesMessage())
-		os.Exit(-3)
 	default:
 		panic(commandError)
 	}
