@@ -83,6 +83,11 @@ func Test386() error {
 	return sh.RunWith(map[string]string{"GOARCH": "386"}, goexe, "test", "./...")
 }
 
+// Features runs Cucumber & Aruba tests
+func Features() error {
+	return sh.Run("bundle", "exec", "cucumber", "-S")
+}
+
 // Test runs all tests
 func Test() error {
 	return sh.Run(goexe, "test", "./...")
