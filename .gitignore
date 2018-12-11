@@ -7,3 +7,5 @@ chrono.exe
 .bundle
 *.out
 tmp
+.vagrant
+*.log
