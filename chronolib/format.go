@@ -58,7 +58,7 @@ func FormatFrameLine(frame Frame) string {
 	}
 	hours, minutes, seconds := GetTimeElapsed(frame.StartedAt, frame.EndedAt)
 
-	return fmt.Sprintf("\t(ID: %s) %s to %s %4dh %02dm %02ds  %-12s%s", shorthex, green(start), green(end), hours, minutes, seconds, magenta(frame.Project), blue(tags))
+	return fmt.Sprintf("\t(ID: %s) %s to %s %4dh %02dm %02ds  %-12s%s", shorthex, green(start), green(end), hours, minutes, seconds, magenta(frame.Project), tags)
 }
 
 // FormatReportProjectTotal returns the total time spent on a project

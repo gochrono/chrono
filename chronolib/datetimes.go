@@ -74,7 +74,6 @@ func FilterFrames(frames *[]Frame, filterOptions FrameFilterOptions) []Frame {
 	var start = filterOptions.TimespanFilter.Start
 	var end = filterOptions.TimespanFilter.End
 	for _, frame := range *frames {
-
 		if IsFrameInTimespan(frame, start, end) || noTimespanCheck {
 			validFrame = true
 			if useTags {

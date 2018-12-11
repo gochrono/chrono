@@ -24,7 +24,11 @@ func newStopCmd() *cobra.Command {
 
 			frame, err := stateStorage.Get()
 			if err != nil {
-				commandError = err
+				PrintErrorAndExit(err)
+			}
+
+			if frame.Project == "" {
+				fmt.Println(chronolib.FormatNoProjectMessage())
 				return
 			}
 
@@ -52,5 +56,6 @@ func newStopCmd() *cobra.Command {
 	}
 	stopCmd.Flags().StringVarP(&stopNote, "note", "n", "", "add a final note to current frame")
 	stopCmd.Flags().StringVarP(&stopAt, "at", "a", "", "sets the time the current frame ended to something other than now - format: HH:MM mm/dd/yyyy")
+	stopCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	return stopCmd
 }

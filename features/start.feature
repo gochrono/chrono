@@ -1,8 +1,12 @@
 Feature: Start
     Scenario: Check start project
-        Given a directory named "appdir"
         When I run `chrono start something`
         Then the output should match /^Starting project something at \d{2}:\d{2}/
+        And a file named "appdir/state.msgpack" should exist
+
+    Scenario: Check start project with tag
+        When I run `chrono start something +pandas`
+        Then the output should match /^Starting project something \[pandas\] at \d{2}:\d{2}/
         And a file named "appdir/state.msgpack" should exist
 
     Scenario: Check start --at project

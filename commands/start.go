@@ -47,5 +47,6 @@ func newStartCmd() *cobra.Command {
 	startCmd.Flags().StringVarP(&startNote, "note", "n", "", "add an initial note to the frame")
 	startCmd.Flags().StringVarP(&startAt, "at", "a", "", "set the start time to a different time than now - format: HH:MM mm/dd/yyyy")
 	startCmd.Flags().StringVarP(&startEnded, "ended", "e", "", "add a manual end time to the new frame - does not get tracked through a timer")
+	startCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	return startCmd
 }

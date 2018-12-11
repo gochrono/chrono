@@ -2,6 +2,7 @@ package chronolib
 
 import (
 	"encoding/hex"
+	jww "github.com/spf13/jwalterweatherman"
 	"github.com/vmihailenco/msgpack"
 	"io/ioutil"
 	"os"
@@ -39,7 +40,7 @@ func (s *MsgpackFrameFileStorage) GetPath() string {
 func getFrames(framesPath string) ([]Frame, error) {
 	var data Data
 	if _, err := os.Stat(framesPath); os.IsNotExist(err) {
-		return []Frame{}, NewErrFileDoesNotExist(framesPath + " does not exist")
+		return []Frame{}, NewErrFramesFileDoesNotExist(framesPath + " does not exist")
 	}
 	content, err := ioutil.ReadFile(framesPath)
 	if err != nil {
@@ -55,10 +56,13 @@ func getFrames(framesPath string) ([]Frame, error) {
 func saveFrames(framesPath string, frames []Frame) error {
 	b, err := msgpack.Marshal(Data{frames})
 	if err != nil {
+		jww.ERROR.Printf("error while serializing frames: %v", err)
 		return err
 	}
+	jww.DEBUG.Printf("saving frames to %s", framesPath)
 	err = ioutil.WriteFile(framesPath, b, 0644)
 	if err != nil {
+		jww.ERROR.Printf("error while saving frames: %v", err)
 		return err
 	}
 	return nil
@@ -121,7 +125,7 @@ func (s MsgpackFrameFileStorage) Add(frame Frame) (Frame, error) {
 	frames, err := getFrames(s.GetPath())
 	if err != nil {
 		switch err.(type) {
-		case *ErrFileDoesNotExist:
+		case *ErrFramesFileDoesNotExist:
 			frames = []Frame{}
 		default:
 			return Frame{}, err
@@ -174,6 +178,7 @@ func (s MsgpackFrameFileStorage) Tags() ([]string, error) {
 // Get retrieves a single frame based on the FrameGetOptions
 func (s MsgpackFrameFileStorage) Get(getOptions FrameGetOptions) (Frame, error) {
 	frames, err := s.All(FrameFilterOptions{})
+	jww.ERROR.Printf("error while loading frames %v", err)
 	if err != nil {
 		return Frame{}, err
 	}

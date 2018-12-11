@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
+	jww "github.com/spf13/jwalterweatherman"
+	"os"
 )
 
 const mainDescription = `Chrono is a time to help track what you spend your time on.
@@ -33,28 +35,36 @@ Built: %s`, banner, version, commit, date+"\n")
 // PrintErrorAndExit prints an appropriate message depending on the error type.
 // If the error type is unknown, panics
 func PrintErrorAndExit(e error) {
-	switch e.(type) {
-	case *chronolib.ErrFileDoesNotExist:
-		fmt.Println("error: " + commandError.Error())
-	case *chronolib.ErrStateFileDoesNotExist:
-		fmt.Println(chronolib.FormatNoProjectMessage())
-	case *chronolib.ErrFramesFileDoesNotExist:
-		fmt.Println(chronolib.FormatNoFramesMessage())
-	default:
-		panic(commandError)
+	if e != nil {
+		switch e.(type) {
+		case *chronolib.ErrStateFileDoesNotExist:
+			fmt.Println(chronolib.FormatNoProjectMessage())
+			os.Exit(0)
+		case *chronolib.ErrFramesFileDoesNotExist:
+			fmt.Println(chronolib.FormatNoFramesMessage())
+			os.Exit(0)
+		default:
+			panic(commandError)
+		}
 	}
 }
 
 var commandError error
 
+var verbose bool
+
 // Execute creates the root command with all sub-commands installed
 func Execute() {
+	jww.SetLogThreshold(jww.LevelFatal)
+	jww.SetStdoutThreshold(jww.LevelFatal)
 	var rootCmd = &cobra.Command{
 		Use:     "chrono",
 		Long:    mainDescription,
 		Version: version,
-		PersistentPostRun: func(cmd *cobra.Command, args []string) {
-			if commandError != nil {
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			if verbose {
+				jww.SetLogThreshold(jww.LevelInfo)
+				jww.SetStdoutThreshold(jww.LevelInfo)
 			}
 		},
 	}

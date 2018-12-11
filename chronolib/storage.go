@@ -54,6 +54,11 @@ func NewErrFileDoesNotExist(message string) *ErrFileDoesNotExist {
 	return &ErrFileDoesNotExist{message}
 }
 
+// NewErrFramesFileDoesNotExist creates a new ErrFileDoesNotExist
+func NewErrFramesFileDoesNotExist(message string) *ErrFramesFileDoesNotExist {
+	return &ErrFramesFileDoesNotExist{message}
+}
+
 // TimespanFilterOptions contains a start and end date to filter frames by
 type TimespanFilterOptions struct {
 	Start time.Time
