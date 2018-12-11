@@ -76,12 +76,11 @@ func saveState(statePath string, frame Frame) (Frame, error) {
 	return frame, nil
 }
 
-// Get retrieves the current frame if it exists
-func (s MsgpackStateFileStorage) Get() (Frame, error) {
-	if _, err := os.Stat(s.GetPath()); os.IsNotExist(err) {
-		return Frame{}, &ErrStateFileDoesNotExist{s.GetPath()}
+func getState(statePath string) (Frame, error) {
+	if _, err := os.Stat(statePath); os.IsNotExist(err) {
+		return Frame{}, &ErrStateFileDoesNotExist{statePath}
 	}
-	content, err := ioutil.ReadFile(s.GetPath())
+	content, err := ioutil.ReadFile(statePath)
 	var frame Frame
 	if err != nil {
 		return Frame{}, err
@@ -91,6 +90,11 @@ func (s MsgpackStateFileStorage) Get() (Frame, error) {
 		return Frame{}, err
 	}
 	return frame, nil
+}
+
+// Get retrieves the current frame if it exists
+func (s MsgpackStateFileStorage) Get() (Frame, error) {
+	return getState(s.GetPath())
 }
 
 // Update the current frame's information if it exists
