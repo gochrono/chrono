@@ -17,7 +17,7 @@ Want to know what you did with your time? Chrono will help you with that. Track 
 long you spend on a project. Add notes so you know exactly what
 you did.
 
-![Preview](./.github/preview.gif)
+[preview][1]
 
 
 ## Installation ##
@@ -157,4 +157,4 @@ Below is a list of Go libraries used and their license.
 | github.com/vmihailenco/msgpack | BSD 2-Clause "Simplified" License |
 
 
-[1]: https://github.com/gochrono/chrono/wiki/Quick-Start
+[1]: https://asciinema.org/a/pb5PlJHshi2gjpDeQYCj0gmfI
