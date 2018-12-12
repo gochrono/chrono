@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
+	jww "github.com/spf13/jwalterweatherman"
 	"os"
 	"time"
 )
@@ -38,6 +39,7 @@ func newLogCmd() *cobra.Command {
 				CurrentYear:  logForCurrentYear,
 			})
 
+			jww.INFO.Printf("timespan filter options: %v", timespanFilterOptions)
 			frames, err := frameStorage.All(chronolib.FrameFilterOptions{
 				TimespanFilter: timespanFilterOptions, Tags: logTags,
 			})
@@ -76,6 +78,7 @@ func newLogCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&round, "round", "r", false, "round frames start and end times to the nearest interval (default: 5 mins)")
 	cmd.Flags().IntVarP(&interval, "interval", "i", 5, "the interval to round to in minutes")
 	cmd.Flags().StringSliceVarP(&logTags, "tag", "t", []string{}, "only show frames that contain the given tag - can be used multiple times")
+	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	return cmd
 }
 
