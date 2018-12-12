@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/jinzhu/now"
+	jww "github.com/spf13/jwalterweatherman"
 	"time"
 )
 
@@ -22,12 +23,15 @@ func ParseStartArguments(args []string) (string, []string, error) {
 // ParseTime converts a properly formated time string into a time.Time struct
 func ParseTime(t string) (time.Time, error) {
 	if t == "" {
+		jww.INFO.Printf("time is empty, using time.Now()")
 		return time.Now(), nil
 	}
 	parsedTime, err := now.Parse(t)
 	if err != nil {
+		jww.ERROR.Printf("error parsing time: %s", t)
 		return time.Time{}, errors.New("invalid time format: " + t)
 	}
+	jww.DEBUG.Printf("using custom time %v", parsedTime)
 	return parsedTime, nil
 }
 
@@ -61,7 +65,7 @@ func ParseTimespanFlags(timespanFlags TimespanFlags) chronolib.TimespanFilterOpt
 func ParseNewFrameFlags(project string, tags []string, startAt string, startNote string) (chronolib.Frame, error) {
 	frameStart, err := ParseTime(startAt)
 	if err != nil {
-		return chronolib.Frame{}, err
+		return chronolib.Frame{}, NewErrTimeStringNotValid(startAt)
 	}
 
 	notes := []string{}

@@ -194,6 +194,11 @@ func FormatCancelMessage(frame Frame) string {
 	return fmt.Sprintf("Cancelled project %s%s at %s", magenta(frame.Project), tags, green(cancelTime))
 }
 
+// FormatTimeStringNotValid returns a message when a time string was unable to be parsed
+func FormatTimeStringNotValid() string {
+	return red("Invalid time format")
+}
+
 // FormatReportDurationDate returns the date using format Mon 02 January 2006
 func FormatReportDurationDate(t time.Time) string {
 	return t.Format("Mon 02 January 2006")

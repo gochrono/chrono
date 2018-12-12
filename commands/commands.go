@@ -43,6 +43,9 @@ func PrintErrorAndExit(e error) {
 		case *chronolib.ErrFramesFileDoesNotExist:
 			fmt.Println(chronolib.FormatNoFramesMessage())
 			os.Exit(0)
+		case *ErrTimeStringNotValid:
+			fmt.Println(chronolib.FormatTimeStringNotValid())
+			os.Exit(0)
 		default:
 			panic(commandError)
 		}
