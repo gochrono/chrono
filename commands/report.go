@@ -26,7 +26,6 @@ func newReportCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			frameStorage := chronolib.GetFrameStorage(config)
 
 			if chronolib.ContainsMoreThanOneBooleanFlag(
 				reportForCurrentWeek, reportForCurrentMonth,
@@ -43,23 +42,19 @@ func newReportCmd() *cobra.Command {
 				CurrentYear:  reportForCurrentYear,
 			})
 
-			frames, err := frameStorage.All(chronolib.FrameFilterOptions{
+			frames, _ := chronolib.GetFrames(config)
+			filteredFrames := frames.Filter(chronolib.FrameFilterOptions{
 				TimespanFilter: timespanFilterOptions, Tags: logTags,
 			})
 
-			if err != nil {
-				commandError = err
-				return
-			}
-
-			filteredFrames := chronolib.OrganizeFrameByTime(&frames)
-			dates := chronolib.SortTimeMapKeys(&filteredFrames)
+			timemap := chronolib.OrganizeFrameByTime(&filteredFrames)
+			dates := chronolib.SortTimeMapKeys(&timemap)
 			totals := make(map[string]frameTotals)
 			fmt.Println(chronolib.FormatReportDuration(
 				timespanFilterOptions.Start,
 			))
 			for _, date := range dates {
-				for _, frame := range filteredFrames[date] {
+				for _, frame := range timemap[date] {
 					frameTotal, ok := totals[frame.Project]
 					frameDuration := frame.EndedAt.Sub(frame.StartedAt)
 					if ok {
