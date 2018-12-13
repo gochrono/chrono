@@ -25,7 +25,6 @@ func newLogCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			frameStorage := chronolib.GetFrameStorage(config)
 
 			if chronolib.ContainsMoreThanOneBooleanFlag(logForCurrentWeek, logForCurrentMonth, logForCurrentYear) {
 				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month']")
@@ -40,19 +39,16 @@ func newLogCmd() *cobra.Command {
 			})
 
 			jww.INFO.Printf("timespan filter options: %v", timespanFilterOptions)
-			frames, err := frameStorage.All(chronolib.FrameFilterOptions{
+
+			frames, _ := chronolib.GetFrames(config)
+			filteredFrames := frames.Filter(chronolib.FrameFilterOptions{
 				TimespanFilter: timespanFilterOptions, Tags: logTags,
 			})
-			if err != nil {
-				commandError = err
-				return
-			}
-
-			filteredFrames := chronolib.OrganizeFrameByTime(&frames)
-			dates := chronolib.SortTimeMapKeys(&filteredFrames)
+			timemap := chronolib.OrganizeFrameByTime(&filteredFrames)
+			dates := chronolib.SortTimeMapKeys(&timemap)
 			for _, date := range dates {
 				fmt.Println(chronolib.FormatDateHeader(date))
-				for _, frame := range filteredFrames[date] {
+				for _, frame := range timemap[date] {
 					if round {
 						newStartTime := GetAdjustedTime(frame.StartedAt)
 						newEndTime := GetAdjustedTime(frame.EndedAt)

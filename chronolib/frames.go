@@ -16,7 +16,7 @@ func (s *Frames) All() []Frame {
 
 // Filter retrieves frames based on filter options
 func (s *Frames) Filter(filterOptions FrameFilterOptions) []Frame {
-	return []Frame{}
+	return FilterFrames(&s.Frames, filterOptions)
 }
 
 // GetByIndex retrieves a frame by its index
