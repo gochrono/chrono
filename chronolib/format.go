@@ -217,8 +217,8 @@ func FormatFrameDescribe(frame Frame) string {
 	if len(frame.Tags) != 0 {
 		tags = FormatTags(frame.Tags)
 	}
-	startTime := green(frame.StartedAt.Format("Jan 2 15:04:05"))
-	endTime := green(frame.EndedAt.Format("Jan 2 15:04:05"))
+	startTime := green(frame.StartedAt.Format("Jan 2 15:04"))
+	endTime := green(frame.EndedAt.Format("Jan 2 15:04"))
 	return fmt.Sprintf("(%s) %s%s: %s to %s", shortHex, magenta(frame.Project), tags, startTime, endTime)
 }
 

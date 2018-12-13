@@ -16,13 +16,8 @@ func newFramesCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			frameStorage := chronolib.GetFrameStorage(config)
-			frames, err := frameStorage.All(chronolib.FrameFilterOptions{})
-			if err != nil {
-				commandError = err
-				return
-			}
-			for _, frame := range frames {
+			frames, _ := chronolib.GetFrames(config)
+			for _, frame := range frames.All() {
 				if framesDescribe {
 					fmt.Println(chronolib.FormatFrameDescribe(frame))
 				} else {
