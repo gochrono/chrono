@@ -19,39 +19,38 @@ func newStopCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			stateStorage := chronolib.GetStateStorage(config)
-			frameStorage := chronolib.GetFrameStorage(config)
+			state, _ := chronolib.GetState(config)
 
-			frame, err := stateStorage.Get()
-			if err != nil {
-				PrintErrorAndExit(err)
-			}
-
-			if frame.Project == "" {
-				fmt.Println(chronolib.FormatNoProjectMessage())
+			if state.IsEmpty() {
+				fmt.Println("No project started")
 				return
 			}
 
+			var endedAt time.Time
+			var err error
 			if stopAt != "" {
-				t, err := now.Parse(stopAt)
-				frame.EndedAt = t
+				endedAt, err = now.Parse(stopAt)
 				if err != nil {
-					commandError = err
+					fmt.Println("Unable to parse time string")
 					return
 				}
 			} else {
-				frame.EndedAt = time.Now()
+				endedAt = time.Now()
 			}
-			frame.UUID = chronolib.CreateFrameUUID(frame.Project, &frame.StartedAt, &frame.EndedAt)
+
+			newFrame := state.ToFrame(endedAt)
 
 			if stopNote != "" {
-				frame.Notes = append(frame.Notes, stopNote)
+				newFrame.Notes = append(newFrame.Notes, stopNote)
 			}
 
-			_, err = frameStorage.Add(frame)
-			_, err = stateStorage.Clear()
+			frames, _ := chronolib.GetFrames(config)
+			frames.Add(newFrame)
+			chronolib.SaveFrames(config, frames)
+			state.Clear()
+			chronolib.SaveState(config, state)
 
-			fmt.Println(chronolib.FormatStopFrameMessage(frame))
+			fmt.Println(chronolib.FormatStopFrameMessage(newFrame))
 		},
 	}
 	stopCmd.Flags().StringVarP(&stopNote, "note", "n", "", "add a final note to current frame")
