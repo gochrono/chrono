@@ -3,17 +3,17 @@ Given(/I wait (\d*) seconds/) do |seconds|
 end
 
 Given(/I start tracking time for "([^"]*)"/) do |project|
-    startAt = DateTime.now.strftime("%Y-%d-%m") + " 11:00"
+    startAt = DateTime.now.strftime("%Y-%m-%d") + " 11:00"
     step %(I run `chrono start #{project} -v --at "#{startAt}"`)
 end
 
 Given(/I start tracking time with tag "([^"]*)" for "([^"]*)"/) do |tag, project|
-    startAt = DateTime.now.strftime("%Y-%d-%m") + " 11:00"
+    startAt = DateTime.now.strftime("%Y-%m-%d") + " 11:00"
     step %(I run `chrono start #{project} +#{tag} --at "#{startAt}"`)
 end
 
 Given(/I stop tracking time/) do
-    startAt = DateTime.now.strftime("%Y-%d-%m") + " 12:00"
+    startAt = DateTime.now.strftime("%Y-%m-%d") + " 12:00"
     step %(I run `chrono stop --at "#{startAt}"`)
 end
 
