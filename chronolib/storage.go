@@ -28,15 +28,103 @@ type Frames struct {
 	frames []Frame
 }
 
+// All retrieves all frames
+func (s *Frames) All() []Frame {
+	return []Frame{}
+}
+
+// Filter retrieves frames based on filter options
+func (s *Frames) Filter(filterOptions FrameFilterOptions) []Frame {
+	return []Frame{}
+}
+
+// GetByIndex retrieves a frame by its index
+func (s *Frames) GetByIndex(index int) (Frame, bool) {
+	return Frame{}, false
+}
+
+// GetByUUID retrieves a frame by its uuid
+func (s *Frames) GetByUUID(id string) (Frame, bool) {
+	return Frame{}, false
+}
+
+// Add a new frame to the frames list
+func (s *Frames) Add(frame Frame) {
+	s.frames = append(s.frames, frame)
+}
+
+// Update a frame in the frames list, matched by its UUID
+func (s *Frames) Update(frame Frame) {
+}
+
+// Remove a frame from the frames list, matched by its UUID
+func (s *Frames) Remove(frame Frame) {
+}
+
 // StateRepo is an interface for retieving current state
 type StateRepo interface {
 	Load() (State, error)
 	Save(state State) error
 }
 
+// FramesStorage is an interface for loading/saving frames
+type FramesStorage interface {
+	Load() (Frames, error)
+	Save(frames Frames) error
+}
+
 // MsgpackStateRepo retrieves state in msgpack format
 type MsgpackStateRepo struct {
 	config ChronoConfig
+}
+
+// MsgpackFramesRepo retrieves state in msgpack format
+type MsgpackFramesRepo struct {
+	config ChronoConfig
+}
+
+// Load retrieves frames from the msgpack format
+func (s *MsgpackFramesRepo) Load() (Frames, error) {
+	var frames Frames
+	framesPath := filepath.Join(s.config.ConfigDir, FramesFilename)
+	if _, err := os.Stat(framesPath); os.IsNotExist(err) {
+		return Frames{}, NewErrFramesFileDoesNotExist(framesPath + " does not exist")
+	}
+	content, err := ioutil.ReadFile(framesPath)
+	if err != nil {
+		return Frames{}, err
+	}
+	err = msgpack.Unmarshal(content, &frames)
+	if err != nil {
+		return Frames{}, err
+	}
+	return frames, nil
+}
+
+// Save writes frames using the msgpack format
+func (s *MsgpackFramesRepo) Save(frames Frames) error {
+	framesPath := filepath.Join(s.config.ConfigDir, FramesFilename)
+	b, err := msgpack.Marshal(frames)
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(framesPath, b, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// SaveFrames writes frames
+func SaveFrames(config ChronoConfig, frames Frames) error {
+	framesRepo := MsgpackFramesRepo{config}
+	return framesRepo.Save(frames)
+}
+
+// GetFrames writes frames
+func GetFrames(config ChronoConfig) (Frames, error) {
+	framesRepo := MsgpackFramesRepo{config}
+	return framesRepo.Load()
 }
 
 // Save writes the state to the current file
@@ -115,12 +203,6 @@ func (s *State) ToFrame(end time.Time) Frame {
 		EndedAt:   end,
 		Notes:     s.currentFrame.Notes,
 	}
-}
-
-// FramesStorage is an interface for loading/saving frames
-type FramesStorage interface {
-	Load() (Frames, error)
-	Save(frames Frames) error
 }
 
 // ErrFileDoesNotExist represents when a file doesn't exist on the file system

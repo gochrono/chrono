@@ -37,6 +37,15 @@ func newStartCmd() *cobra.Command {
 
 			if startEnded != "" {
 				frame := state.ToFrame(ended)
+				frames, err := chronolib.GetFrames(config)
+				if err != nil {
+					panic(err)
+				}
+				frames.Add(frame)
+				err = chronolib.SaveFrames(config, frames)
+				if err != nil {
+					panic(err)
+				}
 				state.Clear()
 				fmt.Println(chronolib.FormatStartFrame(frame))
 			} else {
