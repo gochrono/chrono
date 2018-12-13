@@ -22,26 +22,28 @@ func newStartCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			stateStorage := chronolib.GetStateStorage(config)
-			state, err := stateStorage.Get()
+			state, _ := chronolib.GetState(config)
 
-			if err == nil && state.Project != "" {
-				fmt.Println(chronolib.FormatStartError(state))
-				return
+			if !state.IsEmpty() {
+				fmt.Println(state.Get())
 			}
-			project, tags, err := ParseStartArguments(args)
+
+			currentFrame, ended, err := ParseStartArgs(args, startAt, startEnded, startNote)
 			if err != nil {
 				PrintErrorAndExit(err)
 			}
-			newState, err := ParseNewFrameFlags(project, tags, startAt, startNote)
-			if err != nil {
-				PrintErrorAndExit(err)
+
+			state.Update(currentFrame)
+
+			if startEnded != "" {
+				frame := state.ToFrame(ended)
+				state.Clear()
+				fmt.Println(chronolib.FormatStartFrame(frame))
+			} else {
+				fmt.Println(chronolib.FormatStartCurrentFrame(state.Get()))
 			}
-			newState, err = stateStorage.Update(newState)
-			if err != nil {
-				PrintErrorAndExit(err)
-			}
-			fmt.Println(chronolib.FormatNewFrameMessage(newState))
+
+			chronolib.SaveState(config, state)
 		},
 	}
 	startCmd.Flags().StringVarP(&startNote, "note", "n", "", "add an initial note to the frame")

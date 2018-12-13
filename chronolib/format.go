@@ -85,6 +85,27 @@ func FormatNoteShowLine(index int, note string) string {
 	return fmt.Sprintf("[%s]: %s", cyan(index), note)
 }
 
+// FormatStartFrame returns the output when a new frame is created
+func FormatStartFrame(frame Frame) string {
+	startTime := frame.StartedAt.Format("15:04")
+	endTime := frame.StartedAt.Format("15:04")
+	tags := ""
+	if len(frame.Tags) != 0 {
+		tags = FormatTags(frame.Tags)
+	}
+	return fmt.Sprintf("Added project %s%s, started at %s and ended at %s", magenta(frame.Project), tags, green(startTime), green(endTime))
+}
+
+// FormatStartCurrentFrame returns the output when a new frame is created
+func FormatStartCurrentFrame(currentFrame CurrentFrame) string {
+	startTime := currentFrame.StartedAt.Format("15:04")
+	tags := ""
+	if len(currentFrame.Tags) != 0 {
+		tags = FormatTags(currentFrame.Tags)
+	}
+	return fmt.Sprintf("Starting project %s%s at %s", magenta(currentFrame.Project), tags, green(startTime))
+}
+
 // FormatNewFrameMessage returns the output when a new frame is created
 func FormatNewFrameMessage(frame Frame) string {
 	startTime := frame.StartedAt.Format("15:04")

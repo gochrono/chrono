@@ -8,6 +8,37 @@ import (
 	"time"
 )
 
+// ParseStartArgs properly handles user arguments for the start command
+func ParseStartArgs(args []string, startAt string, startEnded string, startNote string) (chronolib.CurrentFrame, time.Time, error) {
+	project, tags, err := ParseStartArguments(args)
+	if err != nil {
+		return chronolib.CurrentFrame{}, time.Time{}, err
+	}
+
+	frameStart, err := ParseTime(startAt)
+	if err != nil {
+		return chronolib.CurrentFrame{}, time.Time{}, NewErrTimeStringNotValid(startAt)
+	}
+	frameEnd, err := ParseTime(startEnded)
+	if err != nil {
+		return chronolib.CurrentFrame{}, time.Time{}, NewErrTimeStringNotValid(startEnded)
+	}
+
+	notes := []string{}
+	if startNote != "" {
+		notes = append(notes, startNote)
+	}
+
+	return chronolib.CurrentFrame{
+		Project:   project,
+		StartedAt: frameStart,
+		UpdatedAt: time.Now(),
+		Tags:      tags,
+		Notes:     notes,
+	}, frameEnd, nil
+
+}
+
 // ParseStartArguments splits the argument string list and validates tags
 func ParseStartArguments(args []string) (string, []string, error) {
 	project := args[0]
