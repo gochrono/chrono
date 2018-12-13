@@ -18,16 +18,14 @@ func newStatusCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			stateStorage := chronolib.GetStateStorage(config)
-			state, err := stateStorage.Get()
+			state, err := chronolib.GetState(config)
 			if err != nil {
-				PrintErrorAndExit(err)
+				panic(err)
+			}
+			if state.IsEmpty() {
+				fmt.Println(chronolib.FormatNoProjectMessage())
 			} else {
-				if state.Project == "" {
-					fmt.Println(chronolib.FormatNoProjectMessage())
-				} else {
-					fmt.Println(chronolib.RenderStatusFormatString(state, format))
-				}
+				fmt.Println(chronolib.RenderCurrentFrameStatus(state.Get(), format))
 			}
 		},
 	}

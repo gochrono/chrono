@@ -42,7 +42,7 @@ func (s *MsgpackStateRepo) Load() (State, error) {
 	jww.INFO.Printf("reading state from %s", statePath)
 	if _, err := os.Stat(statePath); os.IsNotExist(err) {
 		jww.INFO.Printf("no state found, loading empty state")
-		return State{CurrentFrame{}}, &ErrStateFileDoesNotExist{statePath}
+		return State{CurrentFrame{}}, nil
 	}
 	content, err := ioutil.ReadFile(statePath)
 	var currentFrame CurrentFrame

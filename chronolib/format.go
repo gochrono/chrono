@@ -171,6 +171,23 @@ func FormatNoFramesMessage() string {
 	return "No time has been logged"
 }
 
+// RenderCurrentFrameStatus returns the status output using Go template string
+func RenderCurrentFrameStatus(currentFrame CurrentFrame, format string) string {
+	tmpl := template.New("format")
+	tmpl.Funcs(funcMap)
+	tmpl, err := tmpl.Parse(format)
+	if err != nil {
+		panic(err)
+	}
+
+	var tpl bytes.Buffer
+	if err := tmpl.Execute(&tpl, currentFrame); err != nil {
+		panic(err)
+	}
+
+	return tpl.String()
+}
+
 // RenderStatusFormatString returns the status output using Go template string
 func RenderStatusFormatString(frame Frame, format string) string {
 	tmpl := template.New("format")
