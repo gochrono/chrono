@@ -29,21 +29,14 @@ func newNotesAddCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			stateStorage := chronolib.GetStateStorage(config)
-			state, err := stateStorage.Get()
-			if err != nil {
-				commandError = err
-				return
-			}
-			if state.Project == "" {
+			state, _ := chronolib.GetState(config)
+			if state.IsEmpty() {
 				fmt.Println(chronolib.FormatNoProjectMessage())
 			} else {
-				state.Notes = append(state.Notes, args[0])
-				state, err = stateStorage.Update(state)
-				if err != nil {
-					commandError = err
-					return
-				}
+				currentFrame := state.Get()
+				currentFrame.Notes = append(currentFrame.Notes, args[0])
+				state.Update(currentFrame)
+				chronolib.SaveState(config, state)
 			}
 		},
 	}
@@ -56,17 +49,13 @@ func newNotesShowCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			stateStorage := chronolib.GetStateStorage(config)
-			state, err := stateStorage.Get()
-			if err != nil {
-				commandError = err
-				return
-			}
-			if state.Project == "" {
+			state, _ := chronolib.GetState(config)
+			if state.IsEmpty() {
 				fmt.Println(chronolib.FormatNoProjectMessage())
 			} else {
-				if len(state.Notes) != 0 {
-					for index, note := range state.Notes {
+				notes := state.Get().Notes
+				if len(notes) != 0 {
+					for index, note := range notes {
 						fmt.Println(chronolib.FormatNoteShowLine(index, note))
 					}
 				} else {
@@ -85,30 +74,23 @@ func newNotesDeleteCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			stateStorage := chronolib.GetStateStorage(config)
-			state, err := stateStorage.Get()
-			if err != nil {
-				commandError = err
-				return
-			}
-			if state.Project == "" {
+			state, _ := chronolib.GetState(config)
+			if state.IsEmpty() {
 				fmt.Println(chronolib.FormatNoProjectMessage())
 			} else {
+				currentFrame := state.Get()
 				index, err := strconv.Atoi(args[0])
 				if err != nil {
 					fmt.Println("Index must be a number!")
 					os.Exit(0)
-				} else if index > len(state.Notes) || index < 0 {
+				} else if index > len(currentFrame.Notes) || index < 0 {
 					fmt.Println("Index must be a number!")
 					os.Exit(0)
 				}
-				fmt.Printf("Deleting note '%s'\n", state.Notes[index])
-				state.Notes = append(state.Notes[:index], state.Notes[index+1:]...)
-				state, err = stateStorage.Update(state)
-				if err != nil {
-					commandError = err
-					return
-				}
+				fmt.Printf("Deleting note '%s'\n", currentFrame.Notes[index])
+				currentFrame.Notes = append(currentFrame.Notes[:index], currentFrame.Notes[index+1:]...)
+				state.Update(currentFrame)
+				_ = chronolib.SaveState(config, state)
 			}
 		},
 	}
