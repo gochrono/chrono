@@ -223,13 +223,13 @@ func FormatFrameDescribe(frame Frame) string {
 }
 
 // FormatCancelMessage shows a message if the current state is stopped but not saved
-func FormatCancelMessage(frame Frame) string {
+func FormatCancelMessage(currentFrame CurrentFrame) string {
 	cancelTime := time.Now().Format("15:04")
 	tags := ""
-	if len(frame.Tags) != 0 {
-		tags = FormatTags(frame.Tags)
+	if len(currentFrame.Tags) != 0 {
+		tags = FormatTags(currentFrame.Tags)
 	}
-	return fmt.Sprintf("Cancelled project %s%s at %s", magenta(frame.Project), tags, green(cancelTime))
+	return fmt.Sprintf("Cancelled project %s%s at %s", magenta(currentFrame.Project), tags, green(cancelTime))
 }
 
 // FormatTimeStringNotValid returns a message when a time string was unable to be parsed

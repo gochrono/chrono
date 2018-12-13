@@ -14,18 +14,21 @@ func newCancelCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			stateStorage := chronolib.GetStateStorage(config)
-			state, err := stateStorage.Get()
+			state, err := chronolib.GetState(config)
 			if err != nil {
-				commandError = err
-				return
+				panic(err)
 			}
-			_, err = stateStorage.Clear()
-			if err != nil {
-				commandError = err
-				return
+
+			if state.IsEmpty() {
+				fmt.Println(chronolib.FormatNoProjectMessage())
+			} else {
+				fmt.Println(chronolib.FormatCancelMessage(state.Get()))
+				state.Clear()
+				err := chronolib.SaveState(config, state)
+				if err != nil {
+					panic(err)
+				}
 			}
-			fmt.Println(chronolib.FormatCancelMessage(state))
 		},
 	}
 }
