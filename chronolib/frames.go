@@ -42,3 +42,31 @@ func (s *Frames) Update(frame Frame) {
 // Remove a frame from the frames list, matched by its UUID
 func (s *Frames) Remove(frame Frame) {
 }
+
+// Tags returns a list of all unique tags found in all frames
+func (s *Frames) Tags() []string {
+	encountered := map[string]bool{}
+	for _, frame := range s.Frames {
+		for _, tag := range frame.Tags {
+			encountered[tag] = true
+		}
+	}
+	keys := make([]string, 0, len(encountered))
+	for k := range encountered {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
+// Projects returns a list of all unique project names found in all frames
+func (s *Frames) Projects() []string {
+	encountered := map[string]bool{}
+	for _, frame := range s.Frames {
+		encountered[frame.Project] = true
+	}
+	keys := make([]string, 0, len(encountered))
+	for k := range encountered {
+		keys = append(keys, k)
+	}
+	return keys
+}
