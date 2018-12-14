@@ -138,23 +138,4 @@ the GitHub issue tracker to report the problem to the Chrono maintainers.
 
 When reporting an issue, please provide the version of chrono is use (`chrono version`)
 
-## Dependecies ##
-
-Below is a list of Go libraries used and their license.
-
-| Dependency | License |
-| :----------- | :------------- |
-| github.com/BurntSushi/toml | MIT License |
-| github.com/SaidinWoT/timespan | MIT License |
-| github.com/dustin/go-humanize | MIT License |
-| github.com/fatih/color | MIT License |
-| github.com/gookit/config | MIT License |
-| github.com/imdario/mergo | BSD 3-Clause "New" or "Revised" License |
-| github.com/jinzhu/now | MIT License |
-| github.com/kirsle/configdir | MIT License |
-| github.com/spf13/cobra | Apache License 2.0 |
-| github.com/spf13/pflag | BSD 3-Clause "New" or "Revised" License |
-| github.com/vmihailenco/msgpack | BSD 2-Clause "Simplified" License |
-
-
 [1]: https://asciinema.org/a/pb5PlJHshi2gjpDeQYCj0gmfI
