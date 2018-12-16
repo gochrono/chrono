@@ -118,6 +118,10 @@ cd chrono
 go install
 ```
 
+Make sure `$GOPATH/bin` is on `$PATH`.
+
+If you haven't customized your `$GOPATH` then you'll need to add `~/go/bin` to `$PATH`.
+
 ## Contributing to Chrono ###
 
 To contribute to the Chrono project or documentation, you should [fork the GitHub project](https://github.com/gochrono/chrono#fork-destination-box) and clone it to your machine.
