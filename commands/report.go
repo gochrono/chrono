@@ -18,6 +18,10 @@ type frameTotals struct {
 	Tags      map[string]time.Duration
 }
 
+func (f *frameTotals) SetTotalTime(d time.Duration) {
+	(*f).TotalTime = f.TotalTime + d
+}
+
 func newReportCmd() *cobra.Command {
 	newReport := &cobra.Command{
 		Use:   "report",
@@ -55,10 +59,12 @@ func newReportCmd() *cobra.Command {
 			))
 			for _, date := range dates {
 				for _, frame := range timemap[date] {
-					frameTotal, ok := totals[frame.Project]
+					_, ok := totals[frame.Project]
 					frameDuration := frame.EndedAt.Sub(frame.StartedAt)
 					if ok {
-						frameTotal.TotalTime = frameTotal.TotalTime + frameDuration
+						totals[frame.Project] = frameTotals{
+							totals[frame.Project].TotalTime + frameDuration, totals[frame.Project].Tags,
+						}
 					} else {
 						totals[frame.Project] = frameTotals{
 							frameDuration, make(map[string]time.Duration),
