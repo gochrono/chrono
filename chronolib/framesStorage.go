@@ -25,7 +25,7 @@ func (s *MsgpackFramesRepo) Load() (Frames, error) {
 	framesPath := filepath.Join(s.config.ConfigDir, FramesFilename)
 	jww.INFO.Printf("reading frames from %s", framesPath)
 	if _, err := os.Stat(framesPath); os.IsNotExist(err) {
-		return Frames{}, NewErrFramesFileDoesNotExist(framesPath + " does not exist")
+		return Frames{}, nil
 	}
 	content, err := ioutil.ReadFile(framesPath)
 	if err != nil {
