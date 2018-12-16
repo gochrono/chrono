@@ -31,7 +31,7 @@ func GetFrame(frames chronolib.Frames, target string) (chronolib.Frame, bool) {
 }
 
 func newDeleteCmd() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "delete",
 		Short: "Deletes a frame through either its index possition or UUID",
 		Long:  "Deletes a frame through either its index possition or UUID",
@@ -54,4 +54,6 @@ func newDeleteCmd() *cobra.Command {
 			}
 		},
 	}
+	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
+	return cmd
 }

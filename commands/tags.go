@@ -7,7 +7,7 @@ import (
 )
 
 func newTagsCmd() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "tags",
 		Short: "Get a list of all tags used",
 		Long:  "Get a list of all tags used",
@@ -21,4 +21,6 @@ func newTagsCmd() *cobra.Command {
 			}
 		},
 	}
+	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
+	return cmd
 }

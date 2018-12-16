@@ -57,6 +57,7 @@ func (s *Frames) Update(frame Frame) {
 func (s *Frames) Delete(targetFrame Frame) {
 	for index, frame := range s.Frames {
 		if GetShortHex(frame.UUID) == GetShortHex(targetFrame.UUID) {
+			jww.INFO.Printf("deleting frame %v", s.Frames[index])
 			s.Frames = append(s.Frames[:index], s.Frames[index + 1:]...)
 			break
 		}

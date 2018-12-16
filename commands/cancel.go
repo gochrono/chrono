@@ -7,7 +7,7 @@ import (
 )
 
 func newCancelCmd() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "cancel",
 		Short: "Stops current project without saving it",
 		Long:  "Stops current project without saving it",
@@ -31,4 +31,6 @@ func newCancelCmd() *cobra.Command {
 			}
 		},
 	}
+	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
+	return cmd
 }

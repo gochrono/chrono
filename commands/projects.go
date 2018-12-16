@@ -7,7 +7,7 @@ import (
 )
 
 func newProjectsCmd() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "projects",
 		Short: "Get a list of all projects used",
 		Long:  "Get a list of all projects used",
@@ -20,4 +20,6 @@ func newProjectsCmd() *cobra.Command {
 			}
 		},
 	}
+	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
+	return cmd
 }

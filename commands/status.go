@@ -31,5 +31,6 @@ func newStatusCmd() *cobra.Command {
 	}
 
 	newStatus.Flags().StringVarP(&format, "format", "f", defaultFormat, "go template string to format output")
+	newStatus.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	return newStatus
 }

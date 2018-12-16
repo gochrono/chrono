@@ -90,5 +90,6 @@ func newReportCmd() *cobra.Command {
 	newReport.Flags().BoolVarP(&reportForCurrentMonth, "month", "m", false, "show frames for entire month")
 	newReport.Flags().BoolVarP(&reportForCurrentYear, "year", "y", false, "show frames for entire year")
 	newReport.Flags().BoolVarP(&reportForAllTime, "all", "a", false, "show all frames")
+	newReport.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	return newReport
 }
