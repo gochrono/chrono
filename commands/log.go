@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
+	"github.com/jinzhu/now"
 	jww "github.com/spf13/jwalterweatherman"
 	"os"
 	"time"
@@ -14,8 +15,32 @@ var logForCurrentWeek bool
 var logForCurrentMonth bool
 var logForCurrentYear bool
 var logForAllTime bool
+var logFrom string
+var logTo string
 var round bool
 var logTags []string
+
+
+func GetToFromTimespan(from string, to string) (chronolib.TimespanFilterOptions, error) {
+	start := now.BeginningOfDay()
+	end := now.EndOfDay()
+	var err error
+	if logTo != "" {
+		start, err = ParseTime(logTo)
+		if err != nil {
+			fmt.Println("unable to parse time string")
+			return chronolib.TimespanFilterOptions{}, err
+		}
+	}
+	if logFrom != "" {
+		end, err = ParseTime(logFrom)
+		if err != nil {
+			fmt.Println("unable to parse time string")
+			return chronolib.TimespanFilterOptions{}, err
+		}
+	}
+	return chronolib.TimespanFilterOptions{start, end}, nil
+}
 
 func newLogCmd() *cobra.Command {
 	cmd := &cobra.Command{
@@ -31,12 +56,22 @@ func newLogCmd() *cobra.Command {
 				os.Exit(0)
 			}
 
-			timespanFilterOptions := ParseTimespanFlags(TimespanFlags{
-				AllTime:      logForAllTime,
-				CurrentWeek:  logForCurrentWeek,
-				CurrentMonth: logForCurrentMonth,
-				CurrentYear:  logForCurrentYear,
-			})
+			var timespanFilterOptions chronolib.TimespanFilterOptions
+			var err error
+			if logTo != "" || logFrom != "" {
+				timespanFilterOptions, err = GetToFromTimespan(logFrom, logTo)
+				if err != nil {
+					fmt.Println("unable to parse time string")
+					return
+				}
+			} else {
+				timespanFilterOptions = ParseTimespanFlags(TimespanFlags{
+					AllTime:      logForAllTime,
+					CurrentWeek:  logForCurrentWeek,
+					CurrentMonth: logForCurrentMonth,
+					CurrentYear:  logForCurrentYear,
+				})
+			}
 
 			jww.INFO.Printf("timespan filter options: %v", timespanFilterOptions)
 
@@ -72,6 +107,8 @@ func newLogCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&logForCurrentYear, "year", "y", false, "show frames for entire year")
 	cmd.Flags().BoolVarP(&logForAllTime, "all", "a", false, "show all frames")
 	cmd.Flags().BoolVarP(&round, "round", "r", false, "round frames start and end times to the nearest interval (default: 5 mins)")
+	cmd.Flags().StringVarP(&logFrom, "from", "f", "", "")
+	cmd.Flags().StringVarP(&logTo, "to", "T", "", "")
 	cmd.Flags().IntVarP(&interval, "interval", "i", 5, "the interval to round to in minutes")
 	cmd.Flags().StringSliceVarP(&logTags, "tag", "t", []string{}, "only show frames that contain the given tag - can be used multiple times")
 	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")

@@ -21,11 +21,25 @@ func (s *Frames) Filter(filterOptions FrameFilterOptions) []Frame {
 
 // GetByIndex retrieves a frame by its index
 func (s *Frames) GetByIndex(index int) (Frame, bool) {
-	return Frame{}, false
+	var targetIndex int
+	if idx >= 0 {
+		targetIndex = idx
+	} else {
+		targetIndex = idx + len(frames)
+	}
+	if targetIndex >= len(s.Frames) || targetIndex < 0 {
+		return Frame{}, false
+	}
+	return s.Frames[targetIndex], true
 }
 
 // GetByUUID retrieves a frame by its uuid
 func (s *Frames) GetByUUID(id string) (Frame, bool) {
+	for _, frame := range s.Frames {
+		if GetShortHex(frame.UUID) == id {
+			return frame, true
+		}
+	}
 	return Frame{}, false
 }
 
@@ -40,7 +54,13 @@ func (s *Frames) Update(frame Frame) {
 }
 
 // Remove a frame from the frames list, matched by its UUID
-func (s *Frames) Remove(frame Frame) {
+func (s *Frames) Delete(targetFrame Frame) {
+	for index, frame := range s.Frames {
+		if GetShortHex(frame.UUID) == GetShortHex(targetFrame.UUID) {
+			s.Frames = append(s.Frames[:index], s.Frames[index + 1:]...)
+			break
+		}
+	}
 }
 
 // Tags returns a list of all unique tags found in all frames

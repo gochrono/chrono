@@ -222,6 +222,17 @@ func FormatFrameDescribe(frame Frame) string {
 	return fmt.Sprintf("(%s) %s%s: %s to %s", shortHex, magenta(frame.Project), tags, startTime, endTime)
 }
 
+// FormatFrameDelete shows confirmation messasge to delete a frame
+func FormatFrameDelete(frame Frame) string {
+	tags := ""
+	if len(frame.Tags) != 0 {
+		tags = FormatTags(frame.Tags)
+	}
+	startTime := green(frame.StartedAt.Format("Jan 2 15:04"))
+	endTime := green(frame.EndedAt.Format("Jan 2 15:04"))
+	return fmt.Sprintf("Delete frame %s%s [%s to %s] (y/N)? ",  magenta(frame.Project), tags, startTime, endTime)
+}
+
 // FormatCancelMessage shows a message if the current state is stopped but not saved
 func FormatCancelMessage(currentFrame CurrentFrame) string {
 	cancelTime := time.Now().Format("15:04")
