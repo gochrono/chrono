@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	jww "github.com/spf13/jwalterweatherman"
+	"github.com/spf13/viper"
 	"os"
 )
 
@@ -77,14 +77,12 @@ var rootCmd = &cobra.Command{
 	Long:    mainDescription,
 	Version: version,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		fmt.Println(viper.GetStringMapString("colors"))
 		if viper.GetBool("verbose") {
 			jww.SetLogThreshold(jww.LevelInfo)
 			jww.SetStdoutThreshold(jww.LevelInfo)
 		}
 	},
 }
-
 
 // Execute creates the root command with all sub-commands installed
 func Execute() {

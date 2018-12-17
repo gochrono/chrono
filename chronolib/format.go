@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	humanize "github.com/dustin/go-humanize"
-	"github.com/fatih/color"
+	"github.com/gookit/color"
 	"strings"
 	"text/template"
 	"time"
@@ -12,12 +12,12 @@ import (
 
 type colorFormat func(string) string
 
-var cyan = color.New(color.FgCyan).SprintFunc()
-var green = color.New(color.FgGreen).SprintFunc()
-var blue = color.New(color.FgBlue).SprintFunc()
-var red = color.New(color.FgRed).SprintFunc()
-var magenta = color.New(color.FgMagenta).SprintFunc()
-var boldWhite = color.New(color.FgWhite).Add(color.Bold).SprintFunc()
+var cyan = color.FgCyan.Render
+var green = color.FgGreen.Render
+var blue = color.FgBlue.Render
+var red = color.FgRed.Render
+var magenta = color.FgMagenta.Render
+var boldWhite = color.OpBold.Render
 var funcMap = template.FuncMap{
 	"cyan": func(input string) string {
 		return cyan(input)
@@ -230,7 +230,7 @@ func FormatFrameDelete(frame Frame) string {
 	}
 	startTime := green(frame.StartedAt.Format("Jan 2 15:04"))
 	endTime := green(frame.EndedAt.Format("Jan 2 15:04"))
-	return fmt.Sprintf("Delete frame %s%s [%s to %s] (y/N)? ",  magenta(frame.Project), tags, startTime, endTime)
+	return fmt.Sprintf("Delete frame %s%s [%s to %s] (y/N)? ", magenta(frame.Project), tags, startTime, endTime)
 }
 
 // FormatCancelMessage shows a message if the current state is stopped but not saved
