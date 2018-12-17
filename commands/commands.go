@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	jww "github.com/spf13/jwalterweatherman"
 	"os"
 )
@@ -56,21 +57,39 @@ var commandError error
 
 var verbose bool
 
+func init() {
+	cobra.OnInitialize(initConfig)
+	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "enable verbose output")
+	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
+	viper.BindPFlag("configDir", rootCmd.PersistentFlags().Lookup("configDir"))
+}
+
+func initConfig() {
+	_ = viper.ReadInConfig()
+	viper.SetEnvPrefix("chrono")
+	viper.BindEnv("configDir")
+
+	viper.SetDefault("configDir", chronolib.GetDir())
+}
+
+var rootCmd = &cobra.Command{
+	Use:     "chrono",
+	Long:    mainDescription,
+	Version: version,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println(viper.GetStringMapString("colors"))
+		if viper.GetBool("verbose") {
+			jww.SetLogThreshold(jww.LevelInfo)
+			jww.SetStdoutThreshold(jww.LevelInfo)
+		}
+	},
+}
+
+
 // Execute creates the root command with all sub-commands installed
 func Execute() {
 	jww.SetLogThreshold(jww.LevelFatal)
 	jww.SetStdoutThreshold(jww.LevelFatal)
-	var rootCmd = &cobra.Command{
-		Use:     "chrono",
-		Long:    mainDescription,
-		Version: version,
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
-			if verbose {
-				jww.SetLogThreshold(jww.LevelInfo)
-				jww.SetStdoutThreshold(jww.LevelInfo)
-			}
-		},
-	}
 	rootCmd.SetVersionTemplate(versionTemplate)
 	rootCmd.AddCommand(newStartCmd(), newStatusCmd(), newStopCmd(), newReportCmd(),
 		newLogCmd(), newCancelCmd(), newDeleteCmd(), newFramesCmd(),

@@ -22,10 +22,10 @@ func (s *Frames) Filter(filterOptions FrameFilterOptions) []Frame {
 // GetByIndex retrieves a frame by its index
 func (s *Frames) GetByIndex(index int) (Frame, bool) {
 	var targetIndex int
-	if idx >= 0 {
-		targetIndex = idx
+	if index >= 0 {
+		targetIndex = index
 	} else {
-		targetIndex = idx + len(frames)
+		targetIndex = index + len(s.Frames)
 	}
 	if targetIndex >= len(s.Frames) || targetIndex < 0 {
 		return Frame{}, false

@@ -17,6 +17,10 @@ const ChronoAppConf = "chrono"
 // ChronoConfDirEnvName is name of the environment variable used to manually set the config directory
 const ChronoConfDirEnvName = "CHRONO_CONFIG_DIR"
 
+func GetDir() string {
+	return configdir.LocalConfig(ChronoAppConf)
+}
+
 // GetAppFilePath returns a file's path in the config directory through either an environment variable or the default path
 func GetAppFilePath(fileName string, customConfDir string) string {
 	var appConfDir = configdir.LocalConfig(ChronoAppConf)
