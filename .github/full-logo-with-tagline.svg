@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -58,7 +58,7 @@
      id="layer1"
      transform="translate(0,-343.70079)">
     <circle
-       style="fill:none;fill-rule:evenodd;stroke:#2c3f50;stroke-width:33.05263138;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-rule:evenodd;stroke:#061539;stroke-width:33.053;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4156"
        cx="441.03595"
        cy="698.03149"
@@ -81,14 +81,14 @@
        inkscape:transform-center-x="44.982994"
        inkscape:transform-center-y="0.58716857" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#31b198;stroke-width:26.72340393;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:1;stroke:#417c81;stroke-width:26.723;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 318.99699,486.07719 61.04407,105.72969 61.04408,105.7297 61.03977,-105.7297 61.04408,-105.72969 -122.08385,0 -122.08815,0 z m 121.98918,212.44924 -61.0441,105.72969 -61.03976,105.72969 122.08386,0 122.08816,0 -61.0441,-105.72969 -61.04406,-105.72969 z"
        id="path4168-3"
        inkscape:connector-curvature="0" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot4239"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2c3f50;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#061539;fill-opacity:1;stroke:none;stroke-width:13.71604472;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;"
        transform="matrix(2.4098055,0,0,2.4098055,-1832.8188,-580.48711)"><flowRegion
          id="flowRegion4241"><rect
            id="rect4243"
@@ -96,11 +96,11 @@
            height="564"
            x="1118"
            y="392.99207"
-           style="fill:#2c3f50;fill-opacity:1" /></flowRegion><flowPara
+           style="fill:#061539;fill-opacity:1;stroke-width:13.71604472;stroke-miterlimit:4;stroke-dasharray:none;" /></flowRegion><flowPara
          id="flowPara4245"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:180px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans';fill:#2c3f50;fill-opacity:1">CHRONO</flowPara></flowRoot>    <text
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:180px;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans';fill:#061539;fill-opacity:1;stroke-width:13.71604472;stroke-miterlimit:4;stroke-dasharray:none;">CHRONO</flowPara></flowRoot>    <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40.333992px;line-height:125%;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans';letter-spacing:0px;word-spacing:0px;fill:#2c3f3f;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40.333992px;line-height:125%;font-family:'Fira Sans';-inkscape-font-specification:'Fira Sans';letter-spacing:0px;word-spacing:0px;fill:#061539;fill-opacity:1;stroke:none;stroke-width:33.053;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;"
        x="1074.6654"
        y="896.08105"
        id="text4266"
@@ -109,6 +109,6 @@
          id="tspan4268"
          x="1074.6654"
          y="896.08105"
-         style="font-size:70.58448792px;fill:#2c3f3f;fill-opacity:1">A fast time tracking tool made with love</tspan></text>
+         style="font-size:70.58448792px;fill:#061539;fill-opacity:1;stroke-width:33.053;stroke-miterlimit:4;stroke-dasharray:none;">A fast time tracking tool made with love</tspan></text>
   </g>
 </svg>
