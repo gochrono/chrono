@@ -43,13 +43,3 @@ type StateStorage interface {
 	Update(frame Frame) (Frame, error)
 	Clear() (Frame, error)
 }
-
-// GetStateStorage retreives the correct implementation for backend storage
-func GetStateStorage(config ChronoConfig) StateStorage {
-	return MsgpackStateFileStorage{config}
-}
-
-// GetFrameStorage retreives the correct implementation for backend storage
-func GetFrameStorage(config ChronoConfig) FrameStorage {
-	return MsgpackFrameFileStorage{config}
-}
