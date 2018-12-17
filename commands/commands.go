@@ -56,12 +56,15 @@ func PrintErrorAndExit(e error) {
 var commandError error
 
 var verbose bool
+var noColor bool
 
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "enable verbose output")
+	rootCmd.PersistentFlags().BoolVar(&noColor, "no-color", false, "disable color")
 	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 	viper.BindPFlag("configDir", rootCmd.PersistentFlags().Lookup("configDir"))
+	viper.BindPFlag("no-color", rootCmd.PersistentFlags().Lookup("no-color"))
 }
 
 func initConfig() {
@@ -70,6 +73,7 @@ func initConfig() {
 	viper.BindEnv("configDir")
 
 	viper.SetDefault("configDir", chronolib.GetDir())
+	chronolib.NoColor = viper.GetBool("no-color")
 }
 
 var rootCmd = &cobra.Command{

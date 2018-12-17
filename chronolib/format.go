@@ -5,6 +5,7 @@ import (
 	"fmt"
 	humanize "github.com/dustin/go-humanize"
 	"github.com/gookit/color"
+	"strconv"
 	"strings"
 	"text/template"
 	"time"
@@ -12,12 +13,46 @@ import (
 
 type colorFormat func(string) string
 
-var cyan = color.FgCyan.Render
-var green = color.FgGreen.Render
-var blue = color.FgBlue.Render
-var red = color.FgRed.Render
-var magenta = color.FgMagenta.Render
+// NoColor if set to false will no color any output with ANSI color codes
+var NoColor = false
+
+func cyan(input string) string {
+	if NoColor {
+		return input
+	}
+	return color.FgCyan.Render(input)
+}
+
+func green(input string) string {
+	if NoColor {
+		return input
+	}
+	return color.FgGreen.Render(input)
+}
+
+func blue(input string) string {
+	if NoColor {
+		return input
+	}
+	return color.FgBlue.Render(input)
+}
+
+func red(input string) string {
+	if NoColor {
+		return input
+	}
+	return color.FgRed.Render(input)
+}
+
+func magenta(input string) string {
+	if NoColor {
+		return input
+	}
+	return color.FgMagenta.Render(input)
+}
+
 var boldWhite = color.OpBold.Render
+
 var funcMap = template.FuncMap{
 	"cyan": func(input string) string {
 		return cyan(input)
@@ -82,7 +117,7 @@ func FormatNoteLine(note string) string {
 
 // FormatNoteShowLine formats a single frame note for the notes show command
 func FormatNoteShowLine(index int, note string) string {
-	return fmt.Sprintf("[%s]: %s", cyan(index), note)
+	return fmt.Sprintf("[%s]: %s", cyan(strconv.Itoa(index)), note)
 }
 
 // FormatStartFrame returns the output when a new frame is created
@@ -128,7 +163,11 @@ func FormatEditFrameMessage(frame Frame) string {
 // FormatTags joins tags together and color them blue
 func FormatTags(tags []string) string {
 	for index, tag := range tags {
-		tags[index] = blue(tag)
+		if NoColor {
+			tags[index] = tag
+		} else {
+			tags[index] = blue(tag)
+		}
 	}
 	return " [" + strings.Join(tags, ", ") + "]"
 }
