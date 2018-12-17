@@ -4,13 +4,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/gochrono/chrono/chronolib"
+	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
-	"strconv"
-
-	"github.com/gochrono/chrono/chronolib"
-
-	"github.com/spf13/cobra"
 )
 
 const editDesciption = `Edit a frame.
@@ -34,44 +31,20 @@ func newEditCmd() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
-			frameStorage := chronolib.GetFrameStorage(config)
-			frames, err := frameStorage.All(chronolib.FrameFilterOptions{})
-			if err != nil {
-				commandError = err
+			frames, _ := chronolib.GetFrames(config)
+			frame, ok := GetFrame(frames, args[0])
+			if !ok {
+				fmt.Println("Could not find frame")
 				return
 			}
-			chronolib.SortFramesByDate(frames)
 
-			var target chronolib.Frame
-			var targetIndex int
-			index, err := strconv.Atoi(args[0])
-			if err != nil {
-				targetIndex, target, err = chronolib.GetFrameByShortHex(frames, args[0])
-				if err != nil {
-					fmt.Println("No frame found with that ID")
-					os.Exit(-1)
-				}
-			} else {
-				if index < 0 {
-					targetIndex = len(frames) + index
-				} else {
-					targetIndex = len(frames) - index
-				}
-
-				if targetIndex >= len(frames) || targetIndex < 0 {
-					fmt.Println("No frame found at that index")
-					os.Exit(-1)
-				}
-				target = frames[targetIndex]
-			}
-
-			simpleFrame := chronolib.ConvertFrameToSimpleFrame(target)
+			simpleFrame := chronolib.ConvertFrameToSimpleFrame(frame)
 			simpleFrameJSON, err := json.MarshalIndent(simpleFrame, "", "    ")
 			if err != nil {
 				panic(err)
 			}
 
-			fpath := os.TempDir() + "/chrono-" + hex.EncodeToString(target.UUID) + ".json"
+			fpath := os.TempDir() + "/chrono-" + hex.EncodeToString(frame.UUID) + ".json"
 			err = ioutil.WriteFile(fpath, simpleFrameJSON, 0644)
 			if err != nil {
 				panic(err)
@@ -91,15 +64,18 @@ func newEditCmd() *cobra.Command {
 				fmt.Println(err)
 				os.Exit(-1)
 			}
-			frameEdited, err := chronolib.ConvertSimpleFrameToFrame(target.UUID, newSimpleFrame)
+			frameEdited, err := chronolib.ConvertSimpleFrameToFrame(frame.UUID, newSimpleFrame)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(-1)
 			}
-			if chronolib.FramesEqual(target, frameEdited) {
+			if chronolib.FramesEqual(frame, frameEdited) {
 				fmt.Println("No changes made")
 			} else {
-				frameStorage.Update(frameEdited)
+				frames.Update(frameEdited)
+				if err := chronolib.SaveFrames(config, frames); err != nil {
+					panic(err)
+				}
 				fmt.Println(chronolib.FormatEditFrameMessage(frameEdited))
 			}
 		},

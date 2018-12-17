@@ -6,7 +6,6 @@ import (
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -17,18 +16,6 @@ func ConfirmDelete(frame chronolib.Frame) bool {
 	text, _ := reader.ReadString('\n')
 	text = strings.Replace(text, "\n", "", -1)
 	return text == "y"
-}
-
-// GetFrame is a helper method for getting a frame by either index or UUID
-func GetFrame(frames chronolib.Frames, target string) (chronolib.Frame, bool) {
-	index, err := strconv.Atoi(target)
-	if err == nil {
-		frame, ok := frames.GetByIndex(index)
-		if ok {
-			return frame, true
-		}
-	}
-	return frames.GetByUUID(target)
 }
 
 var deleteForce bool

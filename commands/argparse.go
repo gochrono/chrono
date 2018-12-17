@@ -5,6 +5,7 @@ import (
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/jinzhu/now"
 	jww "github.com/spf13/jwalterweatherman"
+	"strconv"
 	"time"
 )
 
@@ -90,6 +91,18 @@ func ParseTimespanFlags(timespanFlags TimespanFlags) chronolib.TimespanFilterOpt
 		tsStart, tsEnd = chronolib.GetTimespanForToday()
 	}
 	return chronolib.TimespanFilterOptions{Start: tsStart, End: tsEnd}
+}
+
+// GetFrame is a helper method for getting a frame by either index or UUID
+func GetFrame(frames chronolib.Frames, target string) (chronolib.Frame, bool) {
+	index, err := strconv.Atoi(target)
+	if err == nil {
+		frame, ok := frames.GetByIndex(index)
+		if ok {
+			return frame, true
+		}
+	}
+	return frames.GetByUUID(target)
 }
 
 // ParseNewFrameFlags is a helper method for creating a new frame based on user input
