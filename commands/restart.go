@@ -5,6 +5,7 @@ import (
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
 	jww "github.com/spf13/jwalterweatherman"
+	"time"
 )
 
 var restartAt string
@@ -19,29 +20,34 @@ func newRestartCmd() *cobra.Command {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			jww.INFO.Printf("using configDir %s", configDir)
 			config := chronolib.GetConfig(configDir)
-			frameStorage := chronolib.GetFrameStorage(config)
-			stateStorage := chronolib.GetStateStorage(config)
+			frames, _ := chronolib.GetFrames(config)
+			state, _ := chronolib.GetState(config)
 
 			jww.INFO.Printf("no argument, retrieving last frame")
-			lastFrame, err := frameStorage.Get(chronolib.FrameGetOptions{Target: "-1"})
+			lastFrame, ok := frames.GetByIndex(-1)
 			jww.DEBUG.Printf("last frame %v", lastFrame)
-			if err != nil {
-				PrintErrorAndExit(err)
+
+			if ok {
+				notes := []string{}
+				if restartNote != "" {
+					notes = append(notes, restartNote)
+				}
+				currentFrame := chronolib.CurrentFrame{
+					Project:   lastFrame.Project,
+					StartedAt: time.Now(),
+					UpdatedAt: time.Now(),
+					Tags:      lastFrame.Tags,
+					Notes:     notes,
+				}
+				state.Update(currentFrame)
+				err := chronolib.SaveState(config, state)
+				if err != nil {
+					panic(err)
+				}
+				fmt.Println(chronolib.FormatStartCurrentFrame(currentFrame))
+			} else {
+				fmt.Println("Could not find frame")
 			}
-			newState, err := ParseNewFrameFlags(
-				lastFrame.Project,
-				lastFrame.Tags,
-				restartAt,
-				restartNote,
-			)
-			if err != nil {
-				PrintErrorAndExit(err)
-			}
-			_, err = stateStorage.Update(newState)
-			if err != nil {
-				PrintErrorAndExit(err)
-			}
-			fmt.Println(chronolib.FormatNewFrameMessage(newState))
 		},
 	}
 	cmd.Flags().StringVarP(&restartNote, "note", "n", "", "add an initial note to the frame")
