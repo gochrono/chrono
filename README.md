@@ -30,17 +30,17 @@ To install the latest stable release:
 curl -L https://git.io/fpHAj | sh
 ```
 
-If you'd like to install a specific version or would like to install from a .deb package, checkout the [releases page](https://github.com/gochrono/chrono/releases).
-
-### Supported Architectures ###
-
 We provide pre-built Chrono binaries for Windows, Linux, and macOS (Darwin) for x64, i386 and ARM architectures.
 
-We also provide .deb packages.
+If you'd like to install a specific version, checkout the [releases page](https://github.com/gochrono/chrono/releases).
 
-Alternatively, Chrono can be compiled from source where ever the Go compiler tool chain can run.
+If you want to run the absolute latest version, [build it from source](#building-chrono-from-the-source).
 
-**For more information on which architectures you can install Chrono on, check out the [Go documentation](https://golang.org/doc/install).**
+### Package Managers ###
+
+If you are using __Arch Linux__, you can install the AUR package [chrono-git][2] to get the latest version or [chrono][3] for the latest stable release.
+
+If you're using __Ubuntu__ or a __Debian__ based system, you can find debian packages (.deb) on the [releases page](https://github.com/gochrono/chrono/releases).
 
 ## Quickstart ##
 
@@ -143,3 +143,5 @@ the GitHub issue tracker to report the problem to the Chrono maintainers.
 When reporting an issue, please provide the version of chrono is use (`chrono version`)
 
 [1]: https://asciinema.org/a/pb5PlJHshi2gjpDeQYCj0gmfI
+[2]: https://aur.archlinux.org/packages/chrono-git/
+[3]: https://aur.archlinux.org/packages/chrono/
