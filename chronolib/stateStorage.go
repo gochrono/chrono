@@ -8,6 +8,9 @@ import (
 	"path/filepath"
 )
 
+// StateFilename is the filename of the states file
+const StateFilename = "state.msgpack"
+
 // StateRepo is an interface for retieving current state
 type StateRepo interface {
 	Load() (State, error)

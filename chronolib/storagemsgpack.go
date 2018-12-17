@@ -11,12 +11,6 @@ import (
 	"strings"
 )
 
-// StateFilename is the filename of the states file
-const StateFilename = "state.msgpack"
-
-// FramesFilename is the filename of the frames file
-const FramesFilename = "frames.msgpack"
-
 // MsgpackStateFileStorage stores the current frame in the Msgpack format
 type MsgpackStateFileStorage struct {
 	Config ChronoConfig

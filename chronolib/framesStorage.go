@@ -8,6 +8,9 @@ import (
 	"path/filepath"
 )
 
+// FramesFilename is the filename of the frames file
+const FramesFilename = "frames.msgpack"
+
 // FramesStorage is an interface for loading/saving frames
 type FramesStorage interface {
 	Load() (Frames, error)
