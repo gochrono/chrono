@@ -17,7 +17,7 @@ Want to know what you did with your time? Chrono will help you with that. Track 
 long you spend on a project. Add notes so you know exactly what
 you did.
 
-[preview][1]
+[![asciicast](https://asciinema.org/a/pb5PlJHshi2gjpDeQYCj0gmfI.svg)](https://asciinema.org/a/pb5PlJHshi2gjpDeQYCj0gmfI)
 
 
 ## Installation ##
