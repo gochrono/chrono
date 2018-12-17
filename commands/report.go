@@ -5,6 +5,7 @@ import (
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
 	"os"
+	"sort"
 	"time"
 )
 
@@ -79,8 +80,13 @@ func newReportCmd() *cobra.Command {
 
 			for project, frameTotal := range totals {
 				fmt.Println(chronolib.FormatReportProjectTotal(project, frameTotal.TotalTime))
-				for tag, duration := range frameTotal.Tags {
-					fmt.Println(chronolib.FormatReportProjectTagTotal(tag, duration))
+				keys := make([]string, 0, len(frameTotal.Tags))
+				for key := range frameTotal.Tags {
+					keys = append(keys, key)
+				}
+				sort.Strings(keys)
+				for _, tag := range keys {
+					fmt.Println(chronolib.FormatReportProjectTagTotal(tag, frameTotal.Tags[tag]))
 				}
 			}
 		},
