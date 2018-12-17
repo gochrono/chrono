@@ -1,16 +1,16 @@
 package commands
 
 import (
-	"strings"
-	"os"
 	"bufio"
-	"strconv"
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
+	"os"
+	"strconv"
+	"strings"
 )
 
-
+// ConfirmDelete asks user if they are sure they want to delete the frame
 func ConfirmDelete(frame chronolib.Frame) bool {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Printf(chronolib.FormatFrameDelete(frame))
@@ -19,6 +19,7 @@ func ConfirmDelete(frame chronolib.Frame) bool {
 	return text == "y"
 }
 
+// GetFrame is a helper method for getting a frame by either index or UUID
 func GetFrame(frames chronolib.Frames, target string) (chronolib.Frame, bool) {
 	index, err := strconv.Atoi(target)
 	if err == nil {
@@ -29,6 +30,8 @@ func GetFrame(frames chronolib.Frames, target string) (chronolib.Frame, bool) {
 	}
 	return frames.GetByUUID(target)
 }
+
+var deleteForce bool
 
 func newDeleteCmd() *cobra.Command {
 	cmd := &cobra.Command{
@@ -47,13 +50,18 @@ func newDeleteCmd() *cobra.Command {
 				fmt.Println("Could not find frame")
 				return
 			}
-			shouldDelete := ConfirmDelete(frame)
+			var shouldDelete bool
+			if deleteForce {
+				shouldDelete = true
+			} else {
+				shouldDelete = ConfirmDelete(frame)
+			}
 			if shouldDelete {
 				frames.Delete(frame)
 				chronolib.SaveFrames(config, frames)
 			}
 		},
 	}
-	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
+	cmd.Flags().BoolVarP(&deleteForce, "force", "f", false, "delete frame without confirmation frame")
 	return cmd
 }
