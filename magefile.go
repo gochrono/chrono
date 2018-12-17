@@ -78,6 +78,11 @@ func Build() error {
 	return sh.RunWith(flagEnv(), goexe, "build", "-ldflags", ldflags, packageName)
 }
 
+// Install creates a binary with version information and installs it to $GOATH/bin
+func Install() error {
+	return sh.RunWith(flagEnv(), goexe, "install", "-ldflags", ldflags, packageName)
+}
+
 // Test386 runs tests on a x86 architecture
 func Test386() error {
 	return sh.RunWith(map[string]string{"GOARCH": "386"}, goexe, "test", "./...")
