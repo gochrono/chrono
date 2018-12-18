@@ -96,11 +96,11 @@ func (s MsgpackStateRepo) Load() (State, error) {
 	content, err := loadBytes(s.config, StateFilename)
 	if err != nil {
 		jww.INFO.Printf("error unmarshling state, loading empty state")
-		return State{CurrentFrame{}}, err
+		return State{CurrentFrame{}}, nil
 	}
 	if err = msgpack.Unmarshal(content, &currentFrame); err != nil {
 		jww.INFO.Printf("error unmarshling state, loading empty state")
-		return State{CurrentFrame{}}, err
+		return State{CurrentFrame{}}, nil
 	}
 	return State{currentFrame}, nil
 }
