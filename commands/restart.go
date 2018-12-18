@@ -20,8 +20,14 @@ func newRestartCmd() *cobra.Command {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			jww.INFO.Printf("using configDir %s", configDir)
 			config := chronolib.GetConfig(configDir)
-			frames, _ := chronolib.GetFrames(config)
-			state, _ := chronolib.GetState(config)
+			frames, err := chronolib.GetFrames(config)
+			if err != nil {
+				panic(err)
+			}
+			state, err := chronolib.GetState(config)
+			if err != nil {
+				panic(err)
+			}
 
 			jww.INFO.Printf("no argument, retrieving last frame")
 			lastFrame, ok := frames.GetByIndex(-1)
@@ -29,13 +35,21 @@ func newRestartCmd() *cobra.Command {
 
 			if ok {
 				notes := []string{}
+				startedAt := time.Now()
 				if restartNote != "" {
 					notes = append(notes, restartNote)
 				}
+				if restartAt != "" {
+					startedAt, err = ParseTime(restartAt)
+					if err != nil {
+						fmt.Println(chronolib.FormatTimeStringNotValid())
+						return
+					}
+				}
 				currentFrame := chronolib.CurrentFrame{
 					Project:   lastFrame.Project,
-					StartedAt: time.Now(),
-					UpdatedAt: time.Now(),
+					StartedAt: startedAt,
+					UpdatedAt: startedAt,
 					Tags:      lastFrame.Tags,
 					Notes:     notes,
 				}
