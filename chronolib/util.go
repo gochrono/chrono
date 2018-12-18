@@ -2,7 +2,6 @@ package chronolib
 
 import (
 	"crypto/sha1"
-	"encoding/hex"
 	"time"
 )
 
@@ -54,12 +53,8 @@ func FramesEqual(f1 Frame, f2 Frame) bool {
 }
 
 // GetShortHex returns the first six characters from a hex encoded SHA
-func GetShortHex(sha []byte) string {
-	if len(sha) < 6 {
-		return ""
-	}
-	hex := hex.EncodeToString(sha)
-	return hex[0:6]
+func GetShortHex(sha string) string {
+	return sha[0:7]
 }
 
 // CreateFrameUUID generates a frame's UUID using it's name, start and end date

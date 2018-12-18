@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
@@ -44,7 +43,7 @@ func newEditCmd() *cobra.Command {
 				panic(err)
 			}
 
-			fpath := os.TempDir() + "/chrono-" + hex.EncodeToString(frame.UUID) + ".json"
+			fpath := os.TempDir() + "/chrono-" + frame.UUID + ".json"
 			err = ioutil.WriteFile(fpath, simpleFrameJSON, 0644)
 			if err != nil {
 				panic(err)

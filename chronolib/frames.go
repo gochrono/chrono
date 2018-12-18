@@ -2,7 +2,19 @@ package chronolib
 
 import (
 	jww "github.com/spf13/jwalterweatherman"
+	"time"
 )
+
+// Frame is a timespan containing some metadata
+type Frame struct {
+	UUID      string
+	Project   string
+	StartedAt time.Time
+	EndedAt   time.Time
+	UpdatedAt time.Time
+	Tags      []string
+	Notes     []string
+}
 
 // Frames contains recordered frames
 type Frames struct {
@@ -53,12 +65,12 @@ func (s *Frames) Add(frame Frame) {
 func (s *Frames) Update(frame Frame) {
 }
 
-// Remove a frame from the frames list, matched by its UUID
+// Delete a frame from the frames list, matched by its UUID
 func (s *Frames) Delete(targetFrame Frame) {
 	for index, frame := range s.Frames {
 		if GetShortHex(frame.UUID) == GetShortHex(targetFrame.UUID) {
 			jww.INFO.Printf("deleting frame %v", s.Frames[index])
-			s.Frames = append(s.Frames[:index], s.Frames[index + 1:]...)
+			s.Frames = append(s.Frames[:index], s.Frames[index+1:]...)
 			break
 		}
 	}

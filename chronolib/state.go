@@ -43,7 +43,7 @@ func (s *State) IsEmpty() bool {
 func (s *State) ToFrame(end time.Time) Frame {
 	id, _ := uuid.NewV4()
 	return Frame{
-		UUID:      id.Bytes(),
+		UUID:      id.String(),
 		Project:   s.CurrentFrame.Project,
 		Tags:      s.CurrentFrame.Tags,
 		StartedAt: s.CurrentFrame.StartedAt,

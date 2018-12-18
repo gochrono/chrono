@@ -16,17 +16,6 @@ type SimpleFrame struct {
 	Notes     []string
 }
 
-// Frame is a timespan containing some metadata
-type Frame struct {
-	UUID      []byte
-	Project   string
-	StartedAt time.Time
-	EndedAt   time.Time
-	UpdatedAt time.Time
-	Tags      []string
-	Notes     []string
-}
-
 // Data is a wrapper for frames
 type Data struct {
 	Frames []Frame
@@ -73,7 +62,7 @@ func ConvertFrameToSimpleFrame(frame Frame) SimpleFrame {
 }
 
 // ConvertSimpleFrameToFrame converts a raw frame back to a frame
-func ConvertSimpleFrameToFrame(uuid []byte, rawFrame SimpleFrame) (Frame, error) {
+func ConvertSimpleFrameToFrame(uuid string, rawFrame SimpleFrame) (Frame, error) {
 	started, err := now.Parse(rawFrame.StartedAt)
 	if err != nil {
 		return Frame{}, err

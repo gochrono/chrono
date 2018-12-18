@@ -6,7 +6,7 @@ Feature: Log
         Then the output should contain the current log line
         And the output should match:
         """
-        \t\(ID: [0-9a-z]{6}\) 11:00 to 12:00    1h 00m 00s  something
+        \t\(ID: [0-9a-z]{7}\) 11:00 to 12:00    1h 00m 00s  something
         """
 
     Scenario: Check log command shows correct output with one project with tags
@@ -16,5 +16,5 @@ Feature: Log
         Then the output should contain the current log line
         And the output should match:
         """
-        \t\(ID: [0-9a-z]{6}\) 11:00 to 12:00    1h 00m 00s  something\s*\[pandas\]
+        \t\(ID: [0-9a-z]{7}\) 11:00 to 12:00    1h 00m 00s  something\s*\[pandas\]
         """

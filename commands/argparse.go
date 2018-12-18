@@ -104,23 +104,3 @@ func GetFrame(frames chronolib.Frames, target string) (chronolib.Frame, bool) {
 	}
 	return frames.GetByUUID(target)
 }
-
-// ParseNewFrameFlags is a helper method for creating a new frame based on user input
-func ParseNewFrameFlags(project string, tags []string, startAt string, startNote string) (chronolib.Frame, error) {
-	frameStart, err := ParseTime(startAt)
-	if err != nil {
-		return chronolib.Frame{}, NewErrTimeStringNotValid(startAt)
-	}
-
-	notes := []string{}
-	if startNote != "" {
-		notes = append(notes, startNote)
-	}
-
-	return chronolib.Frame{
-		UUID: []byte{}, Project: project,
-		StartedAt: frameStart, EndedAt: time.Time{},
-		Tags: tags, Notes: notes,
-		UpdatedAt: time.Now(),
-	}, nil
-}

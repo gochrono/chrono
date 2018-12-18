@@ -6,7 +6,7 @@ Feature: Restart
         Then the output should match:
         """
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
-        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{6}\)$
+        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{7}\)$
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
         """
         And a file named "appdir/state.msgpack" should exist
@@ -17,7 +17,7 @@ Feature: Restart
         Then the output should match:
         """
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
-        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{6}\)$
+        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{7}\)$
         ^Starting project something \[pandas\] at 12:00$
         """
         And a file named "appdir/state.msgpack" should exist
@@ -28,7 +28,7 @@ Feature: Restart
         Then the output should match:
         """
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
-        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{6}\)$
+        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{7}\)$
         ^Invalid time format$
         """
         And a file named "appdir/state.msgpack" should exist
@@ -39,7 +39,7 @@ Feature: Restart
         Then the output should match:
         """
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
-        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{6}\)$
+        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{7}\)$
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
         """
         And a file named "appdir/state.msgpack" should exist
@@ -52,9 +52,9 @@ Feature: Restart
         Then the output should match:
         """
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
-        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{6}\)$
+        ^Stopping project something \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{7}\)$
         ^Starting project else \[pandas\] at \d{2}:\d{2}$
-        ^Stopping project else \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{6}\)$
+        ^Stopping project else \[pandas\], started (\d{1,2} seconds? ago|now) \(id: [a-z0-9]{7}\)$
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
         """
         And a file named "appdir/state.msgpack" should exist

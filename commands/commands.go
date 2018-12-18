@@ -57,6 +57,7 @@ var commandError error
 
 var verbose bool
 var noColor bool
+var storage = "json"
 
 func init() {
 	cobra.OnInitialize(initConfig)

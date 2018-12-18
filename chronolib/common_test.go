@@ -1,7 +1,6 @@
 package chronolib
 
 import (
-	"encoding/hex"
 	"github.com/jinzhu/now"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -18,14 +17,12 @@ func TestContainsMorethanOneBooleanFlag(t *testing.T) {
 }
 
 func createFrame(h string, project string) Frame {
-	uuid, _ := hex.DecodeString(h)
-	return Frame{uuid, project, time.Time{}, time.Time{}, time.Time{}, []string{}, []string{}}
+	return Frame{h, project, time.Time{}, time.Time{}, time.Time{}, []string{}, []string{}}
 }
 
 func createFrameWithTime(h string, project string, startTime string) Frame {
-	uuid, _ := hex.DecodeString(h)
 	fStart, _ := now.Parse(startTime)
-	return Frame{uuid, project, fStart, time.Time{}, fStart, []string{}, []string{}}
+	return Frame{h, project, fStart, time.Time{}, fStart, []string{}, []string{}}
 }
 
 func TestGetFrameByShortHex(t *testing.T) {
@@ -35,12 +32,12 @@ func TestGetFrameByShortHex(t *testing.T) {
 		createFrame("c394b77210dfd79161b9492d224541258ee3a9c0", "development"),
 	}
 
-	index, frame, err := GetFrameByShortHex(frames, "cf23df")
+	index, frame, err := GetFrameByShortHex(frames, "cf23df2")
 	assert.Equal(t, 0, index)
 	assert.Equal(t, "something", frame.Project)
 	assert.Equal(t, err, nil)
 
-	index, frame, err = GetFrameByShortHex(frames, "ddb9ab")
+	index, frame, err = GetFrameByShortHex(frames, "ddb9aba")
 	assert.Equal(t, 1, index)
 	assert.Equal(t, "timevault", frame.Project)
 	assert.Equal(t, err, nil)

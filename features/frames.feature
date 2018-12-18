@@ -5,5 +5,5 @@ Feature: Frames
         When I run `chrono frames`
         Then the output should match:
         """
-        ^[0-9a-z]{6}$
+        ^[0-9a-z]{7}$
         """
