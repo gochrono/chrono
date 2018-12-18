@@ -16,12 +16,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `delete` command which deletes a saved frame by either an index or UUID
 - Added `cancel` command which stops tracking the current frame without saving it
 - Added `frames` command which shows a list of frame ID's
+- Added global `--no-color` flag that doesn't print out ANSI color codes
+- Added global `--verbose` flag that prints out helping debugging information
+- Added config file support (config file should be located at ~/.config/chrono/config)
+
 
 ### Changed
 - Renamed `--start` flag to `--at` in `start` command
+- Frame UUID's are stored as strings instead of byte arrays now
+- The state filename is now based on the format state.{storageType}
+- The frames filename is now based on the format state.{storageType}
 
 ### Fixed
 - Edge case where frames adjusted through the --round flag had negative times
+- Bug where tags where stored with their ANSI color codes
 
 ## [1.0.0-beta] - 2018-10-11
 ### Added
