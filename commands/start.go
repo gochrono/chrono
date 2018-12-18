@@ -33,7 +33,11 @@ func newStartCmd() *cobra.Command {
 				PrintErrorAndExit(err)
 			}
 
+			fmt.Println(currentFrame.Tags)
+
 			state.Update(currentFrame)
+
+			fmt.Println(state.Get().Tags)
 
 			if startEnded != "" {
 				frame := state.ToFrame(ended)

@@ -162,14 +162,15 @@ func FormatEditFrameMessage(frame Frame) string {
 
 // FormatTags joins tags together and color them blue
 func FormatTags(tags []string) string {
-	for index, tag := range tags {
+	formated := []string{}
+	for _, tag := range tags {
 		if NoColor {
-			tags[index] = tag
+			formated = append(formated, tag)
 		} else {
-			tags[index] = blue(tag)
+			formated = append(formated, blue(tag))
 		}
 	}
-	return " [" + strings.Join(tags, ", ") + "]"
+	return " [" + strings.Join(formated, ", ") + "]"
 }
 
 // FormatStopFrameMessage returns the output when time tracking for a frame is stopped
