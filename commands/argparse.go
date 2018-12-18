@@ -2,7 +2,6 @@ package commands
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/jinzhu/now"
 	jww "github.com/spf13/jwalterweatherman"
@@ -13,8 +12,6 @@ import (
 // ParseStartArgs properly handles user arguments for the start command
 func ParseStartArgs(args []string, startAt string, startEnded string, startNote string) (chronolib.CurrentFrame, time.Time, error) {
 	project, frameTags, err := ParseStartArguments(args)
-	fmt.Println("Parse")
-	fmt.Println(frameTags)
 	if err != nil {
 		return chronolib.CurrentFrame{}, time.Time{}, err
 	}
