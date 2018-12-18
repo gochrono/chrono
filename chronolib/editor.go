@@ -12,6 +12,7 @@ func GetEditorEnv() string {
 
 // EditFile opens a file in an external text editor
 func EditFile(editor string, fpath string) {
+	// #nosec
 	editorCmd := exec.Command(editor, fpath)
 	editorCmd.Stdin = os.Stdin
 	editorCmd.Stdout = os.Stdout

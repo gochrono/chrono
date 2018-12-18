@@ -1,10 +1,5 @@
 package chronolib
 
-import (
-	"crypto/sha1"
-	"time"
-)
-
 func isSlicesEqual(s1, s2 []string) bool {
 	if (s1 == nil) != (s2 == nil) {
 		return false
@@ -55,12 +50,4 @@ func FramesEqual(f1 Frame, f2 Frame) bool {
 // GetShortHex returns the first six characters from a hex encoded SHA
 func GetShortHex(sha string) string {
 	return sha[0:7]
-}
-
-// CreateFrameUUID generates a frame's UUID using it's name, start and end date
-func CreateFrameUUID(name string, start *time.Time, end *time.Time) []byte {
-	input := []byte(name + start.Format("2006-01-02 15:04:05") + end.Format("2006-01-02 15:04:05"))
-	hasher := sha1.New()
-	hasher.Write(input)
-	return hasher.Sum(nil)
 }

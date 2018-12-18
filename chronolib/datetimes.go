@@ -68,7 +68,7 @@ func HasSameDate(t1 *time.Time, t2 *time.Time) bool {
 // FilterFrames filters out a list of frames based on the given FrameFilterOptions
 func FilterFrames(frames *[]Frame, filterOptions FrameFilterOptions) []Frame {
 	var filteredFrames = []Frame{}
-	var validFrame = true
+	var validFrame bool
 	var useTags = len(filterOptions.Tags) != 0
 	var noTimespanCheck = filterOptions.TimespanFilter == TimespanFilterOptions{}
 	var start = filterOptions.TimespanFilter.Start
@@ -106,7 +106,7 @@ func OrganizeFrameByTime(frames *[]Frame) map[time.Time][]Frame {
 // FilterFramesByTimespan returns only frames that are in the given timespan
 func FilterFramesByTimespan(start time.Time, end time.Time, frames *[]Frame, noCheck bool, tags []string) map[time.Time][]Frame {
 	filteredFrames := make(map[time.Time][]Frame)
-	var validFrame = true
+	var validFrame bool
 	var useTags = len(tags) != 0
 	for _, frame := range *frames {
 		if IsFrameInTimespan(frame, start, end) || noCheck {

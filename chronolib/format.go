@@ -11,8 +11,6 @@ import (
 	"time"
 )
 
-type colorFormat func(string) string
-
 // NoColor if set to false will no color any output with ANSI color codes
 var NoColor = false
 

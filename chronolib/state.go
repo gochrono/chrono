@@ -41,7 +41,7 @@ func (s *State) IsEmpty() bool {
 
 // ToFrame converts the CurrentFrame to a Frame by adding a UUID and end time
 func (s *State) ToFrame(end time.Time) Frame {
-	id, _ := uuid.NewV4()
+	id := uuid.Must(uuid.NewV4())
 	return Frame{
 		UUID:      id.String(),
 		Project:   s.CurrentFrame.Project,

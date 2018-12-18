@@ -10,8 +10,7 @@ import (
 	"path/filepath"
 )
 
-// StateFilename is the filename of the states file
-const StateFilename = "state"
+const stateFilename = "state"
 
 // StateRepo is an interface for retieving current state
 type StateRepo interface {
@@ -42,7 +41,7 @@ func loadBytes(config ChronoConfig, filename string) ([]byte, error) {
 		jww.INFO.Printf("no state found, loading empty state")
 		return []byte{}, nil
 	}
-	b, err := ioutil.ReadFile(statePath)
+	b, err := ioutil.ReadFile(filepath.Clean(statePath))
 	if err != nil {
 		jww.INFO.Printf("error reading state, loading empty state")
 		return []byte{}, nil
@@ -57,13 +56,13 @@ func (s JSONStateRepo) Save(state State) error {
 		jww.INFO.Printf("error marshaling state")
 		return err
 	}
-	return writeBytes(s.config, StateFilename, b)
+	return writeBytes(s.config, stateFilename, b)
 }
 
 // Load reads the state
 func (s JSONStateRepo) Load() (State, error) {
 	var currentFrame CurrentFrame
-	content, err := loadBytes(s.config, StateFilename)
+	content, err := loadBytes(s.config, stateFilename)
 	if err != nil {
 		jww.INFO.Printf("error unmarshling state, loading empty state")
 		return State{CurrentFrame{}}, err
@@ -87,13 +86,13 @@ func (s MsgpackStateRepo) Save(state State) error {
 		jww.INFO.Printf("error marshaling state")
 		return err
 	}
-	return writeBytes(s.config, StateFilename, b)
+	return writeBytes(s.config, stateFilename, b)
 }
 
 // Load reads the state
 func (s MsgpackStateRepo) Load() (State, error) {
 	var currentFrame CurrentFrame
-	content, err := loadBytes(s.config, StateFilename)
+	content, err := loadBytes(s.config, stateFilename)
 	if err != nil {
 		jww.INFO.Printf("error unmarshling state, loading empty state")
 		return State{CurrentFrame{}}, nil
@@ -107,9 +106,9 @@ func (s MsgpackStateRepo) Load() (State, error) {
 
 func getStateStorage(config ChronoConfig) StateRepo {
 	switch config.StorageType {
-	case "json":
+	case jsonStorageType:
 		return JSONStateRepo{config}
-	case "msgpack":
+	case msgpackStorageType:
 		return MsgpackStateRepo{config}
 	default:
 		panic(errors.New("unknown storage type"))

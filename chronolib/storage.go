@@ -4,6 +4,9 @@ import (
 	"time"
 )
 
+const jsonStorageType = "json"
+const msgpackStorageType = "msgpack"
+
 // TimespanFilterOptions contains a start and end date to filter frames by
 type TimespanFilterOptions struct {
 	Start time.Time

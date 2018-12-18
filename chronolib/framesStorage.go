@@ -10,8 +10,7 @@ import (
 	"path/filepath"
 )
 
-// FramesFilename is the filename of the frames file
-const FramesFilename = "frames"
+const framesFilename = "frames"
 
 // FramesRepo is an interface for loading/saving frames
 type FramesRepo interface {
@@ -32,7 +31,7 @@ type JSONFramesRepo struct {
 // Load frames stored in the JSON format
 func (s JSONFramesRepo) Load() (Frames, error) {
 	var frames Frames
-	content, err := loadBytes(s.config, FramesFilename)
+	content, err := loadBytes(s.config, framesFilename)
 	if err != nil {
 		jww.INFO.Printf("error unmarshling state, loading empty state")
 		return Frames{}, err
@@ -52,18 +51,18 @@ func (s JSONFramesRepo) Save(f *Frames) error {
 		jww.INFO.Printf("error marshaling state")
 		return err
 	}
-	return writeBytes(s.config, FramesFilename, b)
+	return writeBytes(s.config, framesFilename, b)
 }
 
 // Load retrieves frames from the msgpack format
 func (s MsgpackFramesRepo) Load() (Frames, error) {
 	var frames Frames
-	framesPath := filepath.Join(s.config.ConfigDir, FramesFilename+"."+s.config.StorageType)
+	framesPath := filepath.Join(s.config.ConfigDir, framesFilename+"."+s.config.StorageType)
 	jww.INFO.Printf("reading frames from %s", framesPath)
 	if _, err := os.Stat(framesPath); os.IsNotExist(err) {
 		return Frames{}, nil
 	}
-	content, err := ioutil.ReadFile(framesPath)
+	content, err := ioutil.ReadFile(filepath.Clean(framesPath))
 	if err != nil {
 		return Frames{}, err
 	}
@@ -76,7 +75,7 @@ func (s MsgpackFramesRepo) Load() (Frames, error) {
 
 // Save writes frames using the msgpack format
 func (s MsgpackFramesRepo) Save(f *Frames) error {
-	framesPath := filepath.Join(s.config.ConfigDir, FramesFilename+"."+s.config.StorageType)
+	framesPath := filepath.Join(s.config.ConfigDir, framesFilename+"."+s.config.StorageType)
 	jww.INFO.Printf("saving frames [%v] to %s", f, framesPath)
 	b, err := msgpack.Marshal(f)
 	jww.INFO.Printf("serialzied frames: %v", b)
@@ -94,9 +93,9 @@ func (s MsgpackFramesRepo) Save(f *Frames) error {
 
 func getFrameStorage(config ChronoConfig) FramesRepo {
 	switch config.StorageType {
-	case "json":
+	case jsonStorageType:
 		return JSONFramesRepo{config}
-	case "msgpack":
+	case msgpackStorageType:
 		return MsgpackFramesRepo{config}
 	default:
 		panic(errors.New("unknown storage type"))

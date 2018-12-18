@@ -1,8 +1,6 @@
 package chronolib
 
 import (
-	"github.com/gookit/config"
-	"github.com/gookit/config/toml"
 	"github.com/kirsle/configdir"
 	jww "github.com/spf13/jwalterweatherman"
 	"github.com/spf13/viper"
@@ -59,28 +57,13 @@ func EnsureConfigDirExists(configDirectory string) error {
 
 // GetConfig loads the a confi file if it exists and returns a ChronoConfig struct
 func GetConfig(configDirectory string) ChronoConfig {
-	configFile := filepath.Join(configDirectory, ChronoConfigFilename)
-	config.WithOptions(config.ParseEnv)
-	config.AddDriver(toml.Driver)
-	config.SetDecoder(config.Toml, toml.Decoder)
-
-	err := config.LoadExists(configFile)
-	if err != nil {
-		panic(err)
-	}
-
-	storage, ok := config.String("general.storage")
-	if !ok {
-		storage = "msgpack"
-	}
-
 	storageType := viper.GetString("storage")
-	if storageType != "json" && storageType != "msgpack" {
+	if storageType != jsonStorageType && storageType != msgpackStorageType {
 		jww.WARN.Printf("unknown storage type %s, using msgpack", storageType)
 		storageType = "msgpack"
 	}
 	jww.INFO.Printf("using storage type %s", storageType)
-	generalConfig := chronoGeneralConfig{storage}
+	generalConfig := chronoGeneralConfig{}
 	return ChronoConfig{configDirectory, storageType, generalConfig}
 }
 
