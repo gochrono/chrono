@@ -3,11 +3,18 @@ package commands
 import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
+	"github.com/kirsle/configdir"
 	"github.com/spf13/cobra"
 	jww "github.com/spf13/jwalterweatherman"
 	"github.com/spf13/viper"
 	"os"
 )
+
+// ChronoConfDirEnvName is name of the environment variable used to manually set the config directory
+const ChronoConfDirEnvName = "CHRONO_CONFIG_DIR"
+
+// ChronoAppConf is the name of the app's data directory
+const ChronoAppConf = "chrono"
 
 const mainDescription = `Chrono is a time to help track what you spend your time on.
 
@@ -54,26 +61,36 @@ func PrintErrorAndExit(e error) {
 }
 
 var commandError error
-
+var configDir string
 var verbose bool
 var noColor bool
-var storage = "json"
 
 func init() {
+	if os.Getenv(ChronoConfDirEnvName) != "" {
+		configDir = os.Getenv(ChronoConfDirEnvName)
+	} else {
+		configDir = configdir.LocalConfig(ChronoAppConf)
+	}
+
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "enable verbose output")
 	rootCmd.PersistentFlags().BoolVar(&noColor, "no-color", false, "disable color")
 	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
-	viper.BindPFlag("configDir", rootCmd.PersistentFlags().Lookup("configDir"))
 	viper.BindPFlag("no-color", rootCmd.PersistentFlags().Lookup("no-color"))
 }
 
 func initConfig() {
-	_ = viper.ReadInConfig()
-	viper.SetEnvPrefix("chrono")
-	viper.BindEnv("configDir")
+	viper.AddConfigPath(configDir)
+	viper.SetConfigName("config")
 
-	viper.SetDefault("configDir", chronolib.GetDir())
+	if err := viper.ReadInConfig(); err != nil {
+		jww.WARN.Printf("error reading config, using defaults")
+	}
+
+	viper.SetEnvPrefix("chrono")
+
+	viper.SetDefault("storage", "msgpack")
+
 	chronolib.NoColor = viper.GetBool("no-color")
 }
 
@@ -85,6 +102,11 @@ var rootCmd = &cobra.Command{
 		if viper.GetBool("verbose") {
 			jww.SetLogThreshold(jww.LevelInfo)
 			jww.SetStdoutThreshold(jww.LevelInfo)
+		}
+		jww.INFO.Printf("using config dir: %s", configDir)
+		err := configdir.MakePath(configDir)
+		if err != nil {
+			panic(err)
 		}
 	},
 }

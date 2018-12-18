@@ -4,6 +4,8 @@ import (
 	"github.com/gookit/config"
 	"github.com/gookit/config/toml"
 	"github.com/kirsle/configdir"
+	jww "github.com/spf13/jwalterweatherman"
+	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
 )
@@ -16,10 +18,6 @@ const ChronoAppConf = "chrono"
 
 // ChronoConfDirEnvName is name of the environment variable used to manually set the config directory
 const ChronoConfDirEnvName = "CHRONO_CONFIG_DIR"
-
-func GetDir() string {
-	return configdir.LocalConfig(ChronoAppConf)
-}
 
 // GetAppFilePath returns a file's path in the config directory through either an environment variable or the default path
 func GetAppFilePath(fileName string, customConfDir string) string {
@@ -75,8 +73,15 @@ func GetConfig(configDirectory string) ChronoConfig {
 	if !ok {
 		storage = "msgpack"
 	}
+
+	storageType := viper.GetString("storage")
+	if storageType != "json" && storageType != "msgpack" {
+		jww.WARN.Printf("unknown storage type %s, using msgpack", storageType)
+		storageType = "msgpack"
+	}
+	jww.INFO.Printf("using storage type %s", storageType)
 	generalConfig := chronoGeneralConfig{storage}
-	return ChronoConfig{configDirectory, generalConfig}
+	return ChronoConfig{configDirectory, storageType, generalConfig}
 }
 
 type chronoGeneralConfig struct {
@@ -87,5 +92,6 @@ type chronoGeneralConfig struct {
 // stored in config.toml
 type ChronoConfig struct {
 	ConfigDir     string
+	StorageType   string
 	GeneralConfig chronoGeneralConfig
 }
