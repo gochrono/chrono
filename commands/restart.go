@@ -16,6 +16,7 @@ func newRestartCmd() *cobra.Command {
 		Use:   "restart",
 		Short: "Restart time tracking for a previously stopped project",
 		Long:  "Restart time tracking for a previously stopped project",
+		Args:  cobra.MaximumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			jww.INFO.Printf("using configDir %s", configDir)
@@ -29,11 +30,19 @@ func newRestartCmd() *cobra.Command {
 				panic(err)
 			}
 
-			jww.INFO.Printf("no argument, retrieving last frame")
-			lastFrame, ok := frames.GetByIndex(-1)
-			jww.DEBUG.Printf("last frame %v", lastFrame)
+			var target string
+			if len(args) == 0 {
+				target = "-1"
+				jww.INFO.Printf("no argument, retrieving last frame")
+			} else {
+				target = args[0]
+				jww.INFO.Printf("using target %s", target)
+			}
+
+			lastFrame, ok := GetFrame(frames, target)
 
 			if ok {
+				jww.DEBUG.Printf("found last frame %v", lastFrame)
 				notes := []string{}
 				startedAt := time.Now()
 				if restartNote != "" {
