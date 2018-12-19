@@ -3,8 +3,8 @@ package commands
 import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
-	"github.com/spf13/cobra"
 	"github.com/jinzhu/now"
+	"github.com/spf13/cobra"
 	jww "github.com/spf13/jwalterweatherman"
 	"os"
 	"time"
@@ -20,7 +20,7 @@ var logTo string
 var round bool
 var logTags []string
 
-
+// GetToFromTimespan is a helper function that takes in two time formats and attempts to parse them
 func GetToFromTimespan(from string, to string) (chronolib.TimespanFilterOptions, error) {
 	start := now.BeginningOfDay()
 	end := now.EndOfDay()
@@ -39,7 +39,7 @@ func GetToFromTimespan(from string, to string) (chronolib.TimespanFilterOptions,
 			return chronolib.TimespanFilterOptions{}, err
 		}
 	}
-	return chronolib.TimespanFilterOptions{start, end}, nil
+	return chronolib.TimespanFilterOptions{Start: start, End: end}, nil
 }
 
 func newLogCmd() *cobra.Command {
