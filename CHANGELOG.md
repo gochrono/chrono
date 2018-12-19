@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added coloring to notes show command
 - Updated help documentation for `start` and `notes` command
 - Added `--at` flag to `stop` command to specify a time other than now for the new frame's end time.
+- Added `--project` flag to `report` and `log` command to filter by project name
+- Added `--tag` flag to `report` and `log` command to filter by tags
 - Added `projects` command which shows a unique list of all project names used
 - Added `restart` command which starts a new frame, using the last frame's project & tags
 - Added `--version` flag which works the same as the `version` command
