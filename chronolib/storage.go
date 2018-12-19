@@ -17,6 +17,7 @@ type TimespanFilterOptions struct {
 type FrameFilterOptions struct {
 	TimespanFilter TimespanFilterOptions
 	Tags           []string
+	Projects       []string
 }
 
 // FrameDeleteOptions contains data needed to remove a frame

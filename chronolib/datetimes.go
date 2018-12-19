@@ -70,6 +70,7 @@ func FilterFrames(frames *[]Frame, filterOptions FrameFilterOptions) []Frame {
 	var filteredFrames = []Frame{}
 	var validFrame bool
 	var useTags = len(filterOptions.Tags) != 0
+	var useProjects = len(filterOptions.Projects) != 0
 	var noTimespanCheck = filterOptions.TimespanFilter == TimespanFilterOptions{}
 	var start = filterOptions.TimespanFilter.Start
 	var end = filterOptions.TimespanFilter.End
@@ -82,6 +83,11 @@ func FilterFrames(frames *[]Frame, filterOptions FrameFilterOptions) []Frame {
 						validFrame = false
 						break
 					}
+				}
+			}
+			if useProjects {
+				if !StringInSlice(frame.Project, filterOptions.Projects) {
+					validFrame = false
 				}
 			}
 			if validFrame {

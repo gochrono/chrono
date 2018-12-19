@@ -19,6 +19,7 @@ var logFrom string
 var logTo string
 var round bool
 var logTags []string
+var logProjects []string
 
 // GetToFromTimespan is a helper function that takes in two time formats and attempts to parse them
 func GetToFromTimespan(from string, to string) (chronolib.TimespanFilterOptions, error) {
@@ -77,7 +78,7 @@ func newLogCmd() *cobra.Command {
 
 			frames, _ := chronolib.GetFrames(config)
 			filteredFrames := frames.Filter(chronolib.FrameFilterOptions{
-				TimespanFilter: timespanFilterOptions, Tags: logTags,
+				TimespanFilter: timespanFilterOptions, Tags: logTags, Projects: logProjects,
 			})
 			timemap := chronolib.OrganizeFrameByTime(&filteredFrames)
 			dates := chronolib.SortTimeMapKeys(&timemap)
@@ -111,6 +112,7 @@ func newLogCmd() *cobra.Command {
 	cmd.Flags().StringVarP(&logTo, "to", "T", "", "")
 	cmd.Flags().IntVarP(&interval, "interval", "i", 5, "the interval to round to in minutes")
 	cmd.Flags().StringSliceVarP(&logTags, "tag", "t", []string{}, "only show frames that contain the given tag - can be used multiple times")
+	cmd.Flags().StringSliceVarP(&logProjects, "project", "p", []string{}, "only show frames that contain the given project - can be used multiple times")
 	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	return cmd
 }
