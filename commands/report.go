@@ -13,6 +13,8 @@ var reportForCurrentWeek bool
 var reportForCurrentMonth bool
 var reportForCurrentYear bool
 var reportForAllTime bool
+var reportTags []string
+var reportProjects []string
 
 type frameTotals struct {
 	TotalTime time.Duration
@@ -49,7 +51,9 @@ func newReportCmd() *cobra.Command {
 
 			frames, _ := chronolib.GetFrames(config)
 			filteredFrames := frames.Filter(chronolib.FrameFilterOptions{
-				TimespanFilter: timespanFilterOptions, Tags: logTags,
+				TimespanFilter: timespanFilterOptions,
+				Tags:           reportTags,
+				Projects:       reportProjects,
 			})
 
 			timemap := chronolib.OrganizeFrameByTime(&filteredFrames)
@@ -97,5 +101,7 @@ func newReportCmd() *cobra.Command {
 	newReport.Flags().BoolVarP(&reportForCurrentYear, "year", "y", false, "show frames for entire year")
 	newReport.Flags().BoolVarP(&reportForAllTime, "all", "a", false, "show all frames")
 	newReport.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
+	newReport.Flags().StringSliceVarP(&reportTags, "tag", "t", []string{}, "only show frames that contain the given tag - can be used multiple times")
+	newReport.Flags().StringSliceVarP(&reportProjects, "project", "p", []string{}, "only show frames that contain the given project - can be used multiple times")
 	return newReport
 }
