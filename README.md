@@ -1,6 +1,6 @@
 ![Alt chrono](./.github/full-logo-with-tagline.png)
 
-[![GitHub (pre-)release](https://img.shields.io/github/release/gochrono/chrono/all.svg)](https://github.com/gochrono/chrono/releases)
+[![GitHub Release](https://img.shields.io/github/release-pre/gochrono/chrono.svg)](https://github.com/gochrono/chrono/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gochrono/chrono)](https://goreportcard.com/report/github.com/gochrono/chrono)
 [![Build Status](https://travis-ci.org/gochrono/chrono.svg?branch=master)](https://travis-ci.org/gochrono/chrono)
 ![GitHub](https://img.shields.io/github/license/gochrono/chrono.svg)
