@@ -9,6 +9,7 @@ import (
 const defaultFormat = "Project {{ .Project | magenta }}{{ if .Tags }} [{{ joinTags .Tags | blue }}]{{ end }} started {{ humanize .StartedAt | green }}."
 
 var format string
+var statusShowNotes bool
 
 func newStatusCmd() *cobra.Command {
 	newStatus := &cobra.Command{
@@ -27,9 +28,14 @@ func newStatusCmd() *cobra.Command {
 			} else {
 				fmt.Println(chronolib.RenderCurrentFrameStatus(state.Get(), format))
 			}
+
+			for idx, note := range state.Get().Notes {
+				fmt.Println(chronolib.FormatNoteShowLine(idx, note))
+			}
 		},
 	}
 
 	newStatus.Flags().StringVarP(&format, "format", "f", defaultFormat, "go template string to format output")
+	newStatus.Flags().BoolVarP(&statusShowNotes, "show-notes", "N", false, "include frame notes in status output")
 	return newStatus
 }
