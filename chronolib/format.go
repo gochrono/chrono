@@ -292,7 +292,7 @@ func FormatReportDurationDate(t time.Time) string {
 }
 
 // FormatStartError returns a message formated red that says a project is already started
-func FormatStartError(frame Frame) string {
+func FormatStartError(frame CurrentFrame) string {
 	return red(fmt.Sprintf("Project %s is already started.", frame.Project))
 }
 

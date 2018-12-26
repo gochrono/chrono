@@ -25,7 +25,8 @@ func newStartCmd() *cobra.Command {
 			state, _ := chronolib.GetState(config)
 
 			if !state.IsEmpty() {
-				fmt.Println(state.Get())
+				fmt.Println(chronolib.FormatStartError(state.Get()))
+				return
 			}
 
 			currentFrame, ended, err := ParseStartArgs(args, startAt, startEnded, startNote)

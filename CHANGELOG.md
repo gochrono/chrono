@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added `--show-notes` flag to `status` command. If passed to `status`, notes for the current frame will be shown
 
+### Fixed
+- Fixed bug in `start` where if you started a new project with one already started, the first one would get overridden.
+
 ## [1.0.0] - 2018-12-19
 ### Added
 - Added coloring to notes show command
