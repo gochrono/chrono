@@ -19,7 +19,10 @@ const ChronoAppConf = "chrono"
 const mainDescription = `Chrono is a time to help track what you spend your time on.
 
 You can start tracking your time with ` + "`start`" + ` and you can
-stop the timer with ` + "`stop`" + `.`
+stop the timer with ` + "`stop`" + `.
+
+If you want to set a custom directory to store frames, set the
+CHRONO_CONFIG_DIR environment variable.`
 
 var (
 	version = "dev"
