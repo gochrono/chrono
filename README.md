@@ -30,7 +30,7 @@ To install the latest stable release:
 curl -L https://git.io/fpHAj | sh
 ```
 
-We provide pre-built Chrono binaries for Windows, Linux, and macOS (Darwin) for x64, i386 and ARM architectures.
+We provide pre-built Chrono binaries for Windows, Linux, and macOS (Darwin) for x64 and i386 architectures.
 
 If you'd like to install a specific version, checkout the [releases page](https://github.com/gochrono/chrono/releases).
 
