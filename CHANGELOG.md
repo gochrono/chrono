@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] ##
+
+## [1.0.1] - 2018-12-26 ##
 ### Added
 - Added `--show-notes` flag to `status` command. If passed to `status`, notes for the current frame will be shown
 - Added check for existing project in `restart` command
@@ -46,5 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Core commands implemented
 - Data storage format stabilized
 
-[Unreleased]: https://github.com/gochrono/chrono/compare/v1.0.0-beta...HEAD
+[Unreleased]: https://github.com/gochrono/chrono/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/gochrono/chrono/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/gochrono/chrono/compare/v1.0.0-beta...v1.0.0
