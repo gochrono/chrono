@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] ##
 ### Added
 - Added `--show-notes` flag to `status` command. If passed to `status`, notes for the current frame will be shown
+- Added check for existing project in `restart` command
 
 ### Fixed
 - Fixed bug in `start` where if you started a new project with one already started, the first one would get overridden.

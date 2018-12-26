@@ -30,6 +30,11 @@ func newRestartCmd() *cobra.Command {
 				panic(err)
 			}
 
+			if !state.IsEmpty() {
+				fmt.Println(chronolib.FormatStartError(state.Get()))
+				return
+			}
+
 			var target string
 			if len(args) == 0 {
 				target = "-1"
