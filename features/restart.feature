@@ -58,3 +58,8 @@ Feature: Restart
         ^Starting project something \[pandas\] at \d{2}:\d{2}$
         """
         And a file named "appdir/state.msgpack" should exist
+
+    Scenario: Check restart project fails gracefully when existing project is started
+        Given I successfully run `chrono start something`
+        When I run `chrono restart`
+        Then the output should match /^Project something is already started./

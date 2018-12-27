@@ -23,3 +23,8 @@ Feature: Start
         When I run `chrono start something -n "a simple note"`
         Then I successfully run `chrono notes show`
         And the output should contain "[0]: a simple note"
+
+    Scenario: Check start project fails gracefully when existing project is started
+        Given I successfully run `chrono start something`
+        When I run `chrono start else`
+        Then the output should match /^Project something is already started./
