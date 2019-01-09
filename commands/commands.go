@@ -94,6 +94,8 @@ func initConfig() {
 
 	viper.SetDefault("storage", "msgpack")
 
+	viper.SetDefault("general.start_on_stop", false)
+
 	chronolib.NoColor = viper.GetBool("no-color")
 }
 

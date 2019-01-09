@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"time"
 )
 
 var startNote string
@@ -25,8 +27,22 @@ func newStartCmd() *cobra.Command {
 			state, _ := chronolib.GetState(config)
 
 			if !state.IsEmpty() {
-				fmt.Println(chronolib.FormatStartError(state.Get()))
-				return
+				if viper.GetBool("general.stop_on_start") {
+					oldFrame := state.ToFrame(time.Now())
+					fmt.Println(chronolib.FormatStopFrameMessage(oldFrame))
+					frames, err := chronolib.GetFrames(config)
+					if err != nil {
+						panic(err)
+					}
+					frames.Add(oldFrame)
+					err = chronolib.SaveFrames(config, frames)
+					if err != nil {
+						panic(err)
+					}
+				} else {
+					fmt.Println(chronolib.FormatStartError(state.Get()))
+					return
+				}
 			}
 
 			currentFrame, ended, err := ParseStartArgs(args, startAt, startEnded, startNote)
