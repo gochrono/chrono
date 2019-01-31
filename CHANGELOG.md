@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fixed a bug where if the 'y' is capitalized when confirming a frame delete, it is treated as a no.
+- Actually implemented frame update method, fixing issue where edit didn't do anything
 
 ## [1.0.1] - 2018-12-26 ##
 ### Added

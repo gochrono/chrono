@@ -61,8 +61,20 @@ func (s *Frames) Add(frame Frame) {
 	s.Frames = append(s.Frames, frame)
 }
 
+func (s *Frames) GetFrameIndex(target Frame) int {
+	for index, frame := range s.Frames {
+		if frame.UUID == target.UUID {
+			return index
+		}
+	}
+	jww.ERROR.Printf("can not find frame by index: %v", target)
+	return 0
+}
+
 // Update a frame in the frames list, matched by its UUID
-func (s *Frames) Update(frame Frame) {
+func (s *Frames) Update(target Frame) {
+	index := s.GetFrameIndex(target)
+	s.Frames[index] = target
 }
 
 // Delete a frame from the frames list, matched by its UUID
