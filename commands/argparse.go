@@ -20,7 +20,12 @@ func ParseStartArgs(args []string, startAt string, startEnded string, startNote 
 	if err != nil {
 		return chronolib.CurrentFrame{}, time.Time{}, NewErrTimeStringNotValid(startAt)
 	}
-	frameEnd, err := ParseTime(startEnded)
+	var frameEnd time.Time
+	if chronolib.IsKeyword(startEnded) {
+		frameEnd, err = chronolib.CompileKeyword(startEnded)
+	} else {
+		frameEnd, err = ParseTime(startEnded)
+	}
 	if err != nil {
 		return chronolib.CurrentFrame{}, time.Time{}, NewErrTimeStringNotValid(startEnded)
 	}
