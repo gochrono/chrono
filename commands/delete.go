@@ -14,7 +14,7 @@ func ConfirmDelete(frame chronolib.Frame) bool {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Printf(chronolib.FormatFrameDelete(frame))
 	text, _ := reader.ReadString('\n')
-	text = strings.Replace(text, "\n", "", -1)
+	text = strings.ToLower(strings.Replace(text, "\n", "", -1))
 	return text == "y"
 }
 
