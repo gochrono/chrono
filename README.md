@@ -52,6 +52,14 @@ To start tracking time a project, use the `start` command:
 $ chrono start development +chrono
 ```
 
+If you wanted to set the start time to something other than now, use the '--start' flag:
+
+``` bash
+$ chrono start development --at "2019-02-01 13:00"
+```
+
+Time is parsed by [jinzhu/now][now] so it should be in a format it can understand.
+
 This creates a new __frame__ for the development project with the chrono tag.
 
 Keep notes of what you do for a project with the `notes add` command:
@@ -142,6 +150,7 @@ the GitHub issue tracker to report the problem to the Chrono maintainers.
 
 When reporting an issue, please provide the version of chrono is use (`chrono version`)
 
+[now]: https://github.com/jinzhu/now#parse-string-to-time
 [1]: https://asciinema.org/a/pb5PlJHshi2gjpDeQYCj0gmfI
 [2]: https://aur.archlinux.org/packages/chrono-git/
 [3]: https://aur.archlinux.org/packages/chrono/
