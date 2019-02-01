@@ -286,6 +286,11 @@ func FormatTimeStringNotValid() string {
 	return red("Invalid time format")
 }
 
+// FormatTagNotValid returns a message when a time string was unable to be parsed
+func FormatTagNotValid() string {
+	return red("Invalid tag. Must start with a +")
+}
+
 // FormatReportDurationDate returns the date using format Mon 02 January 2006
 func FormatReportDurationDate(t time.Time) string {
 	return t.Format("Mon 02 January 2006")

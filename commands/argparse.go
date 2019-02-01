@@ -51,7 +51,7 @@ func ParseStartArguments(args []string) (string, []string, error) {
 	tags := args[1:]
 
 	if err := chronolib.CheckTags(tags); err != nil {
-		return "", []string{}, err
+		return "", []string{}, NewErrTagNotValid("invalid tag")
 	}
 
 	return project, chronolib.NormalizeTags(tags), nil

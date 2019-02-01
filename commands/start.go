@@ -52,6 +52,9 @@ func newStartCmd() *cobra.Command {
 				case *ErrTimeStringNotValid:
 					fmt.Println(chronolib.FormatTimeStringNotValid())
 					os.Exit(5)
+				case *ErrTagNotValid:
+					fmt.Println(chronolib.FormatTagNotValid())
+					os.Exit(6)
 				default:
 					panic(err)
 				}

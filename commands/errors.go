@@ -14,3 +14,18 @@ func (e *ErrTimeStringNotValid) Error() string {
 func NewErrTimeStringNotValid(message string) *ErrTimeStringNotValid {
 	return &ErrTimeStringNotValid{message}
 }
+
+// ErrTagNotValid represents when a file doesn't exist on the file system
+type ErrTagNotValid struct {
+	message string
+}
+
+// Error returns the error message
+func (e *ErrTagNotValid) Error() string {
+	return e.message
+}
+
+// NewErrTagNotValid return a ErrTimeStringNotValid
+func NewErrTagNotValid(message string) *ErrTagNotValid {
+	return &ErrTagNotValid{message}
+}
