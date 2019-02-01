@@ -9,10 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added 'now' keyword to '--end' flag time string. Gets replaced with current time and date.
 - Added '-d' flag to 'log' command that shows frames just for yesterday
+- Added note in time format help docs that it should be wrapped in quotes.
 
 ### Fixed
 - Fixed a bug where if the 'y' is capitalized when confirming a frame delete, it is treated as a no.
 - Actually implemented frame update method, fixing issue where edit didn't do anything
+- Added an actual error message rather than just crashing on an invalid tag in `start`
+- Fixed the time format being shown in the command help as backwards
+
 
 ## [1.0.1] - 2018-12-26 ##
 ### Added

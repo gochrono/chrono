@@ -79,7 +79,7 @@ func newRestartCmd() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringVarP(&restartNote, "note", "n", "", "add an initial note to the frame")
-	cmd.Flags().StringVarP(&restartAt, "at", "a", "", "set the start time to a different time than now - format: HH:MM mm/dd/yyyy")
+	cmd.Flags().StringVarP(&restartAt, "at", "a", "", "set the start time to a different time than now - format: 'mm/dd/yyyy HH:MM'. Make sure it is wrapped in quotes.")
 	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	return cmd
 }
