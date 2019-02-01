@@ -54,7 +54,7 @@ func newStopCmd() *cobra.Command {
 		},
 	}
 	stopCmd.Flags().StringVarP(&stopNote, "note", "n", "", "add a final note to current frame")
-	stopCmd.Flags().StringVarP(&stopAt, "at", "a", "", "sets the time the current frame ended to something other than now - format: HH:MM mm/dd/yyyy")
+	stopCmd.Flags().StringVarP(&stopAt, "at", "a", "", "sets the time the current frame ended to something other than now - format: mm/dd/yyyy HH:MM")
 	stopCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	return stopCmd
 }
