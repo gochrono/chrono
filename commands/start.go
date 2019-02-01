@@ -5,6 +5,7 @@ import (
 	"github.com/gochrono/chrono/chronolib"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"os"
 	"time"
 )
 
@@ -47,7 +48,13 @@ func newStartCmd() *cobra.Command {
 
 			currentFrame, ended, err := ParseStartArgs(args, startAt, startEnded, startNote)
 			if err != nil {
-				PrintErrorAndExit(err)
+				switch err.(type) {
+				case *ErrTimeStringNotValid:
+					fmt.Println(chronolib.FormatTimeStringNotValid())
+					os.Exit(5)
+				default:
+					panic(err)
+				}
 			}
 
 			state.Update(currentFrame)
