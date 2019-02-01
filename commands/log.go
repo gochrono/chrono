@@ -15,6 +15,7 @@ var logForCurrentWeek bool
 var logForCurrentMonth bool
 var logForCurrentYear bool
 var logForAllTime bool
+var logForYesterday bool
 var logFrom string
 var logTo string
 var round bool
@@ -71,6 +72,7 @@ func newLogCmd() *cobra.Command {
 					CurrentWeek:  logForCurrentWeek,
 					CurrentMonth: logForCurrentMonth,
 					CurrentYear:  logForCurrentYear,
+					Yesterday:    logForYesterday,
 				})
 			}
 
@@ -106,6 +108,7 @@ func newLogCmd() *cobra.Command {
 	cmd.Flags().BoolVarP(&logForCurrentWeek, "week", "w", false, "show frames for entire week")
 	cmd.Flags().BoolVarP(&logForCurrentMonth, "month", "m", false, "show frames for entire month")
 	cmd.Flags().BoolVarP(&logForCurrentYear, "year", "y", false, "show frames for entire year")
+	cmd.Flags().BoolVarP(&logForYesterday, "yesterday", "d", false, "show frames for yesterday")
 	cmd.Flags().BoolVarP(&logForAllTime, "all", "a", false, "show all frames")
 	cmd.Flags().BoolVarP(&round, "round", "r", false, "round frames start and end times to the nearest interval (default: 5 mins)")
 	cmd.Flags().StringVarP(&logFrom, "from", "f", "", "")

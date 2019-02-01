@@ -45,6 +45,13 @@ func GetTimespanForMonth() (time.Time, time.Time) {
 	return now.BeginningOfMonth(), now.EndOfMonth()
 }
 
+// GetTimespanForYesterday returns the start and end date for yesterday
+func GetTimespanForYesterday() (time.Time, time.Time) {
+	todayStart := now.BeginningOfDay()
+	todayEnd := now.EndOfDay()
+	return todayStart.AddDate(0, 0, -1), todayEnd.AddDate(0, 0, -1)
+}
+
 // GetTimespanForYear returns the start and end date for the current year
 func GetTimespanForYear() (time.Time, time.Time) {
 	return now.BeginningOfYear(), now.EndOfYear()

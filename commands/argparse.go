@@ -78,6 +78,7 @@ type TimespanFlags struct {
 	CurrentWeek  bool
 	CurrentMonth bool
 	CurrentYear  bool
+	Yesterday    bool
 }
 
 // ParseTimespanFlags gets the correct start and end time for filtering frames based
@@ -92,6 +93,8 @@ func ParseTimespanFlags(timespanFlags TimespanFlags) chronolib.TimespanFilterOpt
 		tsStart, tsEnd = chronolib.GetTimespanForMonth()
 	} else if timespanFlags.CurrentYear {
 		tsStart, tsEnd = chronolib.GetTimespanForYear()
+	} else if timespanFlags.Yesterday {
+		tsStart, tsEnd = chronolib.GetTimespanForYesterday()
 	} else {
 		tsStart, tsEnd = chronolib.GetTimespanForToday()
 	}

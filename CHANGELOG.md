@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] ##
 ### Added
 - Added 'now' keyword to '--end' flag time string. Gets replaced with current time and date.
+- Added '-d' flag to 'log' command that shows frames just for yesterday
 
 ### Fixed
 - Fixed a bug where if the 'y' is capitalized when confirming a frame delete, it is treated as a no.
