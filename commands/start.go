@@ -23,6 +23,7 @@ func newStartCmd() *cobra.Command {
 		the 'stop' command.`,
 		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
+			chronolib.ExtendTimeFormats()
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
 			state, _ := chronolib.GetState(config)

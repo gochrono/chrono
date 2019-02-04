@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+// ExtendTimeFormats adds support for various different time formats
+func ExtendTimeFormats() {
+	now.TimeFormats = append(now.TimeFormats, "02/01/2006 15:04") // dd/mm/yyyy HH:MM
+}
+
 // GetTimeElapsedForDuration returns the hours, minutes, seconds for a given duration
 func GetTimeElapsedForDuration(delta time.Duration) (int, int, int) {
 	hours := int(delta.Hours())
