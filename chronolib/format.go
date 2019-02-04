@@ -121,7 +121,7 @@ func FormatNoteShowLine(index int, note string) string {
 // FormatStartFrame returns the output when a new frame is created
 func FormatStartFrame(frame Frame) string {
 	startTime := frame.StartedAt.Format("15:04")
-	endTime := frame.StartedAt.Format("15:04")
+	endTime := frame.EndedAt.Format("15:04")
 	tags := ""
 	if len(frame.Tags) != 0 {
 		tags = FormatTags(frame.Tags)
