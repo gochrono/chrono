@@ -8,7 +8,7 @@ require (
 	github.com/gookit/color v1.1.6
 	github.com/gookit/config v1.0.11
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/jinzhu/now v0.0.0-20180511015916-ed742868f2ae
+	github.com/jinzhu/now v1.1.1
 	github.com/kirsle/configdir v0.0.0-20170128060238-e45d2f54772f
 	github.com/magefile/mage v1.6.2
 	github.com/spf13/cobra v0.0.3
@@ -21,3 +21,5 @@ require (
 	google.golang.org/appengine v1.2.0 // indirect
 	gopkg.in/resty.v1 v1.9.1
 )
+
+go 1.13

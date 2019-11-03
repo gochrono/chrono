@@ -11,11 +11,11 @@ import (
 )
 
 var interval int
-var logForCurrentWeek bool
-var logForCurrentMonth bool
-var logForCurrentYear bool
+var logForDay string
+var logForWeek string
+var logForMonth string
+var logForYear string
 var logForAllTime bool
-var logForYesterday bool
 var logFrom string
 var logTo string
 var round bool
@@ -53,8 +53,8 @@ func newLogCmd() *cobra.Command {
 			configDir := chronolib.GetCorrectConfigDirectory("")
 			config := chronolib.GetConfig(configDir)
 
-			if chronolib.ContainsMoreThanOneBooleanFlag(logForCurrentWeek, logForCurrentMonth, logForCurrentYear) {
-				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month']")
+			if chronolib.ContainsMoreThanOneBooleanFlag(logForDay != "", logForWeek != "", logForMonth != "", logForYear != "") {
+				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--day', '--week', '--year', '--month']")
 				os.Exit(0)
 			}
 
@@ -69,10 +69,10 @@ func newLogCmd() *cobra.Command {
 			} else {
 				timespanFilterOptions = ParseTimespanFlags(TimespanFlags{
 					AllTime:      logForAllTime,
-					CurrentWeek:  logForCurrentWeek,
-					CurrentMonth: logForCurrentMonth,
-					CurrentYear:  logForCurrentYear,
-					Yesterday:    logForYesterday,
+					Day:          logForDay,
+					Week:         logForWeek,
+					Month:        logForMonth,
+					Year:         logForYear,
 				})
 			}
 
@@ -105,10 +105,14 @@ func newLogCmd() *cobra.Command {
 			}
 		},
 	}
-	cmd.Flags().BoolVarP(&logForCurrentWeek, "week", "w", false, "show frames for entire week")
-	cmd.Flags().BoolVarP(&logForCurrentMonth, "month", "m", false, "show frames for entire month")
-	cmd.Flags().BoolVarP(&logForCurrentYear, "year", "y", false, "show frames for entire year")
-	cmd.Flags().BoolVarP(&logForYesterday, "yesterday", "d", false, "show frames for yesterday")
+	cmd.Flags().StringVarP(&logForWeek, "week", "w", "", "show frames for entire week")
+	cmd.Flags().Lookup("week").NoOptDefVal = time.Now().Format("2006-01-02")
+	cmd.Flags().StringVarP(&logForMonth, "month", "m", "", "show frames for entire month")
+	cmd.Flags().Lookup("month").NoOptDefVal = time.Now().Format("2006-01")
+	cmd.Flags().StringVarP(&logForYear, "year", "y", "", "show frames for entire year")
+	cmd.Flags().Lookup("year").NoOptDefVal = time.Now().Format("2006")
+	cmd.Flags().StringVarP(&logForDay, "day", "d", "", "show frames for day")
+	cmd.Flags().Lookup("day").NoOptDefVal = time.Now().Format("2006-01-02")
 	cmd.Flags().BoolVarP(&logForAllTime, "all", "a", false, "show all frames")
 	cmd.Flags().BoolVarP(&round, "round", "r", false, "round frames start and end times to the nearest interval (default: 5 mins)")
 	cmd.Flags().StringVarP(&logFrom, "from", "f", "", "")

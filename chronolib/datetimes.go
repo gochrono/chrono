@@ -3,6 +3,7 @@ package chronolib
 import (
 	"github.com/SaidinWoT/timespan"
 	"github.com/jinzhu/now"
+	jww "github.com/spf13/jwalterweatherman"
 	"time"
 )
 
@@ -35,31 +36,46 @@ func NormalizeDate(precise time.Time) time.Time {
 	return time.Date(precise.Year(), precise.Month(), precise.Day(), 0, 0, 0, 0, precise.Location())
 }
 
+// SanitizeUserInput parses user-supplied date into specified format and
+// returns time.Now() if date cannot be parsed.
+func SanitizeUserInput(date string, format string) (time.Time) {
+	parsed, err := time.Parse(format, date)
+	if err != nil {
+		jww.ERROR.Printf("couldn't parse specified date (%s), using default instead [err: %s]", date, err)
+		return time.Now()
+	}
+	return parsed
+}
+
 // GetTimespanForToday returns the the start date and end date of today
 func GetTimespanForToday() (time.Time, time.Time) {
 	return now.BeginningOfDay(), now.EndOfDay()
 }
 
 // GetTimespanForWeek returns the start and end date for the current week
-func GetTimespanForWeek() (time.Time, time.Time) {
-	return now.BeginningOfWeek(), now.EndOfWeek()
+// TODO: Is a 2006-01-01 date format the best way to specify a week?
+func GetTimespanForWeek(date string) (time.Time, time.Time) {
+	parsed := SanitizeUserInput(date, "2006-01-02")
+	return now.With(parsed).BeginningOfWeek(), now.With(parsed).EndOfWeek()
 }
 
-// GetTimespanForMonth returns the start and end date for the current month
-func GetTimespanForMonth() (time.Time, time.Time) {
-	return now.BeginningOfMonth(), now.EndOfMonth()
+// GetTimespanForMonth returns the start and end date for the month passed in parameter
+// with the format "2019-11"
+func GetTimespanForMonth(month string) (time.Time, time.Time) {
+	parsed := SanitizeUserInput(month, "2006-01")
+	return now.With(parsed).BeginningOfMonth(), now.With(parsed).EndOfMonth()
 }
 
-// GetTimespanForYesterday returns the start and end date for yesterday
-func GetTimespanForYesterday() (time.Time, time.Time) {
-	todayStart := now.BeginningOfDay()
-	todayEnd := now.EndOfDay()
-	return todayStart.AddDate(0, 0, -1), todayEnd.AddDate(0, 0, -1)
+// GetTimespanForDay returns the start and end date for specific day
+func GetTimespanForDay(day string) (time.Time, time.Time) {
+	parsed := SanitizeUserInput(day, "2006-01-02")
+	return now.With(parsed).BeginningOfDay(), now.With(parsed).EndOfDay()
 }
 
 // GetTimespanForYear returns the start and end date for the current year
-func GetTimespanForYear() (time.Time, time.Time) {
-	return now.BeginningOfYear(), now.EndOfYear()
+func GetTimespanForYear(year string) (time.Time, time.Time) {
+	parsed := SanitizeUserInput(year, "2006")
+	return now.With(parsed).BeginningOfYear(), now.With(parsed).EndOfYear()
 }
 
 // IsTimeInTimespan checks if point is inside the timespan between start and end
@@ -86,9 +102,14 @@ func FilterFrames(frames *[]Frame, filterOptions FrameFilterOptions) []Frame {
 	var noTimespanCheck = filterOptions.TimespanFilter == TimespanFilterOptions{}
 	var start = filterOptions.TimespanFilter.Start
 	var end = filterOptions.TimespanFilter.End
+	jww.DEBUG.Printf("FilterFrames start: %s", filterOptions.TimespanFilter.Start)
+	jww.DEBUG.Printf("FilterFrames end: %s", filterOptions.TimespanFilter.End)
 	for _, frame := range *frames {
 		if IsFrameInTimespan(frame, start, end) || noTimespanCheck {
 			validFrame = true
+			if !IsWholeFrameInTimespan(frame, start, end) {
+				frame = SubFrameForTimespan(frame, start, end)
+			}
 			if useTags {
 				for _, tag := range filterOptions.Tags {
 					if !StringInSlice(tag, frame.Tags) {
@@ -121,33 +142,20 @@ func OrganizeFrameByTime(frames *[]Frame) map[time.Time][]Frame {
 	return frameMap
 }
 
-// FilterFramesByTimespan returns only frames that are in the given timespan
-func FilterFramesByTimespan(start time.Time, end time.Time, frames *[]Frame, noCheck bool, tags []string) map[time.Time][]Frame {
-	filteredFrames := make(map[time.Time][]Frame)
-	var validFrame bool
-	var useTags = len(tags) != 0
-	for _, frame := range *frames {
-		if IsFrameInTimespan(frame, start, end) || noCheck {
-			validFrame = true
-			if useTags {
-				for _, tag := range tags {
-					if !StringInSlice(tag, frame.Tags) {
-						validFrame = false
-						break
-					}
-				}
-			}
-			if validFrame {
-				date := NormalizeDate(frame.StartedAt)
-				filteredFrames[date] = append(filteredFrames[date], frame)
-			}
-		}
+// SubFrameForTimespan returns a new frame removing the part of the given frame that's outside the given timespan
+func SubFrameForTimespan(frame Frame, start time.Time, end time.Time) Frame {
+	newFrame := frame
+	if !IsTimeInTimespan(frame.StartedAt, start, end) {
+		newFrame.StartedAt = start
 	}
-	return filteredFrames
+	if !IsTimeInTimespan(frame.EndedAt, start, end) {
+		newFrame.EndedAt = end
+	}
+	return newFrame
 }
 
-// IsFrameInTimespan checks if a frame's start and end time are both in the given timespan
-func IsFrameInTimespan(frame Frame, start time.Time, end time.Time) bool {
+// IsWholeFrameInTimespan checks if a frame's start and end time are both in the given timespan
+func IsWholeFrameInTimespan(frame Frame, start time.Time, end time.Time) bool {
 	if !IsTimeInTimespan(frame.StartedAt, start, end) {
 		return false
 	}
@@ -155,4 +163,9 @@ func IsFrameInTimespan(frame Frame, start time.Time, end time.Time) bool {
 		return false
 	}
 	return true
+}
+
+// IsFrameInTimespan checks if a frame's start OR end time are in the given timespan
+func IsFrameInTimespan(frame Frame, start time.Time, end time.Time) bool {
+	return IsTimeInTimespan(frame.StartedAt, start, end) || IsTimeInTimespan(frame.EndedAt, start, end)
 }

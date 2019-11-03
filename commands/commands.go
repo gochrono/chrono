@@ -16,7 +16,7 @@ const ChronoConfDirEnvName = "CHRONO_CONFIG_DIR"
 // ChronoAppConf is the name of the app's data directory
 const ChronoAppConf = "chrono"
 
-const mainDescription = `Chrono is a time to help track what you spend your time on.
+const mainDescription = `Chrono is a tool to help track what you spend your time on.
 
 You can start tracking your time with ` + "`start`" + ` and you can
 stop the timer with ` + "`stop`" + `.
@@ -107,6 +107,9 @@ var rootCmd = &cobra.Command{
 		if viper.GetBool("verbose") {
 			jww.SetLogThreshold(jww.LevelInfo)
 			jww.SetStdoutThreshold(jww.LevelInfo)
+		}
+		if os.Getenv("CHRONO_DEBUG") != "" {
+			jww.SetStdoutThreshold(jww.LevelDebug)
 		}
 		jww.INFO.Printf("using config dir: %s", configDir)
 		err := configdir.MakePath(configDir)
