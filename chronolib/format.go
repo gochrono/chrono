@@ -302,7 +302,9 @@ func FormatStartError(frame CurrentFrame) string {
 }
 
 // FormatReportDuration returns the duration currently being viewed in the report command
-func FormatReportDuration(timeStart time.Time) string {
-	today := time.Now()
-	return cyan(fmt.Sprintf("%s -> %s", FormatReportDurationDate(timeStart), FormatReportDurationDate(today)))
+func FormatReportDuration(timeStart time.Time, timeEnd time.Time) string {
+	if timeEnd.IsZero() {
+		timeEnd = time.Now()
+	}
+	return cyan(fmt.Sprintf("%s -> %s", FormatReportDurationDate(timeStart), FormatReportDurationDate(timeEnd)))
 }

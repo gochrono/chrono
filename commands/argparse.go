@@ -75,10 +75,10 @@ func ParseTime(t string) (time.Time, error) {
 // TimespanFlags is a struct containing the four different options for timespans
 type TimespanFlags struct {
 	AllTime      bool
-	CurrentWeek  bool
-	CurrentMonth bool
-	CurrentYear  bool
-	Yesterday    bool
+	Day          string
+	Week         string
+	Month        string
+	Year         string
 }
 
 // ParseTimespanFlags gets the correct start and end time for filtering frames based
@@ -87,14 +87,14 @@ func ParseTimespanFlags(timespanFlags TimespanFlags) chronolib.TimespanFilterOpt
 	var tsStart, tsEnd time.Time
 	if timespanFlags.AllTime {
 		return chronolib.TimespanFilterOptions{}
-	} else if timespanFlags.CurrentWeek {
-		tsStart, tsEnd = chronolib.GetTimespanForWeek()
-	} else if timespanFlags.CurrentMonth {
-		tsStart, tsEnd = chronolib.GetTimespanForMonth()
-	} else if timespanFlags.CurrentYear {
-		tsStart, tsEnd = chronolib.GetTimespanForYear()
-	} else if timespanFlags.Yesterday {
-		tsStart, tsEnd = chronolib.GetTimespanForYesterday()
+	} else if timespanFlags.Week != "" {
+		tsStart, tsEnd = chronolib.GetTimespanForWeek(timespanFlags.Week)
+	} else if timespanFlags.Month != "" {
+		tsStart, tsEnd = chronolib.GetTimespanForMonth(timespanFlags.Month)
+	} else if timespanFlags.Year != "" {
+		tsStart, tsEnd = chronolib.GetTimespanForYear(timespanFlags.Year)
+	} else if timespanFlags.Day != "" {
+		tsStart, tsEnd = chronolib.GetTimespanForDay(timespanFlags.Day)
 	} else {
 		tsStart, tsEnd = chronolib.GetTimespanForToday()
 	}

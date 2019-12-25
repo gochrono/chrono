@@ -9,9 +9,10 @@ import (
 	"time"
 )
 
-var reportForCurrentWeek bool
-var reportForCurrentMonth bool
-var reportForCurrentYear bool
+var reportForDay string
+var reportForWeek string
+var reportForMonth string
+var reportForYear string
 var reportForAllTime bool
 var reportTags []string
 var reportProjects []string
@@ -35,18 +36,20 @@ func newReportCmd() *cobra.Command {
 			config := chronolib.GetConfig(configDir)
 
 			if chronolib.ContainsMoreThanOneBooleanFlag(
-				reportForCurrentWeek, reportForCurrentMonth,
-				reportForCurrentYear, reportForAllTime,
+				reportForWeek != "", reportForMonth != "",
+				reportForYear != "", reportForDay != "",
+				reportForAllTime,
 			) {
-				fmt.Println("Error: the folllowing flags are mutually exclusive: ['--week', '--year', '--month', `--all`]")
+				fmt.Println("Error: the following flags are mutually exclusive: ['--day --week', '--year', '--month', `--all`]")
 				os.Exit(0)
 			}
 
 			timespanFilterOptions := ParseTimespanFlags(TimespanFlags{
 				AllTime:      reportForAllTime,
-				CurrentWeek:  reportForCurrentWeek,
-				CurrentMonth: reportForCurrentMonth,
-				CurrentYear:  reportForCurrentYear,
+				Day:          reportForDay,
+				Week:         reportForWeek,
+				Month:        reportForMonth,
+				Year:         reportForYear,
 			})
 
 			frames, _ := chronolib.GetFrames(config)
@@ -61,6 +64,7 @@ func newReportCmd() *cobra.Command {
 			totals := make(map[string]frameTotals)
 			fmt.Println(chronolib.FormatReportDuration(
 				timespanFilterOptions.Start,
+				timespanFilterOptions.End,
 			))
 			for _, date := range dates {
 				for _, frame := range timemap[date] {
@@ -96,9 +100,14 @@ func newReportCmd() *cobra.Command {
 		},
 	}
 
-	newReport.Flags().BoolVarP(&reportForCurrentWeek, "week", "w", false, "show frames for entire week")
-	newReport.Flags().BoolVarP(&reportForCurrentMonth, "month", "m", false, "show frames for entire month")
-	newReport.Flags().BoolVarP(&reportForCurrentYear, "year", "y", false, "show frames for entire year")
+	newReport.Flags().StringVarP(&reportForWeek, "week", "w", "", "show frames for entire week")
+	newReport.Flags().Lookup("week").NoOptDefVal = time.Now().Format("2006-01-02")
+	newReport.Flags().StringVarP(&reportForMonth, "month", "m", "", "show frames for entire month")
+	newReport.Flags().Lookup("month").NoOptDefVal = time.Now().Format("2006-01")
+	newReport.Flags().StringVarP(&reportForYear, "year", "y", "", "show frames for entire year")
+	newReport.Flags().Lookup("year").NoOptDefVal = time.Now().Format("2006")
+	newReport.Flags().StringVarP(&reportForDay, "day", "d", "", "show frames for day")
+	newReport.Flags().Lookup("day").NoOptDefVal = time.Now().Format("2006-01-02")
 	newReport.Flags().BoolVarP(&reportForAllTime, "all", "a", false, "show all frames")
 	newReport.Flags().BoolVarP(&verbose, "verbose", "v", false, "enable verbose output")
 	newReport.Flags().StringSliceVarP(&reportTags, "tag", "t", []string{}, "only show frames that contain the given tag - can be used multiple times")
